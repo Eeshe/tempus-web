@@ -1,25 +1,37 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { catchError, map, Observable, of } from "rxjs";
+import { inject, Service } from "@angular/core";
+import { BehaviorSubject, catchError, map, Observable, of, tap } from "rxjs";
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class AuthService {
-  private baseUrl = "/api/v1/auth";
+  private readonly http: HttpClient = inject(HttpClient);
+  private readonly authState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private readonly baseUrl = "/api/v1/auth";
 
-  constructor(private http: HttpClient) { }
+  constructor() {
+    this.http.get(`${this.baseUrl}/me`).pipe(
+      map(() => true),
+      catchError(() => of(false)),
+    ).subscribe(isAuthenticated => this.authState.next(isAuthenticated));
+  }
+
+  isAuthenticated(): Observable<boolean> {
+    return this.authState.asObservable();
+  }
 
   register(username: string, password: string) {
     return this.makePostRequest("register", username, password);
   }
 
   login(username: string, password: string) {
-    return this.makePostRequest("login", username, password);
+    return this.makePostRequest("login", username, password).pipe(
+      tap(() => this.authState.next(true))
+    );
   }
 
-  isAuthenticated(): Observable<boolean> {
-    return this.http.get(`${this.baseUrl}/me`).pipe(
-      map(() => true),
-      catchError(() => of(false)),
+  logout(): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/logout`, {}, { withCredentials: true }).pipe(
+      tap(() => this.authState.next(false))
     );
   }
 

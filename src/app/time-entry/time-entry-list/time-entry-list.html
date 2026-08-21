@@ -1,0 +1,21 @@
+@for(activeTimeEntry of activeTimeEntries(); track activeTimeEntry.id) {
+<app-active-time-entry [activeTimeEntry]="activeTimeEntry" (stopActiveTimeEntryEvent)="stopActiveTimeEntry($event)" (deleteActiveTimeEntryEvent)="deleteTimeEntry($event)"/>
+<br>
+}
+@for(dayGroup of dayGroupedTimeEntries(); track dayGroup.formattedDate) {
+<section class="day">
+	<header class="day-header">
+		<span class="day-header__date">{{ dayGroup.formattedDate }}</span>
+		<span class="day-header__total">
+			<span class="day-header__total-label">Total</span>
+			<span class="day-header__total-value">{{ dayGroup.formattedTotalTime }}</span>
+		</span>
+	</header>
+	<div class="day-groups">
+    <!-- Index 0 is key, index 1 is value of Map entry -->
+		@for(projectGroupedEntries of dayGroup.groupedEntries; track projectGroupedEntries[0]) {
+		<app-resumable-time-entry-group [timeEntries]="projectGroupedEntries[1]" (deleteTimeEntryEvent)="deleteTimeEntry($event)" (resumeTimeEntryEvent)="addTimeEntry($event)"/>
+		}
+	</div>
+</section>
+}

@@ -1,3 +1,7 @@
+:root {
+  --nav-height: 3.25rem;
+}
+
 html {
   font-size: 100%;
 }

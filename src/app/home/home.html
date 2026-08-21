@@ -1,29 +1,5 @@
 <h1 class="page-title">Home</h1>
 
 <div class="home-container">
-  @for(activeTimeEntry of activeTimeEntries(); track activeTimeEntry.id) {
-    <app-active-time-entry [activeTimeEntry]="activeTimeEntry"/>
-    <br>
-  }
-
-  @for(dayGroup of dayGroupedTimeEntries(); track dayGroup.formattedDate) {
-  <section class="day">
-    <header class="day-header">
-      <span class="day-header__date">{{ dayGroup.formattedDate }}</span>
-      <span class="day-header__total">
-        <span class="day-header__total-label">Total</span>
-        <span class="day-header__total-value">{{ dayGroup.formattedTotalTime }}</span>
-      </span>
-    </header>
-    <div class="day-groups">
-      @for(projectGroupedEntries of dayGroup.groupedEntries; track projectGroupedEntries[0]) {
-      <app-time-entry-group-component
-      [timeEntries]="projectGroupedEntries[1]"
-      (deleteTimeEntryEvent)="deleteTimeEntry($event)"
-      (continueTimeEntryEvent)="addTimeEntry($event)"
-      />
-      }
-    </div>
-  </section>
-  }
+<app-time-entry-list />
 </div>

@@ -1,0 +1,12 @@
+<nav class="nav">
+  <span class="nav__brand">Tempus</span>
+  @if (isAuthenticated | async) {
+    <button
+      class="nav__logout"
+      type="button"
+      aria-label="Logout"
+      title="Logout"
+      (click)="logout()"
+    ></button>
+  }
+</nav>

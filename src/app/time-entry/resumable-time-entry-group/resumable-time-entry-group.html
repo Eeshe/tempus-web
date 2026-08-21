@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
-
 <div class="time-group">
   @if (timeEntries().length > 1) {
   <div class="time-group__header">
@@ -18,7 +16,7 @@
     <div class="time-group__header-right">
       <span class="time-group__billable" [class.time-group__billable--yes]="timeEntries()[0].isBillable">$</span>
       <span class="time-group__duration">{{ formattedTotalDuration() }}</span>
-        <button class="time-entry__icon time-entry__icon--continue" type="button" (click)="continueTimeEntry(timeEntries()[0])" aria-label="Continue entry"></button>
+      <button class="time-group__icon time-group__icon--continue" type="button" (click)="resumeTimeEntry(timeEntries()[0])" aria-label="Continue entry"></button>
       <button class="time-group__icon time-group__icon--delete" type="button" (click)="deleteGroup()" aria-label="Delete group"></button>
     </div>
   </div>
@@ -27,19 +25,7 @@
   @if (timeEntries().length === 1 || isExpanded()) {
   <div class="time-group__content">
     @for(timeEntry of timeEntries(); track timeEntry.id) {
-    <div class="time-entry">
-      <div class="time-entry__left">
-        <app-time-entry-description [description]="timeEntry.description ?? ''"/>
-        <span class="time-entry__project">{{ timeEntry | displayName}}</span>
-      </div>
-      <div class="time-entry__right">
-        <span class="time-entry__billable" [class.time-entry__billable--yes]="timeEntry.isBillable">$</span>
-        <span class="time-entry__time">{{ formatTime(timeEntry.startTime) }} – {{ formatTime(timeEntry.endTime) }}</span>
-        <span class="time-entry__duration">{{ timeEntry.startTime | duration: timeEntry.endTime }}</span>
-        <button class="time-entry__icon time-entry__icon--continue" type="button" (click)="continueTimeEntry(timeEntry)" aria-label="Continue entry"></button>
-        <button class="time-entry__icon time-entry__icon--delete" type="button" (click)="deleteTimeEntry(timeEntry)" aria-label="Delete entry"></button>
-      </div>
-    </div>
+    <app-resumable-time-entry [timeEntry]="timeEntry" (resumeTimeEntryEvent)="resumeTimeEntry($event)" (deleteTimeEntryEvent)="deleteTimeEntry($event)"/>
     }
   </div>
   }

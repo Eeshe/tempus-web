@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { inject, Service } from "@angular/core";
 import { Observable } from "rxjs";
 import { TimeEntry } from "../model/time-entry.model";
 
@@ -25,17 +25,16 @@ interface PatchTimeEntryRequest {
   endTime: string
 }
 
-@Injectable({ providedIn: 'root' })
+@Service()
 export class TimeEntryService {
   private readonly url: string = "/api/v1/time-entries";
-
-  constructor(private http: HttpClient) { }
+  private http: HttpClient = inject(HttpClient);
 
   listTimeEntries(): Observable<TimeEntry[]> {
     return this.http.get<TimeEntry[]>(this.url, { withCredentials: true });
   }
 
-  continueTimeEntry(timeEntry: TimeEntry): Observable<TimeEntry> {
+  resumeTimeEntry(timeEntry: TimeEntry): Observable<TimeEntry> {
     const createRequest: CreateTimeEntryRequest = {
       groupId: timeEntry.groupId,
       userId: timeEntry.userId,
@@ -49,10 +48,21 @@ export class TimeEntryService {
     return this.http.post<TimeEntry>(this.url, createRequest, { withCredentials: true });
   }
 
-  updateTimeEntryDescription(timeEntry: TimeEntry, newDescription: string): Observable<TimeEntry> {
+  patchTimeEntryDescription(timeEntry: TimeEntry, newDescription: string): Observable<TimeEntry> {
     const patchRequest: Partial<PatchTimeEntryRequest> = {
       description: newDescription,
     }
+    return this.patchTimeEntry(timeEntry, patchRequest);
+  }
+
+  patchTimeEntryEndTime(timeEntry: TimeEntry, endTime: Date): Observable<TimeEntry> {
+    const patchRequest: Partial<PatchTimeEntryRequest> = {
+      endTime: endTime.toISOString(),
+    }
+    return this.patchTimeEntry(timeEntry, patchRequest)
+  }
+
+  private patchTimeEntry(timeEntry: TimeEntry, patchRequest: Partial<PatchTimeEntryRequest>): Observable<TimeEntry> {
     return this.http.patch<TimeEntry>(`${this.url}/${timeEntry.id}`, patchRequest, { withCredentials: true })
   }
 

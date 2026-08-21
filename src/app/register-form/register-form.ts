@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
 import { form, FormField, required, submit, validate } from '@angular/forms/signals';
 import { AuthService } from '../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
@@ -15,40 +15,46 @@ interface RegisterData {
   selector: 'app-register-form',
   imports: [FormField, RouterLink],
   templateUrl: './register-form.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './register-form.css',
 })
 export class RegisterForm {
   registerModel = signal<RegisterData>({
-    username: "",
-    password: "",
-    passwordConfirmation: ""
+    username: '',
+    password: '',
+    passwordConfirmation: '',
   });
 
   registerForm = form(this.registerModel, (fieldPath) => {
-    required(fieldPath.username, { message: "Username is required" })
-    required(fieldPath.password, { message: "Password is required" })
-    required(fieldPath.passwordConfirmation, { message: "You must confirm your password" })
+    required(fieldPath.username, { message: 'Username is required' });
+    required(fieldPath.password, { message: 'Password is required' });
+    required(fieldPath.passwordConfirmation, { message: 'You must confirm your password' });
     validate(fieldPath.passwordConfirmation, (value) => {
-      if (value.value() === "") {
+      if (value.value() === '') {
         return null;
       }
-      return value.value() !== this.registerForm.password().value() ?
-        {
-          kind: "passwordMismatch",
-          message: "Passwords must match"
-        }
+      return value.value() !== this.registerForm.password().value()
+        ? {
+            kind: 'passwordMismatch',
+            message: 'Passwords must match',
+          }
         : null;
-    })
+    });
   });
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
   doPasswordsMatch(): boolean {
-    return this.registerForm.password().value() === this.registerForm.passwordConfirmation().value();
+    return (
+      this.registerForm.password().value() === this.registerForm.passwordConfirmation().value()
+    );
   }
 
   onSubmit(event: Event) {
-    event.preventDefault()
+    event.preventDefault();
 
     submit(this.registerForm, async () => {
       const username: string = this.registerModel().username;
@@ -57,15 +63,15 @@ export class RegisterForm {
       try {
         await firstValueFrom(this.authService.register(username, password));
         await firstValueFrom(this.authService.login(username, password));
-        this.router.navigate(["/home"])
+        this.router.navigate(['/home']);
 
         return undefined;
       } catch (error) {
         if (error instanceof HttpErrorResponse && error.status == 400) {
-          return { kind: "usernameTaken", message: "Username is taken. Try a different one" }
+          return { kind: 'usernameTaken', message: 'Username is taken. Try a different one' };
         }
-        return { kind: "serverError", message: "Something's wrong server-side" }
+        return { kind: 'serverError', message: "Something's wrong server-side" };
       }
-    })
+    });
   }
 }

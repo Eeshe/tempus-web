@@ -1,18 +1,25 @@
-import { Component, input } from '@angular/core';
-import { TimeEntry } from '../model/time-entry.model';
-import { DisplayNamePipe } from '../shared/pipes/time-entry.pipe';
-import { map, timer } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { map, timer } from 'rxjs';
+import { TimeEntry } from '../model/time-entry.model';
+import { TimeEntryService } from '../services/time-entry.service';
+import { DisplayNamePipe } from '../shared/pipes/time-entry.pipe';
 import { TimeEntryDescription } from '../time-entry/time-entry-description/time-entry-description';
 
 @Component({
   selector: 'app-active-time-entry',
   imports: [DisplayNamePipe, AsyncPipe, TimeEntryDescription],
   templateUrl: './active-time-entry.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './active-time-entry.css',
 })
 export class ActiveTimeEntryComponent {
+  private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
+
   readonly activeTimeEntry = input.required<TimeEntry>();
+
+  readonly deleteActiveTimeEntryEvent = output<TimeEntry>();
+  readonly stopActiveTimeEntryEvent = output<TimeEntry>();
 
   elapsedTime$ = timer(0, 1000).pipe(map(() => this.formatElapsedTime()));
 
@@ -30,15 +37,19 @@ export class ActiveTimeEntryComponent {
   }
 
   saveTimeEntryDescription(newDescription: string): void {
-    alert("NEW DESCRIPTION: " + newDescription);
+    this.timeEntryService.patchTimeEntryDescription(this.activeTimeEntry(), newDescription).subscribe();
   }
 
   stopTimeEntry(): void {
-    // TODO
-    alert("STOPPED");
+    console.log(new Date());
+    console.log(new Date().toISOString());
+    this.timeEntryService.patchTimeEntryEndTime(this.activeTimeEntry(), new Date()).subscribe(
+      patchedTimeEntry => this.stopActiveTimeEntryEvent.emit(patchedTimeEntry)
+    );
   }
 
   deleteTimeEntry(): void {
-    alert("DELETED");
+    this.timeEntryService.deleteTimeEntry(this.activeTimeEntry()).subscribe();
+    this.deleteActiveTimeEntryEvent.emit(this.activeTimeEntry());
   }
 }

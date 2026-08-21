@@ -1,0 +1,58 @@
+:host {
+  --bg: #101318;
+  --surface: #161a22;
+  --fg: #e8eaf0;
+  --muted: #9aa3b2;
+  --border: #262c38;
+  --border-strong: #353c4a;
+  --good: #3dd68c;
+  --bad: #f2555c;
+
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--nav-height);
+  padding: 0 1.5rem;
+  box-sizing: border-box;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav__brand {
+  color: var(--fg);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.nav__logout {
+  --icon: url('/icons/logout.svg');
+
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  border: none;
+  background-color: var(--bad);
+  -webkit-mask: var(--icon) center/contain no-repeat;
+  mask: var(--icon) center/contain no-repeat;
+  cursor: pointer;
+  transition: background-color 120ms ease, transform 120ms ease;
+}
+
+.nav__logout:hover {
+  transform: scale(1.08);
+}
+
+.nav__logout:focus-visible {
+  outline: 2px solid var(--good);
+  outline-offset: 2px;
+}

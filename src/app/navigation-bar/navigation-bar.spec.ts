@@ -1,17 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NavigationBar } from './navigation-bar';
 
-import { TimeEntryComponent } from './time-entry-component';
-
-describe('TimeEntryComponent', () => {
-  let component: TimeEntryComponent;
-  let fixture: ComponentFixture<TimeEntryComponent>;
+describe('NavigationBar', () => {
+  let component: NavigationBar;
+  let fixture: ComponentFixture<NavigationBar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TimeEntryComponent],
+      imports: [NavigationBar],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TimeEntryComponent);
+    fixture = TestBed.createComponent(NavigationBar);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

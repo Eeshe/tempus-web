@@ -6,24 +6,6 @@
   min-width: 0;
 }
 
-.active-entry__description-placeholder {
-  position: absolute;
-  left: 0.6875rem;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: var(--muted);
-  font-family: inherit;
-  font-size: 0.875rem;
-  opacity: 0;
-  transition: opacity 240ms ease;
-}
-
-.active-entry__description:hover .active-entry__description-input:placeholder-shown ~ .active-entry__description-placeholder,
-.active-entry__description:focus-within .active-entry__description-input:placeholder-shown ~ .active-entry__description-placeholder {
-  opacity: 1;
-}
-
 .active-entry__description-input {
   flex: 1 1 auto;
   min-width: 0;
@@ -37,10 +19,6 @@
   font-size: 0.875rem;
   outline: none;
   transition: border-color 120ms ease;
-}
-
-.active-entry__description-input::placeholder {
-  color: transparent;
 }
 
 .active-entry__description-input:hover {

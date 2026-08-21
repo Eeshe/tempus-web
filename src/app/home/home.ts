@@ -1,97 +1,13 @@
-import { Component, computed, OnInit, signal } from '@angular/core';
-import { TimeEntryService } from '../services/time-entry.service';
-import { formatDate } from '@angular/common';
-import { TimeEntry } from '../model/time-entry.model';
-import { TimeEntryGroupComponent } from '../time-entry-group/time-entry-group.component';
-import { computeDuration, Duration, durationFromMs, formatHHMMSSTime } from '../shared/util/time.util';
-import { ActiveTimeEntryComponent } from '../active-time-entry/active-time-entry';
-
-interface DayGroupedTimeEntries {
-  formattedDate: string;
-  groupedEntries: Map<string, TimeEntry[]>;
-  formattedTotalTime: string;
-}
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TimeEntryList } from '../time-entry/time-entry-list/time-entry-list';
 
 @Component({
   selector: 'app-home',
-  imports: [TimeEntryGroupComponent, ActiveTimeEntryComponent],
+  imports: [TimeEntryList],
   templateUrl: './home.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.css',
 })
-export class Home implements OnInit {
-  timeEntries = signal<TimeEntry[]>([]);
+export class Home {
 
-  activeTimeEntries = computed<TimeEntry[]>(() => {
-    const activeTimeEntries: TimeEntry[] = [];
-    for (const timeEntry of this.timeEntries()) {
-      if (timeEntry.endTime !== null) {
-        continue;
-      }
-      activeTimeEntries.push(timeEntry);
-    }
-    return activeTimeEntries;
-  });
-
-  dayGroupedTimeEntries = computed<DayGroupedTimeEntries[]>(() => this.groupTimeEntriesByDay());
-
-  groupTimeEntriesByDay(): DayGroupedTimeEntries[] {
-    const dayGroups: Map<string, Map<string, TimeEntry[]>> = new Map<string, Map<string, TimeEntry[]>>();
-
-    for (const timeEntry of this.timeEntries()) {
-      if (timeEntry.endTime == null) {
-        continue;
-      }
-      const formattedDate: string = this.formatDayDate(timeEntry.startTime);
-      // ID is project id + description + taskId + billable
-      // Ex. Tempusv0.9.0Developmentfalse
-      const timeEntryGroupId: string =
-        timeEntry.project.id +
-        (timeEntry.description ? timeEntry.description : "") +
-        (timeEntry.task ? timeEntry.task.id : "") +
-        timeEntry.isBillable;
-
-      const dayProjectGroups: Map<string, TimeEntry[]> = dayGroups.get(formattedDate) ?? new Map<string, TimeEntry[]>();
-      const groupedEntries: TimeEntry[] = dayProjectGroups.get(timeEntryGroupId) ?? [];
-
-      groupedEntries.push(timeEntry);
-      dayProjectGroups.set(timeEntryGroupId, groupedEntries);
-      dayGroups.set(formattedDate, dayProjectGroups);
-    }
-    return Array.from(dayGroups, ([formattedDate, groupedEntries]) => {
-      const totalTimeMs: number = [...groupedEntries.values()]
-        .flatMap((entries) => entries)
-        .reduce((sum, timeEntry) => {
-          const duration: Duration | null = computeDuration(timeEntry.startTime, timeEntry.endTime);
-
-          return sum + (duration?.totalMilliseconds ?? 0);
-        }, 0)
-      const formattedTotalTime: string = formatHHMMSSTime(durationFromMs(totalTimeMs));
-      return {
-        formattedDate: formattedDate,
-        groupedEntries: groupedEntries,
-        formattedTotalTime: formattedTotalTime,
-      }
-    })
-  }
-
-  constructor(private timeEntryService: TimeEntryService) { }
-
-  ngOnInit(): void {
-    this.timeEntryService.listTimeEntries().subscribe(response => {
-      this.timeEntries.set(response);
-      console.log("ACTIVE TIME ENTRIES:", this.activeTimeEntries());
-    });
-  }
-
-  private formatDayDate(date: string | null) {
-    return date ? formatDate(date, "EEEE, MMM d", "en-US") : "Unknown";
-  }
-
-  addTimeEntry(timeEntry: TimeEntry): void {
-    this.timeEntries.update(timeEntries => [...timeEntries, timeEntry]);
-  }
-
-  deleteTimeEntry(timeEntry: TimeEntry): void {
-    this.timeEntries.update(timeEntries => timeEntries.filter(oldTimeEntry => oldTimeEntry.id !== timeEntry.id));
-  }
 }
