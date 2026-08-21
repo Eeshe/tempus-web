@@ -1,0 +1,46 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+
+<div class="time-group">
+  @if (timeEntries().length > 1) {
+  <div class="time-group__header">
+    <div class="time-group__header-left">
+      <button class="time-group__toggle" type="button" (click)="toggleCollapsible()" [attr.aria-expanded]="isExpanded()">
+        <svg class="time-group__chevron" [class.time-group__chevron--open]="isExpanded()" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+          <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z"/>
+        </svg>
+        <span class="time-group__count">{{ timeEntries().length }}</span>
+      </button>
+      <div class="time-group__titles">
+        <app-time-entry-description [description]="timeEntries()[0].description ?? ''"/>
+        <span class="time-group__project">{{ timeEntries()[0] | displayName }}</span>
+      </div>
+    </div>
+    <div class="time-group__header-right">
+      <span class="time-group__billable" [class.time-group__billable--yes]="timeEntries()[0].isBillable">$</span>
+      <span class="time-group__duration">{{ formattedTotalDuration() }}</span>
+        <button class="time-entry__icon time-entry__icon--continue" type="button" (click)="continueTimeEntry(timeEntries()[0])" aria-label="Continue entry"></button>
+      <button class="time-group__icon time-group__icon--delete" type="button" (click)="deleteGroup()" aria-label="Delete group"></button>
+    </div>
+  </div>
+  }
+
+  @if (timeEntries().length === 1 || isExpanded()) {
+  <div class="time-group__content">
+    @for(timeEntry of timeEntries(); track timeEntry.id) {
+    <div class="time-entry">
+      <div class="time-entry__left">
+        <app-time-entry-description [description]="timeEntry.description ?? ''"/>
+        <span class="time-entry__project">{{ timeEntry | displayName}}</span>
+      </div>
+      <div class="time-entry__right">
+        <span class="time-entry__billable" [class.time-entry__billable--yes]="timeEntry.isBillable">$</span>
+        <span class="time-entry__time">{{ formatTime(timeEntry.startTime) }} – {{ formatTime(timeEntry.endTime) }}</span>
+        <span class="time-entry__duration">{{ timeEntry.startTime | duration: timeEntry.endTime }}</span>
+        <button class="time-entry__icon time-entry__icon--continue" type="button" (click)="continueTimeEntry(timeEntry)" aria-label="Continue entry"></button>
+        <button class="time-entry__icon time-entry__icon--delete" type="button" (click)="deleteTimeEntry(timeEntry)" aria-label="Delete entry"></button>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>
