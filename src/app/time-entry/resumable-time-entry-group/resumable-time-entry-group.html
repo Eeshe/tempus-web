@@ -10,7 +10,8 @@
       </button>
       <div class="time-group__titles">
         <app-time-entry-description [description]="timeEntries()[0].description ?? ''"/>
-        <span class="time-group__project">{{ timeEntries()[0] | displayName }}</span>
+        <app-project-task-selector-button [selectedProject]="timeEntries()[0].project" (projectSelectEvent)="updateGroupProject($event)"/>
+        <!-- <span class="time-group__project">{{ timeEntries()[0] | displayName }}</span> -->
       </div>
     </div>
     <div class="time-group__header-right">
@@ -25,7 +26,7 @@
   @if (timeEntries().length === 1 || isExpanded()) {
   <div class="time-group__content">
     @for(timeEntry of timeEntries(); track timeEntry.id) {
-    <app-resumable-time-entry [timeEntry]="timeEntry" (resumeTimeEntryEvent)="resumeTimeEntry($event)" (deleteTimeEntryEvent)="deleteTimeEntry($event)"/>
+    <app-resumable-time-entry [timeEntry]="timeEntry" (resumeTimeEntryEvent)="resumeTimeEntry($event)" (deleteTimeEntryEvent)="deleteTimeEntryEvent.emit($event)" (updateTimeEntryProjectEvent)="updateTimeEntryProjectEvent.emit($event)"/>
     }
   </div>
   }

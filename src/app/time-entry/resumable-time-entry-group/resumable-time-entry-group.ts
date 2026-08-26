@@ -1,19 +1,23 @@
-import { Component, computed, inject, input, output, signal, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import { Project } from '../../model/project.model';
 import { TimeEntry } from '../../model/time-entry.model';
+import { ProjectTaskSelectorButton } from '../../project/project-selector-button/project-task-selector-button';
+import { TimeEntryService } from '../../services/time-entry.service';
 import {
   computeDuration,
   Duration,
   durationFromMs,
   formatHHMMSSTime,
 } from '../../shared/util/time.util';
-import { DisplayNamePipe } from '../../shared/pipes/time-entry.pipe';
-import { TimeEntryService } from '../../services/time-entry.service';
-import { TimeEntryDescription } from '../time-entry-description/time-entry-description';
 import { ResumableTimeEntry } from '../resumable-time-entry/resumable-time-entry';
+import { TimeEntryDescription } from '../time-entry-description/time-entry-description';
 
 @Component({
   selector: 'app-resumable-time-entry-group',
-  imports: [DisplayNamePipe, TimeEntryDescription, ResumableTimeEntry],
+  imports: [
+    TimeEntryDescription,
+    ProjectTaskSelectorButton,
+    ResumableTimeEntry],
   templateUrl: './resumable-time-entry-group.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './resumable-time-entry-group.css',
@@ -37,6 +41,7 @@ export class ResumableTimeEntryGroup {
 
   readonly resumeTimeEntryEvent = output<TimeEntry>();
   readonly deleteTimeEntryEvent = output<TimeEntry>();
+  readonly updateTimeEntryProjectEvent = output<{ timeEntry: TimeEntry, newProject: Project }>();
 
   toggleCollapsible(): void {
     this.isExpanded.update((value) => !value);
@@ -50,12 +55,14 @@ export class ResumableTimeEntryGroup {
 
   deleteGroup(): void {
     for (const timeEntry of this.timeEntries()) {
-      this.deleteTimeEntry(timeEntry);
+      this.deleteTimeEntryEvent.emit(timeEntry);
     }
   }
 
-  deleteTimeEntry(timeEntry: TimeEntry): void {
-    this.timeEntryService.deleteTimeEntry(timeEntry).subscribe();
-    this.deleteTimeEntryEvent.emit(timeEntry);
+  updateGroupProject(newProject: Project): void {
+    this.timeEntries().forEach((timeEntry) => this.updateTimeEntryProjectEvent.emit({
+      timeEntry: timeEntry,
+      newProject: newProject,
+    }));
   }
 }

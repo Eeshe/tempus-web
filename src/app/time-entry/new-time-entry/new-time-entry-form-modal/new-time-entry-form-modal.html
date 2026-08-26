@@ -1,0 +1,72 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+
+<form class="backdrop" (submit)="submit($event)" (click)="close()">
+  <div class="card" (click)="$event.stopPropagation()">
+    <div class="header">
+      <h1>New time entry</h1>
+      <button type="button" class="close" (click)="close()" aria-label="Close">&times;</button>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="description">Description</label>
+        <input id="description" type="text" [formField]="newTimeEntryForm.description" />
+        @if (newTimeEntryForm.description().invalid() && newTimeEntryForm.description().touched()) {
+          <div class="error">
+            @for (error of newTimeEntryForm.description().errors(); track error.kind) {
+              <span>{{ error.message }}</span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="field checkbox-field">
+        <label for="billable">Billable</label>
+        <div class="control">
+          <input id="billable" type="checkbox" [formField]="newTimeEntryForm.billable" />
+        </div>
+      </div>
+    </div>
+
+    <div class="time-row">
+      <div class="field">
+        <label for="startTime">Start Time</label>
+        <input id="startTime" type="datetime-local" [formField]="newTimeEntryForm.startTime" />
+        @if (newTimeEntryForm.startTime().invalid() && newTimeEntryForm.startTime().touched()) {
+          <div class="error">
+            @for (error of newTimeEntryForm.startTime().errors(); track error.kind) {
+              <span>{{ error.message }}</span>
+            }
+          </div>
+        }
+      </div>
+
+      <span class="time-arrow" aria-hidden="true">&rarr;</span>
+
+      <div class="field">
+        <label for="endTime">End Time</label>
+        <input id="endTime" type="datetime-local" [formField]="newTimeEntryForm.endTime" />
+        @if (newTimeEntryForm.endTime().invalid() && newTimeEntryForm.endTime().touched()) {
+          <div class="error">
+            @for (error of newTimeEntryForm.endTime().errors(); track error.kind) {
+              <span>{{ error.message }}</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (newTimeEntryForm().errors().length > 0) {
+      <div class="form-error" role="alert">
+        @for (error of newTimeEntryForm().errors(); track error.kind) {
+          <span>{{ error.message }}</span>
+        }
+      </div>
+    }
+
+    <div class="actions">
+      <button type="button" class="secondary" (click)="close()">Cancel</button>
+      <button type="submit" [disabled]="newTimeEntryForm().invalid()">Create time entry</button>
+    </div>
+  </div>
+</form>

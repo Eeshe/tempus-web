@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { ActiveTimeEntryComponent } from '../../active-time-entry/active-time-entry';
+import { Project } from '../../model/project.model';
 import { TimeEntry } from '../../model/time-entry.model';
 import { TimeEntryService } from '../../services/time-entry.service';
 import { computeDuration, Duration, durationFromMs, formatHHMMSSTime } from '../../shared/util/time.util';
@@ -92,9 +93,18 @@ export class TimeEntryList implements OnInit {
   }
 
   deleteTimeEntry(timeEntry: TimeEntry): void {
-    this.timeEntries.update((timeEntries) =>
-      timeEntries.filter((oldTimeEntry) => oldTimeEntry.id !== timeEntry.id),
-    );
+    this.timeEntryService.deleteTimeEntry(timeEntry).subscribe(() =>
+      this.timeEntries.update((timeEntries) =>
+        timeEntries.filter((oldTimeEntry) => oldTimeEntry.id !== timeEntry.id),
+      ));
+  }
+
+  updateTimeEntryProject(timeEntry: TimeEntry, newProject: Project): void {
+    this.timeEntryService.patchTimeEntryProject(timeEntry, newProject).subscribe(
+      patchedTimeEntry => this.timeEntries.update((timeEntries) =>
+        timeEntries.map(timeEntry =>
+          timeEntry.id === patchedTimeEntry.id ?
+            patchedTimeEntry : timeEntry)));
   }
 
   stopActiveTimeEntry(stoppedTimeEntry: TimeEntry): void {

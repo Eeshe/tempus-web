@@ -1,14 +1,20 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, model, output } from '@angular/core';
 import { map, timer } from 'rxjs';
+import { Project } from '../model/project.model';
 import { TimeEntry } from '../model/time-entry.model';
+import { ProjectTaskSelectorButton } from '../project/project-selector-button/project-task-selector-button';
 import { TimeEntryService } from '../services/time-entry.service';
-import { DisplayNamePipe } from '../shared/pipes/time-entry.pipe';
+import { TimeEntryBillableButton } from '../time-entry/time-entry-billable-button/time-entry-billable-button';
 import { TimeEntryDescription } from '../time-entry/time-entry-description/time-entry-description';
 
 @Component({
   selector: 'app-active-time-entry',
-  imports: [DisplayNamePipe, AsyncPipe, TimeEntryDescription],
+  imports: [
+    AsyncPipe,
+    TimeEntryDescription,
+    ProjectTaskSelectorButton,
+    TimeEntryBillableButton],
   templateUrl: './active-time-entry.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './active-time-entry.css',
@@ -16,7 +22,7 @@ import { TimeEntryDescription } from '../time-entry/time-entry-description/time-
 export class ActiveTimeEntryComponent {
   private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
 
-  readonly activeTimeEntry = input.required<TimeEntry>();
+  readonly activeTimeEntry = model.required<TimeEntry>();
 
   readonly deleteActiveTimeEntryEvent = output<TimeEntry>();
   readonly stopActiveTimeEntryEvent = output<TimeEntry>();
@@ -51,5 +57,11 @@ export class ActiveTimeEntryComponent {
   deleteTimeEntry(): void {
     this.timeEntryService.deleteTimeEntry(this.activeTimeEntry()).subscribe();
     this.deleteActiveTimeEntryEvent.emit(this.activeTimeEntry());
+  }
+
+  updateTimeEntryProject(project: Project): void {
+    this.timeEntryService.patchTimeEntryProject(this.activeTimeEntry(), project).subscribe(
+      patchedTimeEntry => this.activeTimeEntry.set(patchedTimeEntry)
+    );
   }
 }

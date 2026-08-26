@@ -1,13 +1,14 @@
 <div class="time-entry">
-  <div class="time-entry__left">
-    <app-time-entry-description [description]="timeEntry().description ?? ''"/>
-    <span class="time-entry__project">{{ timeEntry() | displayName}}</span>
-  </div>
-  <div class="time-entry__right">
-    <span class="time-entry__billable" [class.time-entry__billable--yes]="timeEntry().isBillable">$</span>
-    <span class="time-entry__time">{{ formatTime(timeEntry().startTime) }} – {{ formatTime(timeEntry().endTime) }}</span>
-    <span class="time-entry__duration">{{ timeEntry().startTime | duration: timeEntry().endTime }}</span>
-    <button class="time-entry__icon time-entry__icon--continue" type="button" (click)="resumeTimeEntryEvent.emit(timeEntry())" aria-label="Continue entry"></button>
-    <button class="time-entry__icon time-entry__icon--delete" type="button" (click)="deleteTimeEntryEvent.emit(timeEntry())" aria-label="Delete entry"></button>
-  </div>
+	<div class="time-entry__left">
+		<app-time-entry-description [description]="timeEntry().description ?? ''"/>
+		<app-project-task-selector-button [selectedProject]="timeEntry().project" (projectSelectEvent)="updateTimeEntryProject($event)"/>
+		<!-- <span class="time-entry__project">{{ timeEntry() | displayName}}</span> -->
+	</div>
+	<div class="time-entry__right">
+		<app-time-entry-billable-button [timeEntry]="timeEntry()"/>
+		<span class="time-entry__time">{{ formatTime(timeEntry().startTime) }} – {{ formatTime(timeEntry().endTime) }}</span>
+		<span class="time-entry__duration">{{ timeEntry().startTime | duration: timeEntry().endTime }}</span>
+		<button class="time-entry__icon time-entry__icon--continue" type="button" (click)="resumeTimeEntryEvent.emit(timeEntry())" aria-label="Continue entry"></button>
+		<button class="time-entry__icon time-entry__icon--delete" type="button" (click)="deleteTimeEntryEvent.emit(timeEntry())" aria-label="Delete entry"></button>
+	</div>
 </div>

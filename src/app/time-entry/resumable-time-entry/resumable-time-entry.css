@@ -13,11 +13,12 @@
   flex-wrap: wrap;
   gap: 0.5rem 1rem;
   padding: 0.875rem 1rem;
-  transition: background 120ms ease;
+  transition: background 120ms ease, border-color 160ms ease;
 }
 
 .time-entry:hover {
   background: rgba(232, 234, 240, 0.03);
+  border-color: var(--border-strong);
 }
 
 .time-entry__left {
@@ -44,19 +45,6 @@
   gap: 0.875rem;
   margin-left: auto;
   flex-shrink: 0;
-}
-
-.time-entry__billable {
-  display: inline-flex;
-  color: var(--muted);
-  font-size: 1.0625rem;
-  font-weight: 500;
-  line-height: 1;
-  transition: color 120ms ease;
-}
-
-.time-entry__billable--yes {
-  color: var(--good);
 }
 
 .time-entry__description {
@@ -124,8 +112,8 @@
 }
 
 .time-entry__icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
   padding: 0;
   border: none;
   background-color: var(--muted);

@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
+
+<form class="backdrop" (submit)="onSubmit($event)" (click)="close()">
+  <div class="card" (click)="$event.stopPropagation()">
+    <div class="header">
+      <h1>Create project</h1>
+      <button type="button" class="close" (click)="close()" aria-label="Close">&times;</button>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="name">Project Name</label>
+        <input id="name" [formField]="projectForm.name" />
+        @if (projectForm.name().invalid() && projectForm.name().touched()) {
+          <div class="error">
+            @for (error of projectForm.name().errors(); track error.kind) {
+              <span>{{ error.message }}</span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="field checkbox-field">
+        <label for="isPrivate">Private</label>
+        <div class="control">
+          <input id="isPrivate" type="checkbox" [formField]="projectForm.isPrivate" />
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="clientId">Client ID</label>
+      <input id="clientId" type="number" [formField]="projectForm.clientId" />
+      @if (projectForm.clientId().invalid() && projectForm.clientId().touched()) {
+        <div class="error">
+          @for (error of projectForm.clientId().errors(); track error.kind) {
+            <span>{{ error.message }}</span>
+          }
+        </div>
+      }
+    </div>
+
+    @if (projectForm().errors().length > 0) {
+      <div class="form-error" role="alert">
+        @for (error of projectForm().errors(); track error.kind) {
+          <span>{{ error.message }}</span>
+        }
+      </div>
+    }
+
+    <div class="actions">
+      <button type="button" class="secondary" (click)="close()">Cancel</button>
+      <button type="submit" [disabled]="projectForm().invalid()">Create project</button>
+    </div>
+  </div>
+</form>

@@ -8,15 +8,12 @@ export class AuthService {
   private readonly authState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private readonly baseUrl = "/api/v1/auth";
 
-  constructor() {
-    this.http.get(`${this.baseUrl}/me`).pipe(
+  isAuthenticated(): Observable<boolean> {
+    return this.http.get(`${this.baseUrl}/me`).pipe(
       map(() => true),
       catchError(() => of(false)),
-    ).subscribe(isAuthenticated => this.authState.next(isAuthenticated));
-  }
-
-  isAuthenticated(): Observable<boolean> {
-    return this.authState.asObservable();
+      tap(isAuthenticated => this.authState.next(isAuthenticated))
+    );
   }
 
   register(username: string, password: string) {

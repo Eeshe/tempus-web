@@ -1,0 +1,109 @@
+:host {
+  --surface: #161a22;
+  --fg: #e8eaf0;
+  --muted: #9aa3b2;
+  --border: #262c38;
+  --good: #3dd68c;
+
+  display: inline-block;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.popup {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 80vh;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--fg);
+  white-space: nowrap;
+  z-index: 20;
+
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 140ms ease, transform 140ms ease, visibility 0s linear 140ms;
+}
+
+.popup--open {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.popup__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: calc(10 * 1.65rem + 9 * 0.5rem);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+.popup__list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.popup__list::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+}
+
+.project-item {
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: var(--fg);
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+
+.project-item:hover,
+.project-item:focus-visible {
+  text-decoration: underline;
+  color: var(--good);
+}
+
+.project-item:focus-visible {
+  outline: 2px solid var(--good);
+  outline-offset: 2px;
+}
+
+.popup__new {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0.75rem 0 0;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--border);
+  font: inherit;
+  color: var(--muted);
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+
+.popup__new:hover,
+.popup__new:focus-visible {
+  color: var(--good);
+}
+
+.popup__new:focus-visible {
+  outline: 2px solid var(--good);
+  outline-offset: 2px;
+}

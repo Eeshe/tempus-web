@@ -14,7 +14,7 @@
 	<div class="day-groups">
     <!-- Index 0 is key, index 1 is value of Map entry -->
 		@for(projectGroupedEntries of dayGroup.groupedEntries; track projectGroupedEntries[0]) {
-		<app-resumable-time-entry-group [timeEntries]="projectGroupedEntries[1]" (deleteTimeEntryEvent)="deleteTimeEntry($event)" (resumeTimeEntryEvent)="addTimeEntry($event)"/>
+		<app-resumable-time-entry-group [timeEntries]="projectGroupedEntries[1]" (deleteTimeEntryEvent)="deleteTimeEntry($event)" (resumeTimeEntryEvent)="addTimeEntry($event)" (updateTimeEntryProjectEvent)="updateTimeEntryProject($event.timeEntry, $event.newProject)"/>
 		}
 	</div>
 </section>

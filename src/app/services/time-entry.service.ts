@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Service } from "@angular/core";
 import { Observable } from "rxjs";
+import { Project } from "../model/project.model";
 import { TimeEntry } from "../model/time-entry.model";
 
 interface CreateTimeEntryRequest {
@@ -55,9 +56,23 @@ export class TimeEntryService {
     return this.patchTimeEntry(timeEntry, patchRequest);
   }
 
+  patchTimeEntryBillable(timeEntry: TimeEntry, newBillableStatus: boolean): Observable<TimeEntry> {
+    const patchRequest: Partial<PatchTimeEntryRequest> = {
+      isBillable: newBillableStatus,
+    }
+    return this.patchTimeEntry(timeEntry, patchRequest);
+  }
+
   patchTimeEntryEndTime(timeEntry: TimeEntry, endTime: Date): Observable<TimeEntry> {
     const patchRequest: Partial<PatchTimeEntryRequest> = {
       endTime: endTime.toISOString(),
+    }
+    return this.patchTimeEntry(timeEntry, patchRequest)
+  }
+
+  patchTimeEntryProject(timeEntry: TimeEntry, project: Project): Observable<TimeEntry> {
+    const patchRequest: Partial<PatchTimeEntryRequest> = {
+      projectId: project.id,
     }
     return this.patchTimeEntry(timeEntry, patchRequest)
   }
