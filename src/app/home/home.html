@@ -1,6 +1,4 @@
-<h1 class="page-title">Home</h1>
-
 <div class="home-container">
-	<app-new-time-entry-button/>
-	<app-time-entry-list/>
+	<app-new-time-entry-button (timeEntryCreateEvent)="timeEntryList.addTimeEntry($event)"/>
+	<app-time-entry-list #timeEntryList/>
 </div>

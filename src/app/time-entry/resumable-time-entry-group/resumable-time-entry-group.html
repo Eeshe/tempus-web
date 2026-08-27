@@ -9,7 +9,7 @@
         <span class="time-group__count">{{ timeEntries().length }}</span>
       </button>
       <div class="time-group__titles">
-        <app-time-entry-description [description]="timeEntries()[0].description ?? ''"/>
+        <app-time-entry-description [description]="timeEntries()[0].description ?? ''" (descriptionChangeEvent)="updateGroupDescription($event)"/>
         <app-project-task-selector-button [selectedProject]="timeEntries()[0].project" (projectSelectEvent)="updateGroupProject($event)"/>
         <!-- <span class="time-group__project">{{ timeEntries()[0] | displayName }}</span> -->
       </div>
@@ -26,7 +26,7 @@
   @if (timeEntries().length === 1 || isExpanded()) {
   <div class="time-group__content">
     @for(timeEntry of timeEntries(); track timeEntry.id) {
-    <app-resumable-time-entry [timeEntry]="timeEntry" (resumeTimeEntryEvent)="resumeTimeEntry($event)" (deleteTimeEntryEvent)="deleteTimeEntryEvent.emit($event)" (updateTimeEntryProjectEvent)="updateTimeEntryProjectEvent.emit($event)"/>
+    <app-resumable-time-entry [timeEntry]="timeEntry" (resumeTimeEntryEvent)="resumeTimeEntry($event)" (deleteTimeEntryEvent)="deleteTimeEntryEvent.emit($event)" (updateTimeEntryProjectEvent)="updateTimeEntryProjectEvent.emit($event)" (updateTimeEntryDescriptionEvent)="updateTimeEntryDescriptionEvent.emit($event)"/>
     }
   </div>
   }

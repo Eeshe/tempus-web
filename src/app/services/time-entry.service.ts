@@ -6,7 +6,6 @@ import { TimeEntry } from "../model/time-entry.model";
 
 interface CreateTimeEntryRequest {
   groupId: number | null;
-  userId: number;
   projectId: number;
   taskId: number | null;
   description: string | null;
@@ -35,10 +34,30 @@ export class TimeEntryService {
     return this.http.get<TimeEntry[]>(this.url, { withCredentials: true });
   }
 
+  createTimeEntry(
+    groupId: number | null,
+    projectId: number,
+    taskId: number | null,
+    description: string | null,
+    isBillable: boolean,
+    startTime: string,
+    endTime: string | null
+  ): Observable<TimeEntry> {
+    const createRequest: CreateTimeEntryRequest = {
+      groupId,
+      projectId,
+      taskId,
+      description,
+      isBillable,
+      startTime,
+      endTime
+    };
+    return this.http.post<TimeEntry>(this.url, createRequest, { withCredentials: true });
+  }
+
   resumeTimeEntry(timeEntry: TimeEntry): Observable<TimeEntry> {
     const createRequest: CreateTimeEntryRequest = {
       groupId: timeEntry.groupId,
-      userId: timeEntry.userId,
       projectId: timeEntry.project.id,
       taskId: timeEntry.task ? timeEntry.task.id : null,
       description: timeEntry.description,

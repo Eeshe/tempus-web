@@ -25,12 +25,20 @@ export class ResumableTimeEntry {
   readonly resumeTimeEntryEvent = output<TimeEntry>();
   readonly deleteTimeEntryEvent = output<TimeEntry>();
   readonly updateTimeEntryProjectEvent = output<{ timeEntry: TimeEntry, newProject: Project }>();
+  readonly updateTimeEntryDescriptionEvent = output<{ timeEntry: TimeEntry, newDescription: string }>();
 
   formatTime(date: string | null): string {
     if (date == null) {
       return '';
     }
     return formatDate(date, 'HH:mm', 'en-US', Intl.DateTimeFormat().resolvedOptions().timeZone);
+  }
+
+  updateTimeEntryDescription(newDescription: string): void {
+    this.updateTimeEntryDescriptionEvent.emit({
+      timeEntry: this.timeEntry(),
+      newDescription,
+    })
   }
 
   updateTimeEntryProject(newProject: Project): void {

@@ -2,6 +2,7 @@
 <app-active-time-entry [activeTimeEntry]="activeTimeEntry" (stopActiveTimeEntryEvent)="stopActiveTimeEntry($event)" (deleteActiveTimeEntryEvent)="deleteTimeEntry($event)"/>
 <br>
 }
+
 @for(dayGroup of dayGroupedTimeEntries(); track dayGroup.formattedDate) {
 <section class="day">
 	<header class="day-header">
@@ -14,7 +15,12 @@
 	<div class="day-groups">
     <!-- Index 0 is key, index 1 is value of Map entry -->
 		@for(projectGroupedEntries of dayGroup.groupedEntries; track projectGroupedEntries[0]) {
-		<app-resumable-time-entry-group [timeEntries]="projectGroupedEntries[1]" (deleteTimeEntryEvent)="deleteTimeEntry($event)" (resumeTimeEntryEvent)="addTimeEntry($event)" (updateTimeEntryProjectEvent)="updateTimeEntryProject($event.timeEntry, $event.newProject)"/>
+		<app-resumable-time-entry-group
+    [timeEntries]="projectGroupedEntries[1]"
+    (deleteTimeEntryEvent)="deleteTimeEntry($event)"
+    (resumeTimeEntryEvent)="addTimeEntry($event)"
+    (updateTimeEntryDescriptionEvent)="updateTimeEntryDescription($event.timeEntry, $event.newDescription)"
+    (updateTimeEntryProjectEvent)="updateTimeEntryProject($event.timeEntry, $event.newProject)"/>
 		}
 	</div>
 </section>

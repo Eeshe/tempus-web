@@ -99,12 +99,21 @@ export class TimeEntryList implements OnInit {
       ));
   }
 
+  updateTimeEntryDescription(timeEntry: TimeEntry, newDescription: string): void {
+    this.timeEntryService.patchTimeEntryDescription(timeEntry, newDescription).subscribe(
+      patchedTimeEntry => this.updateTimeEntry(patchedTimeEntry));
+  }
+
   updateTimeEntryProject(timeEntry: TimeEntry, newProject: Project): void {
     this.timeEntryService.patchTimeEntryProject(timeEntry, newProject).subscribe(
-      patchedTimeEntry => this.timeEntries.update((timeEntries) =>
-        timeEntries.map(timeEntry =>
-          timeEntry.id === patchedTimeEntry.id ?
-            patchedTimeEntry : timeEntry)));
+      patchedTimeEntry => this.updateTimeEntry(patchedTimeEntry));
+  }
+
+  private updateTimeEntry(updatedTimeEntry: TimeEntry): void {
+    this.timeEntries.update((timeEntries) =>
+      timeEntries.map(timeEntry =>
+        timeEntry.id === updatedTimeEntry.id ?
+          updatedTimeEntry : timeEntry));
   }
 
   stopActiveTimeEntry(stoppedTimeEntry: TimeEntry): void {

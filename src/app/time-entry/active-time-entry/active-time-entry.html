@@ -1,6 +1,6 @@
 <div class="active-entry">
 	<div class="active-entry__left">
-		<app-time-entry-description [description]="activeTimeEntry().description ?? ''" (changeDescriptionEvent)="saveTimeEntryDescription($event)"/>
+		<app-time-entry-description [description]="activeTimeEntry().description ?? ''" (descriptionChangeEvent)="saveTimeEntryDescription($event)"/>
 		<app-project-task-selector-button [selectedProject]="activeTimeEntry().project" (projectSelectEvent)="updateTimeEntryProject($event)"/>
 		<!-- <span class="active-entry__project">{{activeTimeEntry() | displayName}}</span> -->
 	</div>

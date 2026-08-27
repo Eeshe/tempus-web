@@ -41,6 +41,7 @@ export class ResumableTimeEntryGroup {
 
   readonly resumeTimeEntryEvent = output<TimeEntry>();
   readonly deleteTimeEntryEvent = output<TimeEntry>();
+  readonly updateTimeEntryDescriptionEvent = output<{ timeEntry: TimeEntry, newDescription: string }>();
   readonly updateTimeEntryProjectEvent = output<{ timeEntry: TimeEntry, newProject: Project }>();
 
   toggleCollapsible(): void {
@@ -57,6 +58,13 @@ export class ResumableTimeEntryGroup {
     for (const timeEntry of this.timeEntries()) {
       this.deleteTimeEntryEvent.emit(timeEntry);
     }
+  }
+
+  updateGroupDescription(newDescription: string): void {
+    this.timeEntries().forEach((timeEntry) => this.updateTimeEntryDescriptionEvent.emit({
+      timeEntry: timeEntry,
+      newDescription: newDescription,
+    }));
   }
 
   updateGroupProject(newProject: Project): void {
