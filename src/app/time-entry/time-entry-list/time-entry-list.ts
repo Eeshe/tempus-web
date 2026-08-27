@@ -1,10 +1,10 @@
 import { formatDate } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { ActiveTimeEntryComponent } from '../../active-time-entry/active-time-entry';
 import { Project } from '../../model/project.model';
 import { TimeEntry } from '../../model/time-entry.model';
 import { TimeEntryService } from '../../services/time-entry.service';
 import { computeDuration, Duration, durationFromMs, formatHHMMSSTime } from '../../shared/util/time.util';
+import { ActiveTimeEntry } from '../active-time-entry/active-time-entry';
 import { ResumableTimeEntryGroup } from '../resumable-time-entry-group/resumable-time-entry-group';
 
 interface DayGroupedTimeEntries {
@@ -14,7 +14,7 @@ interface DayGroupedTimeEntries {
 }
 
 @Component({
-  imports: [ActiveTimeEntryComponent, ResumableTimeEntryGroup],
+  imports: [ActiveTimeEntry, ResumableTimeEntryGroup],
   selector: 'app-time-entry-list',
   styleUrl: './time-entry-list.css',
   templateUrl: './time-entry-list.html',

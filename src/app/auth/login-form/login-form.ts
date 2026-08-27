@@ -1,9 +1,9 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { form, FormField, required, submit } from '@angular/forms/signals';
-import { AuthService } from '../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 interface LoginData {
   username: string;
@@ -31,7 +31,7 @@ export class LoginForm {
   constructor(
     private authService: AuthService,
     private router: Router,
-  ) {}
+  ) { }
 
   onSubmit(event: Event) {
     event.preventDefault();

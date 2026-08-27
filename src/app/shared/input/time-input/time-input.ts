@@ -3,11 +3,11 @@ import { FORM_FIELD, FormValueControl } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-time-input',
-  providers: [{ provide: FORM_FIELD, useExisting: TimeInputComponent }],
+  providers: [{ provide: FORM_FIELD, useExisting: TimeInput }],
   styleUrl: './time-input.css',
   templateUrl: './time-input.html',
 })
-export class TimeInputComponent implements FormValueControl<string | null> {
+export class TimeInput implements FormValueControl<string | null> {
   readonly value = model<string | null>(null);
   readonly invalid = input<boolean>(false);
   readonly touch = output<void>();

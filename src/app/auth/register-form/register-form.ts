@@ -1,9 +1,9 @@
-import { Component, signal, ChangeDetectionStrategy } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { form, FormField, required, submit, validate } from '@angular/forms/signals';
-import { AuthService } from '../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
-import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from '../../services/auth.service';
 
 interface RegisterData {
   username: string;
@@ -35,9 +35,9 @@ export class RegisterForm {
       }
       return value.value() !== this.registerForm.password().value()
         ? {
-            kind: 'passwordMismatch',
-            message: 'Passwords must match',
-          }
+          kind: 'passwordMismatch',
+          message: 'Passwords must match',
+        }
         : null;
     });
   });
@@ -45,7 +45,7 @@ export class RegisterForm {
   constructor(
     private authService: AuthService,
     private router: Router,
-  ) {}
+  ) { }
 
   doPasswordsMatch(): boolean {
     return (

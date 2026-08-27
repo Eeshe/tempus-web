@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { RegisterForm } from './register-form/register-form';
-import { LoginForm } from './login-form/login-form';
+import { LoginForm } from './auth/login-form/login-form';
+import { RegisterForm } from './auth/register-form/register-form';
 import { authGuard } from './guards/auth.guard';
 import { Home } from './home/home';
 

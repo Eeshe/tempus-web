@@ -1,12 +1,12 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, model, output } from '@angular/core';
 import { map, timer } from 'rxjs';
-import { Project } from '../model/project.model';
-import { TimeEntry } from '../model/time-entry.model';
-import { ProjectTaskSelectorButton } from '../project/project-selector-button/project-task-selector-button';
-import { TimeEntryService } from '../services/time-entry.service';
-import { TimeEntryBillableButton } from '../time-entry/time-entry-billable-button/time-entry-billable-button';
-import { TimeEntryDescription } from '../time-entry/time-entry-description/time-entry-description';
+import { Project } from '../../model/project.model';
+import { TimeEntry } from '../../model/time-entry.model';
+import { ProjectTaskSelectorButton } from '../../project/project-selector-button/project-task-selector-button';
+import { TimeEntryService } from '../../services/time-entry.service';
+import { TimeEntryBillableButton } from '../time-entry-billable-button/time-entry-billable-button';
+import { TimeEntryDescription } from '../time-entry-description/time-entry-description';
 
 @Component({
   selector: 'app-active-time-entry',
@@ -19,7 +19,7 @@ import { TimeEntryDescription } from '../time-entry/time-entry-description/time-
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './active-time-entry.css',
 })
-export class ActiveTimeEntryComponent {
+export class ActiveTimeEntry {
   private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
 
   readonly activeTimeEntry = model.required<TimeEntry>();

@@ -5,8 +5,8 @@ import { Project } from '../../../model/project.model';
 import { TimeEntry } from '../../../model/time-entry.model';
 import { ProjectTaskSelectorButton } from '../../../project/project-selector-button/project-task-selector-button';
 import { TimeEntryService } from '../../../services/time-entry.service';
-import { DateInputComponent } from '../../../shared/date-input/date-input';
-import { TimeInputComponent } from '../../../shared/time-input/time-input';
+import { DateInput } from '../../../shared/input/date-input/date-input';
+import { TimeInput } from '../../../shared/input/time-input/time-input';
 
 interface NewTimeEntryModel {
   project: Project | null;
@@ -46,7 +46,7 @@ function isValidDate(date: string | null): boolean {
 }
 
 @Component({
-  imports: [FormField, ProjectTaskSelectorButton, TimeInputComponent, DateInputComponent],
+  imports: [FormField, ProjectTaskSelectorButton, TimeInput, DateInput],
   selector: 'app-new-time-entry-form-modal',
   styleUrl: './new-time-entry-form-modal.css',
   templateUrl: './new-time-entry-form-modal.html',

@@ -3,11 +3,11 @@ import { FORM_FIELD, FormValueControl } from '@angular/forms/signals';
 
 @Component({
   selector: 'app-date-input',
-  providers: [{ provide: FORM_FIELD, useExisting: DateInputComponent }],
+  providers: [{ provide: FORM_FIELD, useExisting: DateInput }],
   styleUrl: './date-input.css',
   templateUrl: './date-input.html',
 })
-export class DateInputComponent implements FormValueControl<string | null> {
+export class DateInput implements FormValueControl<string | null> {
   readonly value = model<string | null>(null);
   readonly invalid = input<boolean>(false);
   readonly touch = output<void>();
