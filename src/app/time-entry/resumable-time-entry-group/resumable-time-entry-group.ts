@@ -43,6 +43,8 @@ export class ResumableTimeEntryGroup {
   readonly deleteTimeEntryEvent = output<TimeEntry>();
   readonly updateTimeEntryDescriptionEvent = output<{ timeEntry: TimeEntry, newDescription: string }>();
   readonly updateTimeEntryProjectEvent = output<{ timeEntry: TimeEntry, newProject: Project }>();
+  readonly updateTimeEntryStartTimeEvent = output<{ timeEntry: TimeEntry, newStartTime: Date }>();
+  readonly updateTimeEntryEndTimeEvent = output<{ timeEntry: TimeEntry, newEndTime: Date }>();
 
   toggleCollapsible(): void {
     this.isExpanded.update((value) => !value);

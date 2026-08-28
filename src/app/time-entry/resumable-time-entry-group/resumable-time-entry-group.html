@@ -26,7 +26,14 @@
   @if (timeEntries().length === 1 || isExpanded()) {
   <div class="time-group__content">
     @for(timeEntry of timeEntries(); track timeEntry.id) {
-    <app-resumable-time-entry [timeEntry]="timeEntry" (resumeTimeEntryEvent)="resumeTimeEntry($event)" (deleteTimeEntryEvent)="deleteTimeEntryEvent.emit($event)" (updateTimeEntryProjectEvent)="updateTimeEntryProjectEvent.emit($event)" (updateTimeEntryDescriptionEvent)="updateTimeEntryDescriptionEvent.emit($event)"/>
+    <app-resumable-time-entry
+    [timeEntry]="timeEntry"
+    (resumeTimeEntryEvent)="resumeTimeEntry($event)"
+    (deleteTimeEntryEvent)="deleteTimeEntryEvent.emit($event)"
+    (updateTimeEntryProjectEvent)="updateTimeEntryProjectEvent.emit($event)"
+    (updateTimeEntryDescriptionEvent)="updateTimeEntryDescriptionEvent.emit($event)"
+    (updateTimeEntryStartTimeEvent)="updateTimeEntryStartTimeEvent.emit($event)"
+    (updateTimeEntryEndTimeEvent)="updateTimeEntryEndTimeEvent.emit($event)"/>
     }
   </div>
   }

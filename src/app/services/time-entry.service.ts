@@ -82,6 +82,13 @@ export class TimeEntryService {
     return this.patchTimeEntry(timeEntry, patchRequest);
   }
 
+  patchTimeEntryStartTime(timeEntry: TimeEntry, startTime: Date): Observable<TimeEntry> {
+    const patchRequest: Partial<PatchTimeEntryRequest> = {
+      startTime: startTime.toISOString(),
+    }
+    return this.patchTimeEntry(timeEntry, patchRequest)
+  }
+
   patchTimeEntryEndTime(timeEntry: TimeEntry, endTime: Date): Observable<TimeEntry> {
     const patchRequest: Partial<PatchTimeEntryRequest> = {
       endTime: endTime.toISOString(),

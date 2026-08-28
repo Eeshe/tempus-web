@@ -109,6 +109,16 @@ export class TimeEntryList implements OnInit {
       patchedTimeEntry => this.updateTimeEntry(patchedTimeEntry));
   }
 
+  updateTimeEntryStartTime(timeEntry: TimeEntry, newStartTime: Date): void {
+    this.timeEntryService.patchTimeEntryStartTime(timeEntry, newStartTime).subscribe(
+      patchedTimeEntry => this.updateTimeEntry(patchedTimeEntry));
+  }
+
+  updateTimeEntryEndTime(timeEntry: TimeEntry, newEndTime: Date): void {
+    this.timeEntryService.patchTimeEntryEndTime(timeEntry, newEndTime).subscribe(
+      patchedTimeEntry => this.updateTimeEntry(patchedTimeEntry));
+  }
+
   private updateTimeEntry(updatedTimeEntry: TimeEntry): void {
     this.timeEntries.update((timeEntries) =>
       timeEntries.map(timeEntry =>

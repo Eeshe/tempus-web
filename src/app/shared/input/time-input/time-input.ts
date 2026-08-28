@@ -11,6 +11,7 @@ export class TimeInput implements FormValueControl<string | null> {
   readonly value = model<string | null>(null);
   readonly invalid = input<boolean>(false);
   readonly touch = output<void>();
+  readonly timeChangeEvent = output<string | null>();
 
   protected onInput(event: Event): void {
     const input: HTMLInputElement = event.target as HTMLInputElement;
@@ -36,6 +37,7 @@ export class TimeInput implements FormValueControl<string | null> {
 
   protected onBlur(): void {
     this.touch.emit();
+    this.timeChangeEvent.emit(this.value());
   }
 }
 

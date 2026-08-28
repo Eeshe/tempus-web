@@ -20,7 +20,10 @@
     (deleteTimeEntryEvent)="deleteTimeEntry($event)"
     (resumeTimeEntryEvent)="addTimeEntry($event)"
     (updateTimeEntryDescriptionEvent)="updateTimeEntryDescription($event.timeEntry, $event.newDescription)"
-    (updateTimeEntryProjectEvent)="updateTimeEntryProject($event.timeEntry, $event.newProject)"/>
+    (updateTimeEntryProjectEvent)="updateTimeEntryProject($event.timeEntry, $event.newProject)"
+    (updateTimeEntryStartTimeEvent)="updateTimeEntryStartTime($event.timeEntry, $event.newStartTime)"
+    (updateTimeEntryEndTimeEvent)="updateTimeEntryEndTime($event.timeEntry, $event.newEndTime)"
+    />
 		}
 	</div>
 </section>

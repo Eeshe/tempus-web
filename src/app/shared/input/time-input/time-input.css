@@ -6,6 +6,7 @@
   width: 100%;
   box-sizing: border-box;
   padding: 0.75rem 0.875rem;
+  text-align: center;
   background: var(--bg, #101318);
   color: var(--fg, #e8eaf0);
   font-family: inherit;
@@ -18,6 +19,10 @@
 
 .time-input::placeholder {
   color: var(--muted, #9aa3b2);
+}
+
+.time-input:hover:not(.invalid) {
+  border-color: var(--border-strong, #353c4a);
 }
 
 .time-input:focus {

@@ -41,5 +41,21 @@ export function formatHHMMSSTime(duration: Duration | null): string {
   }
   const pad = (n: number) => String(n).padStart(2, '0');
   return `${pad(duration.hours)}:${pad(duration.minutes)}:${pad(duration.seconds)}`;
+}
 
+export function toHHmmTime(date: Date): string {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+  return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+export function fromHHmmTime(time: string, base: Date): Date {
+  const [hours, minutes] = time.split(':').map(Number);
+  const result = new Date(base);          // clone so we don't mutate the input
+  result.setHours(hours, minutes, 0, 0);  // reset seconds/ms to 0
+  return result;
+}
+
+export function HHmmToMinutes(HHmm: string): number {
+  const [hours, minutes] = HHmm.split(':').map(Number);
+  return hours * 60 + minutes;
 }

@@ -7,6 +7,7 @@ import { ProjectTaskSelectorButton } from '../../../project/project-selector-but
 import { TimeEntryService } from '../../../services/time-entry.service';
 import { DateInput } from '../../../shared/input/date-input/date-input';
 import { TimeInput } from '../../../shared/input/time-input/time-input';
+import { toHHmmTime } from '../../../shared/util/time.util';
 
 interface NewTimeEntryModel {
   project: Project | null;
@@ -22,11 +23,6 @@ interface NewTimeEntryModel {
 function toLocalDateValue(date: Date): string {
   const pad = (n: number) => n.toString().padStart(2, '0');
   return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-}
-
-function toLocalTimeValue(date: Date): string {
-  const pad = (n: number) => n.toString().padStart(2, '0');
-  return `${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
 function combineToISO(date: string, time: string): string {
@@ -60,7 +56,7 @@ export class NewTimeEntryFormModal {
     task: null,
     billable: true,
     startDate: toLocalDateValue(new Date()),
-    startTime: toLocalTimeValue(new Date()),
+    startTime: toHHmmTime(new Date()),
     endDate: null,
     endTime: null,
   });

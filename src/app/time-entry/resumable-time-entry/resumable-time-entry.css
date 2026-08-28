@@ -39,6 +39,10 @@
   min-width: 0;
 }
 
+app-time-input {
+  width: calc(5ch + 1.20rem);
+}
+
 .time-entry__right {
   display: flex;
   align-items: center;
@@ -97,6 +101,10 @@
 
 .time-entry__description-input:focus {
   border-color: var(--good);
+}
+
+.time-entry__separator {
+  color: var(--muted);
 }
 
 .time-entry__time {
