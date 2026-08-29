@@ -22,6 +22,12 @@
   border: 1px solid var(--border);
   border-radius: 0.625rem;
   overflow: hidden;
+  transition: background 120ms ease, border-color 160ms ease;
+}
+
+.time-group:hover {
+  background: rgba(232, 234, 240, 0.03);
+  border-color: var(--border-strong);
 }
 
 .time-group__header {
@@ -162,7 +168,7 @@
 }
 
 .time-group__duration {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
@@ -178,8 +184,8 @@
 }
 
 .time-group__icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
   padding: 0;
   border: none;
   background-color: var(--muted);
