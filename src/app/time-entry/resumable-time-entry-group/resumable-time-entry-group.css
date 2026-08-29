@@ -37,6 +37,7 @@
   flex-wrap: wrap;
   gap: 0.625rem 1rem;
   padding: 0.875rem 1rem;
+  cursor: pointer;
 }
 
 .time-group__header-left {

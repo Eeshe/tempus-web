@@ -53,7 +53,13 @@ export class ResumableTimeEntryGroup {
   readonly updateTimeEntryStartTimeEvent = output<{ timeEntry: TimeEntry, newStartTime: Date }>();
   readonly updateTimeEntryEndTimeEvent = output<{ timeEntry: TimeEntry, newEndTime: Date }>();
 
-  toggleCollapsible(): void {
+  toggleCollapsible(event?: MouseEvent): void {
+    if (this.timeEntries().length <= 1) {
+      return;
+    }
+    if (event && (event.target as HTMLElement).closest('button, input, select, textarea, a, [contenteditable="true"]')) {
+      return;
+    }
     this.isExpanded.update((value) => !value);
   }
 

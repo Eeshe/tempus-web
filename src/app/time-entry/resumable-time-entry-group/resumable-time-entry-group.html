@@ -1,6 +1,6 @@
 <div class="time-group">
   @if (timeEntries().length > 1) {
-  <div class="time-group__header">
+  <div class="time-group__header" (click)="toggleCollapsible($event)">
     <div class="time-group__header-left">
       <button class="time-group__toggle" type="button" (click)="toggleCollapsible()" [attr.aria-expanded]="isExpanded()">
         <svg class="time-group__chevron" [class.time-group__chevron--open]="isExpanded()" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
