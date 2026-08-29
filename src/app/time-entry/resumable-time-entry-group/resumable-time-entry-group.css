@@ -167,6 +167,12 @@
   font-variant-numeric: tabular-nums;
 }
 
+.time-group__range {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
 .time-group__content {
   border-top: 1px solid var(--border);
 }

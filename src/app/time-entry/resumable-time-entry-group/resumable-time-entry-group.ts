@@ -8,6 +8,7 @@ import {
   Duration,
   durationFromMs,
   formatHHMMSSTime,
+  toHHmmTime,
 } from '../../shared/util/time.util';
 import { ResumableTimeEntry } from '../resumable-time-entry/resumable-time-entry';
 import { TimeEntryDescription } from '../time-entry-description/time-entry-description';
@@ -26,6 +27,12 @@ export class ResumableTimeEntryGroup {
   private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
 
   readonly timeEntries = input.required<TimeEntry[]>();
+  readonly formattedStartToEndTime = computed<string>(() => {
+    const startTime: string = toHHmmTime(new Date(this.timeEntries()[this.timeEntries().length - 1].startTime));
+    const endTime: string = toHHmmTime(new Date(this.timeEntries()[0].endTime!));
+
+    return startTime + " – " + endTime;
+  });
   readonly formattedTotalDuration = computed<string>(() => {
     let totalDurationMs: number = 0;
     for (const timeEntry of this.timeEntries()) {

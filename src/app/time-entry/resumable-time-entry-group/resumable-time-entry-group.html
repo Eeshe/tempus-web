@@ -11,11 +11,11 @@
       <div class="time-group__titles">
         <app-time-entry-description [description]="timeEntries()[0].description ?? ''" (descriptionChangeEvent)="updateGroupDescription($event)"/>
         <app-project-task-selector-button [selectedProject]="timeEntries()[0].project" (projectSelectEvent)="updateGroupProject($event)"/>
-        <!-- <span class="time-group__project">{{ timeEntries()[0] | displayName }}</span> -->
       </div>
     </div>
     <div class="time-group__header-right">
       <span class="time-group__billable" [class.time-group__billable--yes]="timeEntries()[0].isBillable">$</span>
+      <span class="time-group__range">{{formattedStartToEndTime()}}</span>
       <span class="time-group__duration">{{ formattedTotalDuration() }}</span>
       <button class="time-group__icon time-group__icon--continue" type="button" (click)="resumeTimeEntry(timeEntries()[0])" aria-label="Continue entry"></button>
       <button class="time-group__icon time-group__icon--delete" type="button" (click)="deleteGroup()" aria-label="Delete group"></button>
