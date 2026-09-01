@@ -1,8 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { Project } from '../../model/project.model';
-import { TimeEntry } from '../../model/time-entry.model';
 import { ProjectTaskSelectorButton } from '../../project/project-selector-button/project-task-selector-button';
-import { TimeEntryService } from '../../services/time-entry.service';
 import {
   computeDuration,
   Duration,
@@ -10,7 +8,9 @@ import {
   formatHHMMSSTime,
   toHHmmTime,
 } from '../../shared/util/time.util';
+import { TimeEntry } from '../models/time-entry.model';
 import { ResumableTimeEntry } from '../resumable-time-entry/resumable-time-entry';
+import { TimeEntryStore } from '../stores/time-entry.store';
 import { TimeEntryDescription } from '../time-entry-description/time-entry-description';
 
 @Component({
@@ -24,7 +24,7 @@ import { TimeEntryDescription } from '../time-entry-description/time-entry-descr
   styleUrl: './resumable-time-entry-group.css',
 })
 export class ResumableTimeEntryGroup {
-  private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
+  private readonly timeEntryStore: TimeEntryStore = inject(TimeEntryStore);
 
   readonly timeEntries = input.required<TimeEntry[]>();
   readonly formattedStartToEndTime = computed<string>(() => {
@@ -46,13 +46,6 @@ export class ResumableTimeEntryGroup {
   });
   readonly isExpanded = signal<boolean>(false);
 
-  readonly resumeTimeEntryEvent = output<TimeEntry>();
-  readonly deleteTimeEntryEvent = output<TimeEntry>();
-  readonly updateTimeEntryDescriptionEvent = output<{ timeEntry: TimeEntry, newDescription: string }>();
-  readonly updateTimeEntryProjectEvent = output<{ timeEntry: TimeEntry, newProject: Project }>();
-  readonly updateTimeEntryStartTimeEvent = output<{ timeEntry: TimeEntry, newStartTime: Date }>();
-  readonly updateTimeEntryEndTimeEvent = output<{ timeEntry: TimeEntry, newEndTime: Date }>();
-
   toggleCollapsible(event?: MouseEvent): void {
     if (this.timeEntries().length <= 1) {
       return;
@@ -64,28 +57,22 @@ export class ResumableTimeEntryGroup {
   }
 
   resumeTimeEntry(timeEntry: TimeEntry): void {
-    this.timeEntryService.resumeTimeEntry(timeEntry).subscribe((newTimeEntry) => {
-      this.resumeTimeEntryEvent.emit(newTimeEntry);
-    });
+    this.timeEntryStore.resume(timeEntry);
   }
 
   deleteGroup(): void {
-    for (const timeEntry of this.timeEntries()) {
-      this.deleteTimeEntryEvent.emit(timeEntry);
-    }
+    this.timeEntries().forEach((timeEntry) => this.timeEntryStore.delete(timeEntry));
   }
 
   updateGroupDescription(newDescription: string): void {
-    this.timeEntries().forEach((timeEntry) => this.updateTimeEntryDescriptionEvent.emit({
-      timeEntry: timeEntry,
-      newDescription: newDescription,
-    }));
+    this.timeEntries().forEach((timeEntry) => this.timeEntryStore.patchDescription(timeEntry, newDescription));
   }
 
   updateGroupProject(newProject: Project): void {
-    this.timeEntries().forEach((timeEntry) => this.updateTimeEntryProjectEvent.emit({
-      timeEntry: timeEntry,
-      newProject: newProject,
-    }));
+    this.timeEntries().forEach((timeEntry) => this.timeEntryStore.patchProject(timeEntry, newProject));
+  }
+
+  updateGroupBillable(isBillable: boolean): void {
+    this.timeEntries().forEach((timeEntry) => this.timeEntryStore.patchBillable(timeEntry, isBillable));
   }
 }

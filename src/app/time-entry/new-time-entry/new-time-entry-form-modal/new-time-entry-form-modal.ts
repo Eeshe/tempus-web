@@ -2,12 +2,13 @@ import { Component, inject, output, signal } from '@angular/core';
 import { form, FormField, required, submit, validate } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import { Project } from '../../../model/project.model';
-import { TimeEntry } from '../../../model/time-entry.model';
 import { ProjectTaskSelectorButton } from '../../../project/project-selector-button/project-task-selector-button';
-import { TimeEntryService } from '../../../services/time-entry.service';
 import { DateInput } from '../../../shared/input/date-input/date-input';
 import { TimeInput } from '../../../shared/input/time-input/time-input';
 import { toHHmmTime } from '../../../shared/util/time.util';
+import { TimeEntry } from '../../models/time-entry.model';
+import { TimeEntryService } from '../../services/time-entry.service';
+import { TimeEntryStore } from '../../stores/time-entry.store';
 
 interface NewTimeEntryModel {
   project: Project | null;
@@ -49,6 +50,7 @@ function isValidDate(date: string | null): boolean {
 })
 export class NewTimeEntryFormModal {
   private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
+  private readonly timeEntryStore: TimeEntryStore = inject(TimeEntryStore);
 
   readonly newTimeEntryModel = signal<NewTimeEntryModel>({
     project: null,
@@ -76,7 +78,6 @@ export class NewTimeEntryFormModal {
   });
 
   readonly modalCloseEvent = output<void>();
-  readonly timeEntryCreateEvent = output<TimeEntry>();
 
   close(): void {
     this.modalCloseEvent.emit();
@@ -101,7 +102,7 @@ export class NewTimeEntryFormModal {
           combineToISO(model.startDate, model.startTime),
           model.endTime ? combineToISO(model.endDate ?? model.startDate, model.endTime) : null));
 
-        this.timeEntryCreateEvent.emit(createdTimeEntry);
+        this.timeEntryStore.add(createdTimeEntry);
         this.close();
         return null;
       } catch (error) {

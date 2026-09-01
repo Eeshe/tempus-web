@@ -1,6 +1,6 @@
 import { Component, inject, input } from '@angular/core';
-import { TimeEntry } from '../../model/time-entry.model';
-import { TimeEntryService } from '../../services/time-entry.service';
+import { TimeEntry } from '../models/time-entry.model';
+import { TimeEntryStore } from '../stores/time-entry.store';
 
 @Component({
   imports: [],
@@ -9,7 +9,7 @@ import { TimeEntryService } from '../../services/time-entry.service';
   templateUrl: './time-entry-billable-button.html',
 })
 export class TimeEntryBillableButton {
-  private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
+  private readonly timeEntryStore: TimeEntryStore = inject(TimeEntryStore);
 
   readonly timeEntry = input.required<TimeEntry>();
 
@@ -17,6 +17,6 @@ export class TimeEntryBillableButton {
     const newBillableStatus: boolean = !this.timeEntry().isBillable;
     this.timeEntry().isBillable = newBillableStatus;
 
-    this.timeEntryService.patchTimeEntryBillable(this.timeEntry(), newBillableStatus).subscribe();
+    this.timeEntryStore.patchBillable(this.timeEntry(), newBillableStatus);
   }
 }

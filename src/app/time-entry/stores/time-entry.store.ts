@@ -1,0 +1,133 @@
+import { formatDate } from "@angular/common";
+import { computed, inject, Service, Signal, signal } from "@angular/core";
+import { Project } from "../../model/project.model";
+import { computeDuration, Duration, durationFromMs, formatHHMMSSTime } from "../../shared/util/time.util";
+import { TimeEntry } from "../models/time-entry.model";
+import { TimeEntryService } from "../services/time-entry.service";
+
+
+interface DayGroupedTimeEntries {
+  formattedDate: string;
+  groupedEntries: Map<string, TimeEntry[]>;
+  formattedTotalTime: string;
+}
+
+
+@Service()
+export class TimeEntryStore {
+  private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
+
+  private readonly _timeEntries = signal<TimeEntry[]>([]);
+
+  readonly timeEntries: Signal<TimeEntry[]> = this._timeEntries.asReadonly()
+
+  readonly activeTimeEntries = computed<TimeEntry[]>(() => {
+    return this._timeEntries().filter(timeEntry => timeEntry.endTime === null);
+  });
+
+  readonly dayGroupedTimeEntries = computed<DayGroupedTimeEntries[]>(() => this.groupTimeEntriesByDay());
+
+  groupTimeEntriesByDay(): DayGroupedTimeEntries[] {
+    const dayGroups: Map<string, Map<string, TimeEntry[]>> = new Map<string, Map<string, TimeEntry[]>>();
+
+    for (const timeEntry of this.timeEntries()) {
+      if (timeEntry.endTime == null) {
+        continue;
+      }
+      const formattedDate: string = this.formatDayDate(timeEntry.startTime);
+      // ID is project id + description + taskId + billable
+      // Ex. Tempusv0.9.0Developmentfalse
+      const timeEntryGroupId: string =
+        timeEntry.project.id +
+        (timeEntry.description ? timeEntry.description : '') +
+        (timeEntry.task ? timeEntry.task.id : '') +
+        timeEntry.isBillable;
+
+      const dayProjectGroups: Map<string, TimeEntry[]> =
+        dayGroups.get(formattedDate) ?? new Map<string, TimeEntry[]>();
+      const groupedEntries: TimeEntry[] = dayProjectGroups.get(timeEntryGroupId) ?? [];
+
+      groupedEntries.push(timeEntry);
+      dayProjectGroups.set(timeEntryGroupId, groupedEntries);
+      dayGroups.set(formattedDate, dayProjectGroups);
+    }
+    return Array.from(dayGroups, ([formattedDate, groupedEntries]) => {
+      const totalTimeMs: number = [...groupedEntries.values()]
+        .flatMap((entries) => entries)
+        .reduce((sum, timeEntry) => {
+          const duration: Duration | null = computeDuration(timeEntry.startTime, timeEntry.endTime);
+
+          return sum + (duration?.totalMilliseconds ?? 0);
+        }, 0);
+      const formattedTotalTime: string = formatHHMMSSTime(durationFromMs(totalTimeMs));
+      return {
+        formattedDate: formattedDate,
+        groupedEntries: groupedEntries,
+        formattedTotalTime: formattedTotalTime,
+      };
+    });
+  }
+
+  private formatDayDate(date: string | null) {
+    return date ? formatDate(date, 'EEEE, MMM d', 'en-US') : 'Unknown';
+  }
+
+  load(): void {
+    this.timeEntryService.listTimeEntries().subscribe(timeEntries => {
+      this._timeEntries.set(timeEntries);
+    })
+  }
+
+  resume(timeEntry: TimeEntry): void {
+    this.timeEntryService.resumeTimeEntry(timeEntry).subscribe(resumedTimeEntry => {
+      this.add(resumedTimeEntry);
+    })
+  }
+
+  add(timeEntry: TimeEntry): void {
+    this._timeEntries.update(timeEntries => [...timeEntries, timeEntry]);
+  }
+
+  stopActive(timeEntry: TimeEntry): void {
+    this.patchEndTime(timeEntry, new Date());
+  }
+
+  delete(timeEntry: TimeEntry): void {
+    this.timeEntryService.deleteTimeEntry(timeEntry).subscribe(() =>
+      this._timeEntries.update((timeEntries) =>
+        timeEntries.filter((oldTimeEntry) => oldTimeEntry.id !== timeEntry.id),
+      ));
+  }
+
+  patchDescription(timeEntry: TimeEntry, newDescription: string): void {
+    this.timeEntryService.patchTimeEntryDescription(timeEntry, newDescription)
+      .subscribe((patchedTimeEntry) => this.replace(patchedTimeEntry));
+  }
+
+  patchProject(timeEntry: TimeEntry, newProject: Project): void {
+    this.timeEntryService.patchTimeEntryProject(timeEntry, newProject)
+      .subscribe((patchedTimeEntry) => this.replace(patchedTimeEntry));
+  }
+
+  patchBillable(timeEntry: TimeEntry, billable: boolean): void {
+    this.timeEntryService.patchTimeEntryBillable(timeEntry, billable)
+      .subscribe((patchedTimeEntry) => this.replace(patchedTimeEntry));
+  }
+
+  patchStartTime(timeEntry: TimeEntry, newStartTime: Date): void {
+    this.timeEntryService.patchTimeEntryStartTime(timeEntry, newStartTime)
+      .subscribe((patchedTimeEntry) => this.replace(patchedTimeEntry));
+  }
+
+  patchEndTime(timeEntry: TimeEntry, newEndTime: Date): void {
+    this.timeEntryService.patchTimeEntryEndTime(timeEntry, newEndTime)
+      .subscribe((patchedTimeEntry) => this.replace(patchedTimeEntry));
+  }
+
+  private replace(updatedTimeEntry: TimeEntry): void {
+    this._timeEntries.update((timeEntries) =>
+      timeEntries.map(timeEntry =>
+        timeEntry.id === updatedTimeEntry.id ?
+          updatedTimeEntry : timeEntry));
+  }
+}

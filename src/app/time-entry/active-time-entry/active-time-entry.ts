@@ -1,10 +1,10 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, model } from '@angular/core';
 import { map, timer } from 'rxjs';
 import { Project } from '../../model/project.model';
-import { TimeEntry } from '../../model/time-entry.model';
 import { ProjectTaskSelectorButton } from '../../project/project-selector-button/project-task-selector-button';
-import { TimeEntryService } from '../../services/time-entry.service';
+import { TimeEntry } from '../models/time-entry.model';
+import { TimeEntryStore } from '../stores/time-entry.store';
 import { TimeEntryBillableButton } from '../time-entry-billable-button/time-entry-billable-button';
 import { TimeEntryDescription } from '../time-entry-description/time-entry-description';
 
@@ -20,12 +20,9 @@ import { TimeEntryDescription } from '../time-entry-description/time-entry-descr
   styleUrl: './active-time-entry.css',
 })
 export class ActiveTimeEntry {
-  private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
+  private readonly timeEntryStore: TimeEntryStore = inject(TimeEntryStore);
 
   readonly activeTimeEntry = model.required<TimeEntry>();
-
-  readonly deleteActiveTimeEntryEvent = output<TimeEntry>();
-  readonly stopActiveTimeEntryEvent = output<TimeEntry>();
 
   elapsedTime$ = timer(0, 1000).pipe(map(() => this.formatElapsedTime()));
 
@@ -43,25 +40,18 @@ export class ActiveTimeEntry {
   }
 
   saveTimeEntryDescription(newDescription: string): void {
-    this.timeEntryService.patchTimeEntryDescription(this.activeTimeEntry(), newDescription).subscribe();
+    this.timeEntryStore.patchDescription(this.activeTimeEntry(), newDescription);
   }
 
   stopTimeEntry(): void {
-    console.log(new Date());
-    console.log(new Date().toISOString());
-    this.timeEntryService.patchTimeEntryEndTime(this.activeTimeEntry(), new Date()).subscribe(
-      patchedTimeEntry => this.stopActiveTimeEntryEvent.emit(patchedTimeEntry)
-    );
+    this.timeEntryStore.stopActive(this.activeTimeEntry());
   }
 
   deleteTimeEntry(): void {
-    this.timeEntryService.deleteTimeEntry(this.activeTimeEntry()).subscribe();
-    this.deleteActiveTimeEntryEvent.emit(this.activeTimeEntry());
+    this.timeEntryStore.delete(this.activeTimeEntry());
   }
 
   updateTimeEntryProject(project: Project): void {
-    this.timeEntryService.patchTimeEntryProject(this.activeTimeEntry(), project).subscribe(
-      patchedTimeEntry => this.activeTimeEntry.set(patchedTimeEntry)
-    );
+    this.timeEntryStore.patchProject(this.activeTimeEntry(), project);
   }
 }

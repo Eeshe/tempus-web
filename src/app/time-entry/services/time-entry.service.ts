@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Service } from "@angular/core";
 import { Observable } from "rxjs";
-import { Project } from "../model/project.model";
-import { TimeEntry } from "../model/time-entry.model";
+import { Project } from "../../model/project.model";
+import { TimeEntry } from "../models/time-entry.model";
 
 interface CreateTimeEntryRequest {
   groupId: number | null;

@@ -1,5 +1,4 @@
-import { Component, output, signal } from '@angular/core';
-import { TimeEntry } from '../../../model/time-entry.model';
+import { Component, signal } from '@angular/core';
 import { NewTimeEntryFormModal } from '../new-time-entry-form-modal/new-time-entry-form-modal';
 
 @Component({
@@ -10,8 +9,6 @@ import { NewTimeEntryFormModal } from '../new-time-entry-form-modal/new-time-ent
 })
 export class NewTimeEntryButton {
   readonly isNewTimeEntryFormModalOpen = signal<boolean>(false);
-
-  readonly timeEntryCreateEvent = output<TimeEntry>();
 
   toggleNewTimeEntryFormModal(): void {
     this.isNewTimeEntryFormModalOpen.update(value => !value);

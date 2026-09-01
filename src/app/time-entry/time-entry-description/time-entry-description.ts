@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 })
 export class TimeEntryDescription {
   readonly description = input<string>();
+
   readonly descriptionChangeEvent = output<string>();
 
   saveDescriptionChanges(newDescription: string): void {

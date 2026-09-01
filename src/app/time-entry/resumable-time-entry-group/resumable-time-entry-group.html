@@ -14,7 +14,7 @@
       </div>
     </div>
     <div class="time-group__header-right">
-      <span class="time-group__billable" [class.time-group__billable--yes]="timeEntries()[0].isBillable">$</span>
+      <span class="time-group__billable" [class.time-group__billable--yes]="timeEntries()[0].isBillable" (click)="updateGroupBillable(!timeEntries()[0].isBillable)">$</span>
       <span class="time-group__range">{{formattedStartToEndTime()}}</span>
       <span class="time-group__duration">{{ formattedTotalDuration() }}</span>
       <button class="time-group__icon time-group__icon--continue" type="button" (click)="resumeTimeEntry(timeEntries()[0])" aria-label="Continue entry"></button>
@@ -26,14 +26,7 @@
   @if (timeEntries().length === 1 || isExpanded()) {
   <div class="time-group__content">
     @for(timeEntry of timeEntries(); track timeEntry.id) {
-    <app-resumable-time-entry
-    [timeEntry]="timeEntry"
-    (resumeTimeEntryEvent)="resumeTimeEntry($event)"
-    (deleteTimeEntryEvent)="deleteTimeEntryEvent.emit($event)"
-    (updateTimeEntryProjectEvent)="updateTimeEntryProjectEvent.emit($event)"
-    (updateTimeEntryDescriptionEvent)="updateTimeEntryDescriptionEvent.emit($event)"
-    (updateTimeEntryStartTimeEvent)="updateTimeEntryStartTimeEvent.emit($event)"
-    (updateTimeEntryEndTimeEvent)="updateTimeEntryEndTimeEvent.emit($event)"/>
+    <app-resumable-time-entry [timeEntry]="timeEntry"/>
     }
   </div>
   }

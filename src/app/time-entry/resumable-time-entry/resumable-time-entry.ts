@@ -1,11 +1,12 @@
 import { formatDate } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, OnInit, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, linkedSignal } from '@angular/core';
 import { Project } from '../../model/project.model';
-import { TimeEntry } from '../../model/time-entry.model';
 import { ProjectTaskSelectorButton } from '../../project/project-selector-button/project-task-selector-button';
 import { TimeInput } from '../../shared/input/time-input/time-input';
 import { DurationPipe } from '../../shared/pipes/duration.pipe';
 import { fromHHmmTime, HHmmToMinutes, toHHmmTime } from '../../shared/util/time.util';
+import { TimeEntry } from '../models/time-entry.model';
+import { TimeEntryStore } from '../stores/time-entry.store';
 import { TimeEntryBillableButton } from '../time-entry-billable-button/time-entry-billable-button';
 import { TimeEntryDescription } from '../time-entry-description/time-entry-description';
 
@@ -22,23 +23,16 @@ import { TimeEntryDescription } from '../time-entry-description/time-entry-descr
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './resumable-time-entry.css',
 })
-export class ResumableTimeEntry implements OnInit {
+export class ResumableTimeEntry {
+  private readonly timeEntryStore: TimeEntryStore = inject(TimeEntryStore);
   readonly timeEntry = input.required<TimeEntry>();
 
-  readonly startTimeInput = signal<string>("");
-  readonly endTimeInput = signal<string>("");
-
-  readonly resumeTimeEntryEvent = output<TimeEntry>();
-  readonly deleteTimeEntryEvent = output<TimeEntry>();
-  readonly updateTimeEntryProjectEvent = output<{ timeEntry: TimeEntry, newProject: Project }>();
-  readonly updateTimeEntryDescriptionEvent = output<{ timeEntry: TimeEntry, newDescription: string }>();
-  readonly updateTimeEntryStartTimeEvent = output<{ timeEntry: TimeEntry, newStartTime: Date }>();
-  readonly updateTimeEntryEndTimeEvent = output<{ timeEntry: TimeEntry, newEndTime: Date }>();
-
-  ngOnInit(): void {
-    this.setDefaultStartTime();
-    this.setDefaultEndTime();
-  }
+  readonly startTimeInput = linkedSignal(() =>
+    toHHmmTime(new Date(this.timeEntry().startTime)),
+  );
+  readonly endTimeInput = linkedSignal(() =>
+    toHHmmTime(new Date(this.timeEntry().endTime!))
+  );
 
   formatTime(date: string | null): string {
     if (date == null) {
@@ -48,17 +42,11 @@ export class ResumableTimeEntry implements OnInit {
   }
 
   updateTimeEntryDescription(newDescription: string): void {
-    this.updateTimeEntryDescriptionEvent.emit({
-      timeEntry: this.timeEntry(),
-      newDescription,
-    })
+    this.timeEntryStore.patchDescription(this.timeEntry(), newDescription);
   }
 
   updateTimeEntryProject(newProject: Project): void {
-    this.updateTimeEntryProjectEvent.emit({
-      timeEntry: this.timeEntry(),
-      newProject: newProject,
-    })
+    this.timeEntryStore.patchProject(this.timeEntry(), newProject);
   }
 
   updateTimeEntryStartTime(newStartTime: string | null): void {
@@ -76,10 +64,8 @@ export class ResumableTimeEntry implements OnInit {
     if (startTimeMinutes > endTimeMinutes) {
       startTimeDate.setDate(startTimeDate.getDate() - 1);
     }
-    this.updateTimeEntryStartTimeEvent.emit({
-      timeEntry: this.timeEntry(),
-      newStartTime: fromHHmmTime(newStartTime, startTimeDate),
-    });
+    const newStartTimeDate: Date = fromHHmmTime(newStartTime, startTimeDate);
+    this.timeEntryStore.patchStartTime(this.timeEntry(), newStartTimeDate);
   }
 
   private setDefaultStartTime(): void {
@@ -101,14 +87,19 @@ export class ResumableTimeEntry implements OnInit {
     if (endTimeMinutes < startTimeMinutes) {
       endTimeDate.setDate(endTimeDate.getDate() + 1);
     }
-    this.updateTimeEntryEndTimeEvent.emit({
-      timeEntry: this.timeEntry(),
-      newEndTime: fromHHmmTime(newEndTime, endTimeDate),
-    });
+    const newEndTimeDate: Date = fromHHmmTime(newEndTime, endTimeDate);
+    this.timeEntryStore.patchEndTime(this.timeEntry(), newEndTimeDate);
   }
 
   private setDefaultEndTime(): void {
     this.endTimeInput.set(toHHmmTime(new Date(this.timeEntry().endTime!)));
   }
 
+  resumeTimeEntry(): void {
+    this.timeEntryStore.resume(this.timeEntry());
+  }
+
+  deleteTimeEntry(): void {
+    this.timeEntryStore.delete(this.timeEntry());
+  }
 }
