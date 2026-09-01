@@ -19,7 +19,10 @@ export class TimeEntryStore {
 
   private readonly _timeEntries = signal<TimeEntry[]>([]);
 
-  readonly timeEntries: Signal<TimeEntry[]> = this._timeEntries.asReadonly()
+  readonly timeEntries: Signal<TimeEntry[]> = computed(() => {
+    return this._timeEntries().sort((timeEntryA, timeEntryB) =>
+      timeEntryA.startTime.localeCompare(timeEntryB.startTime, undefined)).reverse()
+  });
 
   readonly activeTimeEntries = computed<TimeEntry[]>(() => {
     return this._timeEntries().filter(timeEntry => timeEntry.endTime === null);
@@ -52,6 +55,12 @@ export class TimeEntryStore {
       dayGroups.set(formattedDate, dayProjectGroups);
     }
     return Array.from(dayGroups, ([formattedDate, groupedEntries]) => {
+      // Sort the Map entries by the first entry's startTime
+      const sortedGroupedEntries = new Map(
+        Array.from(groupedEntries).sort(([, entriesA], [, entriesB]) => {
+          return entriesA[0]?.startTime.localeCompare(entriesB[0]?.startTime) ?? 0;
+        }).reverse()
+      );
       const totalTimeMs: number = [...groupedEntries.values()]
         .flatMap((entries) => entries)
         .reduce((sum, timeEntry) => {
@@ -62,7 +71,7 @@ export class TimeEntryStore {
       const formattedTotalTime: string = formatHHMMSSTime(durationFromMs(totalTimeMs));
       return {
         formattedDate: formattedDate,
-        groupedEntries: groupedEntries,
+        groupedEntries: sortedGroupedEntries,
         formattedTotalTime: formattedTotalTime,
       };
     });

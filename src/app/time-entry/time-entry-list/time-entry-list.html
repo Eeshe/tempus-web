@@ -13,8 +13,8 @@
 		</span>
 	</header>
 	<div class="day-groups">
-		@for(timeEntryGroup of dayGroup.groupedEntries | keyvalue; track timeEntryGroup.key) {
-		<app-resumable-time-entry-group [timeEntries]="timeEntryGroup.value"/>
+		@for(timeEntryGroup of dayGroup.groupedEntries; track timeEntryGroup[0]) {
+		<app-resumable-time-entry-group [timeEntries]="timeEntryGroup[1]"/>
 		}
 	</div>
 </section>
