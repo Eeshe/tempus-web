@@ -1,4 +1,4 @@
-import { Component, input, model, output } from '@angular/core';
+import { Component, ElementRef, input, model, output, viewChild } from '@angular/core';
 import { FORM_FIELD, FormValueControl } from '@angular/forms/signals';
 
 @Component({
@@ -8,6 +8,8 @@ import { FORM_FIELD, FormValueControl } from '@angular/forms/signals';
   templateUrl: './time-input.html',
 })
 export class TimeInput implements FormValueControl<string | null> {
+  private readonly inputElement = viewChild.required<ElementRef<HTMLInputElement>>('inputElement');
+
   readonly value = model<string | null>(null);
   readonly invalid = input<boolean>(false);
   readonly touch = output<void>();
@@ -35,9 +37,14 @@ export class TimeInput implements FormValueControl<string | null> {
     input.setSelectionRange(pos, pos);
   }
 
+  selectAllText(): void {
+    this.inputElement().nativeElement.select();
+  }
+
   protected onBlur(): void {
     this.touch.emit();
     this.timeChangeEvent.emit(this.value());
+    this.inputElement().nativeElement.blur();
   }
 }
 
