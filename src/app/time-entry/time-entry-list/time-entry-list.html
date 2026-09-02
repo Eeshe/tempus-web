@@ -4,18 +4,18 @@
 }
 
 @for(dayGroup of dayGroupedTimeEntries(); track dayGroup.formattedDate) {
-<section class="day">
-	<header class="day-header">
-		<span class="day-header__date">{{ dayGroup.formattedDate }}</span>
-		<span class="day-header__total">
-			<span class="day-header__total-label">Total</span>
-			<span class="day-header__total-value">{{ dayGroup.formattedTotalTime }}</span>
-		</span>
-	</header>
-	<div class="day-groups">
-		@for(timeEntryGroup of dayGroup.groupedEntries; track timeEntryGroup[0]) {
-		<app-resumable-time-entry-group [timeEntries]="timeEntryGroup[1]"/>
-		}
-	</div>
-</section>
+  <section class="day">
+    <header class="day-header">
+      <span class="day-header__date">{{ dayGroup.formattedDate }}</span>
+      <span class="day-header__total">
+        <span class="day-header__total-label">Total</span>
+        <span class="day-header__total-value">{{ dayGroup.formattedTotalTime }}</span>
+      </span>
+    </header>
+    <div class="day-groups">
+      @for(timeEntryGroup of dayGroup.endedEntries; track timeEntryGroup[0]) {
+        <app-resumable-time-entry-group [timeEntries]="timeEntryGroup[1]"/>
+      }
+    </div>
+  </section>
 }

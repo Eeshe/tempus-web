@@ -20,4 +20,15 @@ export class TimeEntryList {
   constructor() {
     this.timeEntryStore.load();
   }
+
+  countTotalTimeEntries(map: Map<string, TimeEntry[]>): number {
+    return [...map.values()].reduce((sum, arr) => sum + arr.length, 0);
+  }
+
+  hasAtLeastOneEndedTimeEntry(map: Map<string, TimeEntry[]>): boolean {
+    for (const timeEntries of map.values()) {
+      if (timeEntries.some(timeEntry => timeEntry.endTime != null)) return true;
+    }
+    return false;
+  }
 }

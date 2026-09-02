@@ -8,10 +8,10 @@ import { TimeEntryService } from "../services/time-entry.service";
 
 interface DayGroupedTimeEntries {
   formattedDate: string;
-  groupedEntries: Map<string, TimeEntry[]>;
+  groupedEntries: Map<string, TimeEntry[]>; // All time entries, including active ones
+  endedEntries: Map<string, TimeEntry[]>; // Only ended time entries
   formattedTotalTime: string;
 }
-
 
 @Service()
 export class TimeEntryStore {
@@ -34,9 +34,6 @@ export class TimeEntryStore {
     const dayGroups: Map<string, Map<string, TimeEntry[]>> = new Map<string, Map<string, TimeEntry[]>>();
 
     for (const timeEntry of this.timeEntries()) {
-      if (timeEntry.endTime == null) {
-        continue;
-      }
       const formattedDate: string = this.formatDayDate(timeEntry.startTime);
       // ID is project id + description + taskId + billable
       // Ex. Tempusv0.9.0Developmentfalse
@@ -56,10 +53,16 @@ export class TimeEntryStore {
     }
     return Array.from(dayGroups, ([formattedDate, groupedEntries]) => {
       // Sort the Map entries by the first entry's startTime
-      const sortedGroupedEntries = new Map(
+      const sortedGroupedEntries = new Map<string, TimeEntry[]>(
         Array.from(groupedEntries).sort(([, entriesA], [, entriesB]) => {
           return entriesA[0]?.startTime.localeCompare(entriesB[0]?.startTime) ?? 0;
         }).reverse()
+      );
+      const endedGroupedEntries = new Map(
+        Array.from(sortedGroupedEntries, ([key, entries]) => [
+          key,
+          entries.filter(e => e.endTime !== null)
+        ] as const)
       );
       const totalTimeMs: number = [...groupedEntries.values()]
         .flatMap((entries) => entries)
@@ -72,6 +75,7 @@ export class TimeEntryStore {
       return {
         formattedDate: formattedDate,
         groupedEntries: sortedGroupedEntries,
+        endedEntries: endedGroupedEntries,
         formattedTotalTime: formattedTotalTime,
       };
     });

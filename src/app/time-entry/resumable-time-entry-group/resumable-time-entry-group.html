@@ -26,7 +26,7 @@
   @if (timeEntries().length === 1 || isExpanded()) {
   <div class="time-group__content">
     @for(timeEntry of timeEntries(); track timeEntry.id) {
-    <app-resumable-time-entry [timeEntry]="timeEntry"/>
+      <app-resumable-time-entry [timeEntry]="timeEntry"/>
     }
   </div>
   }

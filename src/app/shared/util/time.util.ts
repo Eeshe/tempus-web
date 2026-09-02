@@ -9,8 +9,10 @@ export function computeDuration(
   start: Date | string | null | undefined,
   end: Date | string | null | undefined
 ): Duration | null {
-  if (start == null || end == null) return null;
-
+  if (start == null) return null;
+  if (end == null) {
+    end = new Date();
+  }
   const startMs = new Date(start).getTime();
   const endMs = new Date(end).getTime();
   if (Number.isNaN(startMs)) {
