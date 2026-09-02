@@ -1,6 +1,9 @@
+import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { map } from 'rxjs';
 import { Project } from '../../model/project.model';
 import { ProjectTaskSelectorButton } from '../../project/project-selector-button/project-task-selector-button';
+import { TimerService } from '../../shared/services/timer.service';
 import {
   computeDuration,
   Duration,
@@ -18,22 +21,28 @@ import { TimeEntryDescription } from '../time-entry-description/time-entry-descr
   imports: [
     TimeEntryDescription,
     ProjectTaskSelectorButton,
-    ResumableTimeEntry],
+    ResumableTimeEntry,
+    AsyncPipe,
+  ],
   templateUrl: './resumable-time-entry-group.html',
   changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './resumable-time-entry-group.css',
 })
 export class ResumableTimeEntryGroup {
   private readonly timeEntryStore: TimeEntryStore = inject(TimeEntryStore);
+  private readonly timerService: TimerService = inject(TimerService);
 
   readonly timeEntries = input.required<TimeEntry[]>();
+  readonly endedTimeEntries = computed<TimeEntry[]>(() => {
+    return this.timeEntries().filter(timeEntry => timeEntry.endTime !== null);
+  });
   readonly formattedStartToEndTime = computed<string>(() => {
     const startTime: string = toHHmmTime(new Date(this.timeEntries()[this.timeEntries().length - 1].startTime));
-    const endTime: string = toHHmmTime(new Date(this.timeEntries()[0].endTime!));
+    const endTime: string = toHHmmTime(new Date(this.endedTimeEntries()[0].endTime!));
 
     return startTime + " – " + endTime;
   });
-  readonly formattedTotalDuration = computed<string>(() => {
+  readonly formattedTotalDuration$ = this.timerService.oneSecondTick$.pipe(map(() => {
     let totalDurationMs: number = 0;
     for (const timeEntry of this.timeEntries()) {
       const duration: Duration | null = computeDuration(timeEntry.startTime, timeEntry.endTime);
@@ -43,7 +52,7 @@ export class ResumableTimeEntryGroup {
       totalDurationMs += duration.totalMilliseconds;
     }
     return formatHHMMSSTime(durationFromMs(totalDurationMs));
-  });
+  }))
   readonly isExpanded = signal<boolean>(false);
 
   toggleCollapsible(event?: MouseEvent): void {
@@ -61,7 +70,7 @@ export class ResumableTimeEntryGroup {
   }
 
   deleteGroup(): void {
-    this.timeEntries().forEach((timeEntry) => this.timeEntryStore.delete(timeEntry));
+    this.endedTimeEntries().forEach((timeEntry) => this.timeEntryStore.delete(timeEntry));
   }
 
   updateGroupDescription(newDescription: string): void {

@@ -6,9 +6,9 @@ import { TimeEntry } from "../models/time-entry.model";
 import { TimeEntryService } from "../services/time-entry.service";
 
 
-interface DayGroupedTimeEntries {
+export interface DayGroupedTimeEntries {
   formattedDate: string;
-  groupedEntries: Map<string, TimeEntry[]>; // All time entries, including active ones
+  allEntries: Map<string, TimeEntry[]>; // All time entries, including active ones
   endedEntries: Map<string, TimeEntry[]>; // Only ended time entries
   formattedTotalTime: string;
 }
@@ -54,10 +54,13 @@ export class TimeEntryStore {
     return Array.from(dayGroups, ([formattedDate, groupedEntries]) => {
       // Sort the Map entries by the first entry's startTime
       const sortedGroupedEntries = new Map<string, TimeEntry[]>(
-        Array.from(groupedEntries).sort(([, entriesA], [, entriesB]) => {
-          return entriesA[0]?.startTime.localeCompare(entriesB[0]?.startTime) ?? 0;
-        }).reverse()
+        Array.from(groupedEntries)
+          .sort(([, entriesA], [, entriesB]) => {
+            return entriesA[entriesA.length - 1].startTime.localeCompare(entriesB[entriesB.length - 1].startTime) ?? 0;
+          })
+          .reverse()
       );
+      console.log(sortedGroupedEntries);
       const endedGroupedEntries = new Map(
         Array.from(sortedGroupedEntries, ([key, entries]) => [
           key,
@@ -74,7 +77,7 @@ export class TimeEntryStore {
       const formattedTotalTime: string = formatHHMMSSTime(durationFromMs(totalTimeMs));
       return {
         formattedDate: formattedDate,
-        groupedEntries: sortedGroupedEntries,
+        allEntries: sortedGroupedEntries,
         endedEntries: endedGroupedEntries,
         formattedTotalTime: formattedTotalTime,
       };
