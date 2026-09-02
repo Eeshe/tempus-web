@@ -36,6 +36,9 @@ export class ResumableTimeEntryGroup {
   readonly endedTimeEntries = computed<TimeEntry[]>(() => {
     return this.timeEntries().filter(timeEntry => timeEntry.endTime !== null);
   });
+  readonly hasActiveTimeEntry = computed<boolean>(() => {
+    return this.timeEntries().length != this.endedTimeEntries().length;
+  });
   readonly formattedStartToEndTime = computed<string>(() => {
     const startTime: string = toHHmmTime(new Date(this.timeEntries()[this.timeEntries().length - 1].startTime));
     const endTime: string = toHHmmTime(new Date(this.endedTimeEntries()[0].endTime!));
