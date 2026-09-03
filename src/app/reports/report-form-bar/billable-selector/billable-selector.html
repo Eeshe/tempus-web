@@ -1,0 +1,9 @@
+<button
+  type="button"
+  class="billable"
+  [class.billable--active]="isBillable()"
+  (click)="toggle()"
+>
+  <span class="billable__icon"></span>
+  Billable
+</button>
