@@ -60,7 +60,6 @@ export class TimeEntryStore {
           })
           .reverse()
       );
-      console.log(sortedGroupedEntries);
       const endedGroupedEntries = new Map(
         Array.from(sortedGroupedEntries, ([key, entries]) => [
           key,

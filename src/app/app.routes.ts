@@ -3,6 +3,7 @@ import { LoginForm } from './auth/login-form/login-form';
 import { RegisterForm } from './auth/register-form/register-form';
 import { authGuard } from './guards/auth.guard';
 import { Home } from './home/home';
+import { ReportsPage } from './reports/reports-page/reports-page';
 
 export const routes: Routes = [
   {
@@ -22,8 +23,14 @@ export const routes: Routes = [
   },
   {
     path: "home",
-    title: "home",
+    title: "Home",
     component: Home,
+    canActivate: [authGuard],
+  },
+  {
+    path: "reports",
+    title: "Reports",
+    component: ReportsPage,
     canActivate: [authGuard],
   }
 ];
