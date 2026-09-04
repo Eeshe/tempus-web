@@ -1,6 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { form, submit } from '@angular/forms/signals';
-import { Project } from '../../model/project.model';
+import { Project } from '../../../model/project.model';
+import { Report } from '../../models/report.model';
+import { ReportService } from '../../services/report.service';
 import { BillableSelector } from './billable-selector/billable-selector';
 import { DateRangeSelector } from './date-range-selector/date-range-selector';
 import { DescriptionSelector } from './description-selector/description-selector';
@@ -11,7 +13,7 @@ interface ReportModel {
   endDate: string,
   projects: Project[],
   descriptions: string[],
-  isBillable: boolean | null
+  isBillable: boolean
 }
 
 @Component({
@@ -21,12 +23,14 @@ interface ReportModel {
   templateUrl: './report-form-bar.html',
 })
 export class ReportFormBar {
+  private readonly reportService: ReportService = inject(ReportService);
+
   readonly reportModel = signal<ReportModel>({
     startDate: '',
     endDate: '',
     projects: [],
     descriptions: [],
-    isBillable: null,
+    isBillable: false,
   });
   readonly reportForm = form(this.reportModel);
 
@@ -35,6 +39,8 @@ export class ReportFormBar {
   readonly projects = signal<Project[]>([]);
   readonly descriptions = signal<string[]>([]);
   readonly isBillable = signal<boolean>(false);
+
+  readonly reportGenerateEvent = output<Report>();
 
   setStartDate(value: string | null): void {
     this.startDate.set(value);
@@ -65,7 +71,15 @@ export class ReportFormBar {
     event.preventDefault();
 
     submit(this.reportForm, async () => {
-
+      this.reportService.generateReport(
+        this.reportModel().startDate,
+        this.reportModel().endDate,
+        this.reportModel().projects,
+        this.reportModel().descriptions,
+        this.reportModel().isBillable,
+      ).subscribe(report => {
+        this.reportGenerateEvent.emit(report);
+      });
     });
   }
 }

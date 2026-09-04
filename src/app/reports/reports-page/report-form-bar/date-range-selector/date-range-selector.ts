@@ -1,6 +1,6 @@
-import { formatDate } from '@angular/common';
 import { Component, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
-import { DateInput } from '../../../shared/input/date-input/date-input';
+import { DateInput } from '../../../../shared/input/date-input/date-input';
+import { formatYYYYMMDDDate } from '../../../../shared/util/date.util';
 
 @Component({
   imports: [DateInput],
@@ -112,18 +112,18 @@ export class DateRangeSelector {
       default:
         return;
     }
+    start.setHours(0);
+    end.setHours(23);
+    console.log("START: " + start);
+    console.log("END: " + end);
 
-    const startStr: string = this.formatDate(start);
-    const endStr: string = this.formatDate(end);
+    const startStr: string = formatYYYYMMDDDate(start);
+    const endStr: string = formatYYYYMMDDDate(end);
 
     this.startDateChangeEvent.emit(startStr);
     this.endDateChangeEvent.emit(endStr);
 
     this.validateDates(startStr, endStr);
-  }
-
-  private formatDate(date: Date): string {
-    return formatDate(date, "yyyy-MM-dd", "en-us");
   }
 
   @HostListener('document:click', ['$event'])

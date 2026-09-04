@@ -1,1 +1,2 @@
-<app-report-form-bar></app-report-form-bar>
+<app-report-form-bar (reportGenerateEvent)="currentReport.set($event)"/>
+<app-report-details-list [report]="currentReport()"/>

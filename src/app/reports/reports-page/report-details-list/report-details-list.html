@@ -1,0 +1,5 @@
+<p>Total: {{formattedTotalTrackedTime()}}</p>
+@for(projectReportEntry of report().projectReportEntries; track projectReportEntry.project.id) {
+<p>{{projectReportEntry.project.name}}   {{projectReportEntry.trackedTimeMillis | msToHHMMSS }}</p>
+<br>
+}

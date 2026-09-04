@@ -1,6 +1,6 @@
 import { Component, computed, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
-import { Project } from '../../../model/project.model';
-import { ProjectService } from '../../../services/project.service';
+import { Project } from '../../../../model/project.model';
+import { ProjectService } from '../../../../services/project.service';
 
 @Component({
   imports: [],
