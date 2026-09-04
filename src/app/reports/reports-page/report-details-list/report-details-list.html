@@ -1,8 +1,8 @@
+<header class="total-header">
+  <span class="total-header__label">TOTAL</span>
+  <span class="total-header__value">{{ formattedTotalTrackedTime() }}</span>
+</header>
 <div class="details-container">
-  <header class="total-header">
-    <span class="total-header__label">Total</span>
-    <span class="total-header__value">{{ formattedTotalTrackedTime() }}</span>
-  </header>
   <table class="report-table">
     <thead>
       <tr>
@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      @for (entry of sortedEntries(); track entry.project.id) {
+      @for (entry of sortedProjectReportEntries(); track entry.project.id) {
         <tr class="report-table__row">
           <td class="report-table__cell report-table__cell--left">{{ entry.project.name }}</td>
           <td class="report-table__cell report-table__cell--right">{{ entry.trackedTimeMillis | msToHHMMSS }}</td>

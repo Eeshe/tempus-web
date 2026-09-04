@@ -1,6 +1,6 @@
 import { Project } from "../../model/project.model";
 
-interface ProjectReportEntry {
+export interface ProjectReportEntry {
   project: Project,
   trackedTimeMillis: number
 }

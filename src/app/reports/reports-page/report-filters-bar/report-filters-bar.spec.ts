@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReportFormBar } from './report-form-bar';
+import { ReportFiltersBar } from './report-filters-bar';
 
-describe('ReportFormBar', () => {
-  let component: ReportFormBar;
-  let fixture: ComponentFixture<ReportFormBar>;
+describe('ReportFiltersBar', () => {
+  let component: ReportFiltersBar;
+  let fixture: ComponentFixture<ReportFiltersBar>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReportFormBar],
+      imports: [ReportFiltersBar],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ReportFormBar);
+    fixture = TestBed.createComponent(ReportFiltersBar);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
