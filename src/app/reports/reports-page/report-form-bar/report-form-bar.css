@@ -3,6 +3,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  padding: 0.75rem 1.25rem;
   font-family: 'Inter', system-ui, sans-serif;
 }
 
@@ -12,7 +13,8 @@
   gap: 0.75rem;
   padding: 0.75rem 1.5rem;
   background: var(--surface, #161a22);
-  border-bottom: 1px solid var(--border, #262c38);
+  border: 1px solid var(--border, #262c38);
+  border-radius: 0.25rem;
   box-sizing: border-box;
 }
 

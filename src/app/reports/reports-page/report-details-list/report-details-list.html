@@ -1,5 +1,26 @@
-<p>Total: {{formattedTotalTrackedTime()}}</p>
-@for(projectReportEntry of report().projectReportEntries; track projectReportEntry.project.id) {
-<p>{{projectReportEntry.project.name}}   {{projectReportEntry.trackedTimeMillis | msToHHMMSS }}</p>
-<br>
-}
+<div class="details-container">
+  <header class="total-header">
+    <span class="total-header__label">Total</span>
+    <span class="total-header__value">{{ formattedTotalTrackedTime() }}</span>
+  </header>
+  <table class="report-table">
+    <thead>
+      <tr>
+        <th class="report-table__header report-table__header--left" (click)="toggleSort('project')">
+          Project {{ sortColumn() === 'project' ? (sortDirection() === 'asc' ? '▲' : '▼') : '' }}
+        </th>
+        <th class="report-table__header report-table__header--right" (click)="toggleSort('duration')">
+          Duration {{ sortColumn() === 'duration' ? (sortDirection() === 'asc' ? '▲' : '▼') : '' }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (entry of sortedEntries(); track entry.project.id) {
+        <tr class="report-table__row">
+          <td class="report-table__cell report-table__cell--left">{{ entry.project.name }}</td>
+          <td class="report-table__cell report-table__cell--right">{{ entry.trackedTimeMillis | msToHHMMSS }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
