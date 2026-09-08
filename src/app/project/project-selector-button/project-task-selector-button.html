@@ -1,8 +1,8 @@
-<button #projectButton type="button" class="project-item" aria-haspopup="dialog" [attr.aria-expanded]="isSelectorOpen()" (click)="toggle()">{{formatDisplayText()}}</button>
+<button #triggerButton type="button" class="project-item" aria-haspopup="dialog" [attr.aria-expanded]="isOpen()" (click)="toggle()">{{formatDisplayText()}}</button>
 
-<div class="popup" [class.popup--open]="isSelectorOpen()"
-     [style.top.px]="popup().top" [style.left.px]="popup().left">
-  <div class="popup__list">
+<div class="selector__popup" [class.selector__popup--open]="isOpen()"
+     [style.top.px]="popupPosition().top" [style.left.px]="popupPosition().left">
+  <div class="selector__popup-list">
     @for (project of projects(); track project.id) {
       <button type="button" class="project-item" [attr.title]="project.name" (click)="changeTimeEntryProject(project)">{{ project.name }}</button>
       @for (task of project.tasks; track task.id) {

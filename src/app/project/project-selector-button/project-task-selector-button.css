@@ -1,3 +1,5 @@
+@import '../../shared/selector-shared.css';
+
 :host {
   --surface: #161a22;
   --fg: #e8eaf0;
@@ -9,56 +11,23 @@
   font-family: 'Inter', system-ui, sans-serif;
 }
 
-.popup {
-  position: fixed;
+.selector__popup {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   max-height: 80vh;
   padding: 0.75rem 1rem;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
   color: var(--fg);
   white-space: nowrap;
   width: 12rem;
-  z-index: 20;
-
-  opacity: 0;
-  transform: translateY(-6px) scale(0.98);
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 140ms ease, transform 140ms ease, visibility 0s linear 140ms;
 }
 
-.popup--open {
-  opacity: 1;
-  transform: none;
-  visibility: visible;
-  pointer-events: auto;
-  transition: opacity 140ms ease, transform 140ms ease;
-}
-
-.popup__list {
+.selector__popup-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   width: 100%;
   max-height: calc(10 * 1.65rem + 9 * 0.5rem);
-  overflow-y: auto;
-  scrollbar-gutter: stable;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-
-.popup__list::-webkit-scrollbar {
-  width: 8px;
-}
-
-.popup__list::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 8px;
 }
 
 .project-item,

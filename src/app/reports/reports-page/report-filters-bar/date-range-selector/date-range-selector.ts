@@ -1,4 +1,5 @@
-import { Component, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
+import { PopupSelectorBase } from '../../../../shared/popup-selector-base';
 import { DateInput } from '../../../../shared/input/date-input/date-input';
 import { formatYYYYMMDDDate } from '../../../../shared/util/date.util';
 
@@ -8,37 +9,15 @@ import { formatYYYYMMDDDate } from '../../../../shared/util/date.util';
   styleUrl: './date-range-selector.css',
   templateUrl: './date-range-selector.html',
 })
-export class DateRangeSelector {
-  private readonly hostElement = inject(ElementRef);
-  private readonly triggerButton = viewChild<ElementRef<HTMLButtonElement>>('triggerButton');
-
+export class DateRangeSelector extends PopupSelectorBase {
   readonly startDate = input<string | null>(null);
   readonly endDate = input<string | null>(null);
 
   readonly startDateChangeEvent = output<string | null>();
   readonly endDateChangeEvent = output<string | null>();
 
-  readonly isOpen = signal<boolean>(false);
-  readonly popupPosition = signal<{ top: number; left: number }>({ top: 0, left: 0 });
-
   readonly startDateInvalid = signal<boolean>(false);
   readonly endDateInvalid = signal<boolean>(false);
-
-  toggle(): void {
-    if (!this.isOpen()) {
-      this.openPopup();
-    }
-    this.isOpen.update((isOpen) => !isOpen);
-  }
-
-  private openPopup(): void {
-    const button: HTMLButtonElement | undefined = this.triggerButton()?.nativeElement;
-    if (!button) {
-      return;
-    }
-    const rect: DOMRect = button.getBoundingClientRect();
-    this.popupPosition.set({ top: rect.bottom + 4, left: rect.left });
-  }
 
   onStartDateChange(value: string | null): void {
     this.startDateChangeEvent.emit(value);
@@ -122,13 +101,5 @@ export class DateRangeSelector {
     this.endDateChangeEvent.emit(endStr);
 
     this.validateDates(startStr, endStr);
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (!this.isOpen() || this.hostElement.nativeElement.contains(event.target)) {
-      return;
-    }
-    this.isOpen.set(false);
   }
 }

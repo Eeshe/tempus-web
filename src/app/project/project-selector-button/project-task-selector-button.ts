@@ -1,4 +1,5 @@
-import { Component, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
+import { PopupSelectorBase } from '../../shared/popup-selector-base';
 import { Project } from '../../model/project.model';
 import { Task } from '../../model/task.model';
 import { ProjectService } from '../../services/project.service';
@@ -10,15 +11,11 @@ import { CreateProjectFormModal } from '../create-project-form/create-project-fo
   styleUrl: './project-task-selector-button.css',
   templateUrl: './project-task-selector-button.html',
 })
-export class ProjectTaskSelectorButton {
+export class ProjectTaskSelectorButton extends PopupSelectorBase {
   private readonly projectService: ProjectService = inject(ProjectService);
-  private readonly buttonElement = viewChild<ElementRef<HTMLButtonElement>>('projectButton');
-  private readonly hostElement = inject(ElementRef);
 
-  readonly isSelectorOpen = signal(false);
   readonly selectedProject = input<Project | null>();
   readonly selectedTask = input<Task | null>();
-  readonly popup = signal<{ top: number; left: number }>({ top: 0, left: 0 });
   readonly projects = signal<Project[]>([]);
 
   readonly isCreateProjectFormOpen = signal<boolean>(false);
@@ -36,19 +33,9 @@ export class ProjectTaskSelectorButton {
     return `${this.selectedProject()!.name}:${this.selectedTask()!.name}`;
   }
 
-  toggle(): void {
-    if (!this.isSelectorOpen()) {
-      this.createPopUp();
-    }
-    this.isSelectorOpen.update((v) => !v);
-  }
+  protected override openPopup(): void {
+    super.openPopup();
 
-  private createPopUp(): void {
-    const popUpElement = this.buttonElement()?.nativeElement;
-    if (popUpElement) {
-      const rect = popUpElement.getBoundingClientRect();
-      this.popup.set({ top: rect.bottom + 4, left: rect.left });
-    }
     this.projectService.listProjects().subscribe(
       fetchedProjects => this.projects.set(fetchedProjects.sort((projectA, projectB) =>
         projectA.name.localeCompare(projectB.name, undefined, { sensitivity: "base" })))
@@ -72,12 +59,5 @@ export class ProjectTaskSelectorButton {
 
   toggleCreateProjectForm(): void {
     this.isCreateProjectFormOpen.update(value => !value);
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (this.isSelectorOpen() && !this.hostElement.nativeElement.contains(event.target)) {
-      this.isSelectorOpen.set(false);
-    }
   }
 }

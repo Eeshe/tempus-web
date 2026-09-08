@@ -1,4 +1,5 @@
-import { Component, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
+import { Component, ElementRef, input, output, signal, viewChild } from '@angular/core';
+import { PopupSelectorBase } from '../../../../shared/popup-selector-base';
 
 @Component({
   imports: [],
@@ -6,33 +7,17 @@ import { Component, ElementRef, HostListener, inject, input, output, signal, vie
   styleUrl: './description-selector.css',
   templateUrl: './description-selector.html',
 })
-export class DescriptionSelector {
-  private readonly hostElement: ElementRef = inject(ElementRef);
-  private readonly triggerButton = viewChild<ElementRef<HTMLButtonElement>>('triggerButton');
+export class DescriptionSelector extends PopupSelectorBase {
   private readonly descriptionInput = viewChild<ElementRef<HTMLInputElement>>('descriptionInput');
 
   readonly descriptions = input<string[]>([]);
 
   readonly descriptionsChangeEvent = output<string[]>();
 
-  readonly isOpen = signal<boolean>(false);
-  readonly popupPosition = signal<{ top: number; left: number }>({ top: 0, left: 0 });
   readonly inputValue = signal<string>('');
 
-  toggle(): void {
-    if (!this.isOpen()) {
-      this.openPopup();
-    }
-    this.isOpen.update((isOpen: boolean) => !isOpen);
-  }
-
-  private openPopup(): void {
-    const button: HTMLButtonElement | undefined = this.triggerButton()?.nativeElement;
-    if (!button) {
-      return;
-    }
-    const rect: DOMRect = button.getBoundingClientRect();
-    this.popupPosition.set({ top: rect.bottom + 4, left: rect.left });
+  protected override openPopup(): void {
+    super.openPopup();
 
     setTimeout(() => {
       this.descriptionInput()?.nativeElement.focus();
@@ -69,13 +54,5 @@ export class DescriptionSelector {
 
   private sortDescriptions(descriptions: string[]): string[] {
     return [...descriptions].sort((a: string, b: string) => a.localeCompare(b, undefined, { sensitivity: 'base' }));
-  }
-
-  @HostListener('document:click', ['$event'])
-  onDocumentClick(event: MouseEvent): void {
-    if (!this.isOpen() || this.hostElement.nativeElement.contains(event.target)) {
-      return;
-    }
-    this.isOpen.set(false);
   }
 }
