@@ -4,9 +4,9 @@
      [style.top.px]="popup().top" [style.left.px]="popup().left">
   <div class="popup__list">
     @for (project of projects(); track project.id) {
-      <button type="button" class="project-item" (click)="changeTimeEntryProject(project)">{{ project.name }}</button>
+      <button type="button" class="project-item" [attr.title]="project.name" (click)="changeTimeEntryProject(project)">{{ project.name }}</button>
       @for (task of project.tasks; track task.id) {
-        <button type="button" class="task-item" (click)="changeTimeEntryTask(project, task)">{{ task.name }}</button>
+        <button type="button" class="task-item" [attr.title]="task.name" (click)="changeTimeEntryTask(project, task)">{{ task.name }}</button>
       }
     }
   </div>

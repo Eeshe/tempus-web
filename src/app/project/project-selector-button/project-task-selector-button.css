@@ -21,6 +21,7 @@
   border-radius: 8px;
   color: var(--fg);
   white-space: nowrap;
+  width: 12rem;
   z-index: 20;
 
   opacity: 0;
@@ -42,6 +43,7 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
   max-height: calc(10 * 1.65rem + 9 * 0.5rem);
   overflow-y: auto;
   scrollbar-gutter: stable;
@@ -59,7 +61,8 @@
   border-radius: 8px;
 }
 
-.project-item {
+.project-item,
+.task-item {
   padding: 0;
   margin: 0;
   background: none;
@@ -68,17 +71,28 @@
   color: var(--fg);
   text-align: left;
   width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   cursor: pointer;
   transition: color 120ms ease;
 }
 
+.task-item {
+  padding-left: 1.25rem;
+}
+
 .project-item:hover,
-.project-item:focus-visible {
+.project-item:focus-visible,
+.task-item:hover,
+.task-item:focus-visible {
   text-decoration: underline;
   color: var(--good);
 }
 
-.project-item:focus-visible {
+.project-item:focus-visible,
+.task-item:focus-visible {
   outline: 2px solid var(--good);
   outline-offset: 2px;
 }
