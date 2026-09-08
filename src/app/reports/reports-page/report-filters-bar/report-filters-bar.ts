@@ -1,5 +1,6 @@
 import { afterNextRender, Component, inject, output, signal } from '@angular/core';
 import { Project } from '../../../model/project.model';
+import { Task } from '../../../model/task.model';
 import { formatYYYYMMDDDate } from '../../../shared/util/date.util';
 import { Report } from '../../models/report.model';
 import { ReportService } from '../../services/report.service';
@@ -7,9 +8,10 @@ import { BillableSelector } from './billable-selector/billable-selector';
 import { DateRangeSelector } from './date-range-selector/date-range-selector';
 import { DescriptionSelector } from './description-selector/description-selector';
 import { ProjectSelector } from './project-selector/project-selector';
+import { TaskSelector } from './task-selector/task-selector';
 
 @Component({
-  imports: [BillableSelector, DateRangeSelector, DescriptionSelector, ProjectSelector],
+  imports: [BillableSelector, DateRangeSelector, DescriptionSelector, ProjectSelector, TaskSelector],
   selector: 'app-report-filters-bar',
   styleUrl: './report-filters-bar.css',
   templateUrl: './report-filters-bar.html',
@@ -20,6 +22,7 @@ export class ReportFiltersBar {
   readonly startDate = signal<string | null>(null);
   readonly endDate = signal<string | null>(null);
   readonly projects = signal<Project[]>([]);
+  readonly tasks = signal<Task[]>([]);
   readonly descriptions = signal<string[]>([]);
   readonly isBillable = signal<boolean>(false);
 
@@ -47,6 +50,11 @@ export class ReportFiltersBar {
     this.generateReport();
   }
 
+  setTasks(tasks: Task[]): void {
+    this.tasks.set(tasks);
+    this.generateReport();
+  }
+
   setDescriptions(descriptions: string[]): void {
     this.descriptions.set(descriptions);
     this.generateReport();
@@ -65,6 +73,7 @@ export class ReportFiltersBar {
       this.startDate()!,
       this.endDate()!,
       this.projects(),
+      this.tasks(),
       this.descriptions(),
       this.isBillable(),
     ).subscribe(report => {

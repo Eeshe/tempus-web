@@ -2,15 +2,16 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Service } from "@angular/core";
 import { Observable } from "rxjs";
 import { Project } from "../../model/project.model";
+import { Task } from "../../model/task.model";
 import { Report } from "../models/report.model";
 
 interface ReportRequest {
   startDate: string,
   endDate: string,
   projectIds: number[] | null,
+  taskIds: number[] | null,
   descriptions: string[] | null,
   isBillable: boolean,
-
 }
 
 @Service()
@@ -22,14 +23,17 @@ export class ReportService {
     startDate: string,
     endDate: string,
     projects: Project[],
+    tasks: Task[],
     descriptions: string[],
     isBillable: boolean
   ): Observable<Report> {
     const projectIds: number[] = projects.map(project => project.id);
+    const taskIds: number[] = tasks.map(task => task.id);
     const reportRequest: ReportRequest = {
       startDate,
       endDate,
       projectIds,
+      taskIds,
       descriptions,
       isBillable
     }
