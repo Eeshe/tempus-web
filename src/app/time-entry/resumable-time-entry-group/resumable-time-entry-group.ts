@@ -2,6 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
 import { map } from 'rxjs';
 import { Project } from '../../model/project.model';
+import { Task } from '../../model/task.model';
 import { ProjectTaskSelectorButton } from '../../project/project-selector-button/project-task-selector-button';
 import { TimerService } from '../../shared/services/timer.service';
 import {
@@ -82,6 +83,10 @@ export class ResumableTimeEntryGroup {
 
   updateGroupProject(newProject: Project): void {
     this.timeEntries().forEach((timeEntry) => this.timeEntryStore.patchProject(timeEntry, newProject));
+  }
+
+  updateGroupTask(newProject: Project, newTask: Task): void {
+    this.timeEntries().forEach((timeEntry) => this.timeEntryStore.patchTask(timeEntry, newProject, newTask));
   }
 
   updateGroupBillable(isBillable: boolean): void {

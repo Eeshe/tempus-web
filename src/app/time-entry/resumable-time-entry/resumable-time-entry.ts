@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, linkedSignal } from '@angular/core';
 import { Project } from '../../model/project.model';
+import { Task } from '../../model/task.model';
 import { ProjectTaskSelectorButton } from '../../project/project-selector-button/project-task-selector-button';
 import { TimeInput } from '../../shared/input/time-input/time-input';
 import { DurationPipe } from '../../shared/pipes/duration.pipe';
@@ -47,6 +48,10 @@ export class ResumableTimeEntry {
 
   updateTimeEntryProject(newProject: Project): void {
     this.timeEntryStore.patchProject(this.timeEntry(), newProject);
+  }
+
+  updateTimeEntryTask(newProject: Project, newTask: Task): void {
+    this.timeEntryStore.patchTask(this.timeEntry(), newProject, newTask);
   }
 
   updateTimeEntryStartTime(newStartTime: string | null): void {

@@ -1,6 +1,7 @@
 import { formatDate } from "@angular/common";
 import { computed, inject, Service, Signal, signal } from "@angular/core";
 import { Project } from "../../model/project.model";
+import { Task } from "../../model/task.model";
 import { computeDuration, Duration, durationFromMs, formatHHMMSSTime } from "../../shared/util/time.util";
 import { TimeEntry } from "../models/time-entry.model";
 import { TimeEntryService } from "../services/time-entry.service";
@@ -121,6 +122,11 @@ export class TimeEntryStore {
 
   patchProject(timeEntry: TimeEntry, newProject: Project): void {
     this.timeEntryService.patchTimeEntryProject(timeEntry, newProject)
+      .subscribe((patchedTimeEntry) => this.replace(patchedTimeEntry));
+  }
+
+  patchTask(timeEntry: TimeEntry, newProject: Project, newTask: Task): void {
+    this.timeEntryService.patchTimeEntryTask(timeEntry, newProject, newTask)
       .subscribe((patchedTimeEntry) => this.replace(patchedTimeEntry));
   }
 

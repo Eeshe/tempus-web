@@ -1,5 +1,6 @@
 import { Component, ElementRef, HostListener, inject, input, output, signal, viewChild } from '@angular/core';
 import { Project } from '../../model/project.model';
+import { Task } from '../../model/task.model';
 import { ProjectService } from '../../services/project.service';
 import { CreateProjectFormModal } from '../create-project-form/create-project-form-modal';
 
@@ -16,12 +17,24 @@ export class ProjectTaskSelectorButton {
 
   readonly isSelectorOpen = signal(false);
   readonly selectedProject = input<Project | null>();
+  readonly selectedTask = input<Task | null>();
   readonly popup = signal<{ top: number; left: number }>({ top: 0, left: 0 });
   readonly projects = signal<Project[]>([]);
 
   readonly isCreateProjectFormOpen = signal<boolean>(false);
 
   readonly projectSelectEvent = output<Project>();
+  readonly taskSelectEvent = output<{ newProject: Project, newTask: Task }>();
+
+  formatDisplayText(): string {
+    if (this.selectedProject() == null) {
+      return "Select a Project";
+    }
+    if (this.selectedTask() == null) {
+      return this.selectedProject()!.name;
+    }
+    return `${this.selectedProject()!.name}:${this.selectedTask()!.name}`;
+  }
 
   toggle(): void {
     if (!this.isSelectorOpen()) {
@@ -44,6 +57,11 @@ export class ProjectTaskSelectorButton {
 
   changeTimeEntryProject(clickedProject: Project): void {
     this.projectSelectEvent.emit(clickedProject);
+    this.toggle();
+  }
+
+  changeTimeEntryTask(project: Project, clickedTask: Task): void {
+    this.taskSelectEvent.emit({ newProject: project, newTask: clickedTask });
     this.toggle();
   }
 

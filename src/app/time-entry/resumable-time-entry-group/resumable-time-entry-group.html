@@ -10,7 +10,7 @@
         </button>
         <div class="time-group__titles">
           <app-time-entry-description [description]="timeEntries()[0].description ?? ''" (descriptionChangeEvent)="updateGroupDescription($event)"/>
-          <app-project-task-selector-button [selectedProject]="timeEntries()[0].project" (projectSelectEvent)="updateGroupProject($event)"/>
+          <app-project-task-selector-button [selectedProject]="timeEntries()[0].project" [selectedTask]="timeEntries()[0].task" (projectSelectEvent)="updateGroupProject($event)" (taskSelectEvent)="updateGroupTask($event.newProject, $event.newTask)"/>
         </div>
       </div>
       <div class="time-group__header-right">

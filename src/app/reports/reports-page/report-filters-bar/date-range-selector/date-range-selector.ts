@@ -114,8 +114,6 @@ export class DateRangeSelector {
     }
     start.setHours(0);
     end.setHours(23);
-    console.log("START: " + start);
-    console.log("END: " + end);
 
     const startStr: string = formatYYYYMMDDDate(start);
     const endStr: string = formatYYYYMMDDDate(end);

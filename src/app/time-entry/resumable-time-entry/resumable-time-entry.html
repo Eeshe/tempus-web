@@ -1,7 +1,7 @@
 <div class="time-entry">
 	<div class="time-entry__left">
 		<app-time-entry-description [description]="timeEntry().description ?? ''" (descriptionChangeEvent)="updateTimeEntryDescription($event)"/>
-		<app-project-task-selector-button [selectedProject]="timeEntry().project" (projectSelectEvent)="updateTimeEntryProject($event)"/>
+		<app-project-task-selector-button [selectedProject]="timeEntry().project" [selectedTask]="timeEntry().task" (projectSelectEvent)="updateTimeEntryProject($event)" (taskSelectEvent)="updateTimeEntryTask($event.newProject, $event.newTask)"/>
 	</div>
 	<div class="time-entry__right">
 		<app-time-entry-billable-button [timeEntry]="timeEntry()"/>

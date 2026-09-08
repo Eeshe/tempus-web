@@ -33,7 +33,6 @@ export class ReportDetailsList {
   });
 
   readonly formattedTotalTrackedTime = computed(() => {
-    console.log(this.report());
     return formatHHMMSSTime(durationFromMs(this.report().totalTrackedTimeMillis));
   });
 

@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Service } from "@angular/core";
 import { Observable } from "rxjs";
 import { Project } from "../../model/project.model";
+import { Task } from "../../model/task.model";
 import { TimeEntry } from "../models/time-entry.model";
 
 interface CreateTimeEntryRequest {
@@ -18,7 +19,7 @@ interface PatchTimeEntryRequest {
   groupId: number
   userId: number
   projectId: number
-  taskId: number
+  taskId: number | null,
   description: string
   isBillable: boolean
   startTime: string
@@ -99,6 +100,15 @@ export class TimeEntryService {
   patchTimeEntryProject(timeEntry: TimeEntry, project: Project): Observable<TimeEntry> {
     const patchRequest: Partial<PatchTimeEntryRequest> = {
       projectId: project.id,
+      taskId: null,
+    }
+    return this.patchTimeEntry(timeEntry, patchRequest)
+  }
+
+  patchTimeEntryTask(timeEntry: TimeEntry, project: Project, task: Task): Observable<TimeEntry> {
+    const patchRequest: Partial<PatchTimeEntryRequest> = {
+      projectId: project.id,
+      taskId: task.id,
     }
     return this.patchTimeEntry(timeEntry, patchRequest)
   }
