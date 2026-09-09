@@ -1,8 +1,39 @@
-@for (projectReport of projectReports(); track projectReport.project.id) {
-<span (click)="openProjectModal(projectReport.project)">{{projectReport.project.name}}</span>
-<span>{{projectReport.trackedTimeMillis | msToHHMMSS }}</span>
-<span>CLIENT_PLACEHOLDER</span>
-<span>USD{{projectReport.project.hourlyRate}}</span>
-<span>USD{{calculateAccumulatedPay(projectReport)}}</span>
-<br>
-}
+<div class="details-container">
+  <app-sortable-table
+    [columns]="columns"
+    ,
+    [rows]="projectReports()"
+    ,
+    [trackBy]="trackBy"
+    ,
+    [cellTemplates]="{
+      project: projectCell,
+      duration: durationCell,
+      client: clientCell,
+      hourlyRate: hourlyRateCell,
+      accumulatedPay: accumulatedPayCell,
+    }"
+    [clickable]="true"
+    ,
+    (rowClickEvent)="openProjectModal($event.project)"
+  >
+    <ng-template #projectCell let-projectReport>
+      {{ projectReport.project.name }}
+    </ng-template>
+    <ng-template #durationCell let-projectReport>
+      {{ projectReport.trackedTimeMillis | msToHHMMSS }}
+    </ng-template>
+    <ng-template #clientCell let-projectReport>
+      <!-- TODO -->
+      {{ projectReport.project.clientId ?? '-' }}
+    </ng-template>
+    <ng-template #hourlyRateCell let-projectReport>
+      {{ projectReport.project.hourlyRate ?? '-' }}
+    </ng-template>
+    <ng-template #accumulatedPayCell let-projectReport>
+      {{
+        calculateAccumulatedPay(projectReport) == -1 ? '-' : calculateAccumulatedPay(projectReport)
+      }}
+    </ng-template>
+  </app-sortable-table>
+</div>

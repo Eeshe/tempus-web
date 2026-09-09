@@ -1,4 +1,5 @@
 import { inject, Service, Signal, signal } from "@angular/core";
+import { forkJoin } from "rxjs";
 import { ProjectReport } from "../../reports/models/report.model";
 import { ReportService } from "../../reports/services/report.service";
 import { ProjectService } from "../../services/project.service";
@@ -13,12 +14,9 @@ export class ProjectReportStore {
   readonly projectReports: Signal<ProjectReport[]> = this._projectReports.asReadonly();
 
   load(): void {
-    this.projectService.listProjects().subscribe(projects => {
-      for (const project of projects) {
-        this.reportService.generateProjectReport(project).subscribe(report =>
-          this._projectReports.update((projectReports) =>
-            [...projectReports, ...report.projectReportEntries]));
-      }
-    });
+    this.projectService.listProjects().subscribe(projects =>
+      forkJoin(projects.map(project => this.reportService.generateProjectReport(project))).subscribe(reports =>
+        this._projectReports.set(reports.flatMap(report => report.projectReportEntries))
+      ));
   }
 }

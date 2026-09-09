@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ProjectSelectorButton } from './project-selector-button';
+import { SortableTable } from './sortable-table';
 
-describe('ProjectSelectorButton', () => {
-  let component: ProjectSelectorButton;
-  let fixture: ComponentFixture<ProjectSelectorButton>;
+describe('SortableTable', () => {
+  let component: SortableTable<unknown>;
+  let fixture: ComponentFixture<SortableTable<unknown>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProjectSelectorButton],
+      imports: [SortableTable],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProjectSelectorButton);
+    fixture = TestBed.createComponent(SortableTable);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
