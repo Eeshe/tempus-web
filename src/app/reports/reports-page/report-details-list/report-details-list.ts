@@ -1,7 +1,7 @@
 import { Component, computed, input, signal } from '@angular/core';
 import { MsToHHMMSSPipe } from '../../../shared/pipes/ms-to-hhmmss.pipe';
 import { durationFromMs, formatHHMMSSTime } from '../../../shared/util/time.util';
-import { ProjectReportEntry, Report } from '../../models/report.model';
+import { ProjectReport, Report } from '../../models/report.model';
 
 @Component({
   imports: [MsToHHMMSSPipe],
@@ -15,7 +15,7 @@ export class ReportDetailsList {
   readonly sortColumn = signal<"project" | "duration">("project");
   readonly sortDirection = signal<"asc" | "desc">("desc")
 
-  readonly sortedProjectReportEntries = computed<ProjectReportEntry[]>(() => {
+  readonly sortedProjectReportEntries = computed<ProjectReport[]>(() => {
     const sortColumn: "project" | "duration" = this.sortColumn();
     const sortDirection: "asc" | "desc" = this.sortDirection();
 

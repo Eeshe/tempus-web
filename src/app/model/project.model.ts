@@ -5,6 +5,7 @@ export interface Project {
   name: string;
   userId: number;
   isPrivate: boolean;
+  hourlyRate: number;
   tasks: Task[],
   clientId: number;
   createdAt: string;

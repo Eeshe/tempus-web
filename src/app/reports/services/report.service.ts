@@ -39,4 +39,10 @@ export class ReportService {
     }
     return this.http.post<Report>(this.url, reportRequest, { withCredentials: true });
   }
+
+  generateProjectReport(project: Project): Observable<Report> {
+    const projectId: number = project.id;
+
+    return this.http.get<Report>(`${this.url}/project/${projectId}`, { withCredentials: true })
+  }
 }

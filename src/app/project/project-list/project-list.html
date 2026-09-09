@@ -1,0 +1,8 @@
+@for (projectReport of projectReports(); track projectReport.project.id) {
+<span (click)="openProjectModal(projectReport.project)">{{projectReport.project.name}}</span>
+<span>{{projectReport.trackedTimeMillis | msToHHMMSS }}</span>
+<span>CLIENT_PLACEHOLDER</span>
+<span>USD{{projectReport.project.hourlyRate}}</span>
+<span>USD{{calculateAccumulatedPay(projectReport)}}</span>
+<br>
+}
