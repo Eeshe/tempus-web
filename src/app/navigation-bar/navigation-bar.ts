@@ -3,9 +3,10 @@ import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { SyncButtons } from '../sync/sync-buttons/sync-buttons';
 
 @Component({
-  imports: [AsyncPipe, RouterLink, RouterLinkActive],
+  imports: [AsyncPipe, RouterLink, RouterLinkActive, SyncButtons],
   selector: 'app-navigation-bar',
   styleUrl: './navigation-bar.css',
   templateUrl: './navigation-bar.html',

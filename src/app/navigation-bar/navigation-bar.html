@@ -6,12 +6,15 @@
     <a class="nav__link" routerLink="/projects" routerLinkActive="nav__link--active">Projects</a>
   </div>
   @if (isAuthenticated | async) {
-    <button
-      class="nav__logout"
-      type="button"
-      aria-label="Logout"
-      title="Logout"
-      (click)="logout()"
-    ></button>
+    <div class="nav__actions">
+      <app-sync-buttons />
+      <button
+        class="nav__logout"
+        type="button"
+        aria-label="Logout"
+        title="Logout"
+        (click)="logout()"
+      ></button>
+    </div>
   }
 </nav>

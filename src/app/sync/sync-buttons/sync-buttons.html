@@ -1,0 +1,3 @@
+<button class="sync-icon sync-icon--import" type="button" aria-label="Import" [title]="'Last import: ' + formattedLastImportTime()" [disabled]="!canImport()" (click)="triggerImport()"></button>
+<button class="sync-icon sync-icon--export" type="button" aria-label="Export" [title]="'Last export: ' + formattedLastExportTime()" [disabled]="canImport()" (click)="triggerExport()"></button>
+

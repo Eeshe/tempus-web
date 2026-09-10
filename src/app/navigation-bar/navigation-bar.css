@@ -65,10 +65,17 @@
   letter-spacing: -0.01em;
 }
 
+.nav__actions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .nav__logout {
   --icon: url('/icons/logout.svg');
 
-  margin-left: auto;
+  display: flex;
   width: 1.5rem;
   height: 1.5rem;
   padding: 0;

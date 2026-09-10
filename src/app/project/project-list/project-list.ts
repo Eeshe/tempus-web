@@ -68,6 +68,6 @@ export class ProjectList {
     }
     const trackedHours: number = projectReport.trackedTimeMillis / 1000 / 60 / 60;
 
-    return Math.round(hourlyRate * trackedHours);
+    return parseFloat((hourlyRate * trackedHours).toFixed(2));
   }
 }

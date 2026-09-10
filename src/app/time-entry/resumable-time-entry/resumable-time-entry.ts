@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, input, linkedSignal } from '@angular/core';
 import { Project } from '../../model/project.model';
 import { Task } from '../../model/task.model';
@@ -34,13 +33,6 @@ export class ResumableTimeEntry {
   readonly endTimeInput = linkedSignal(() =>
     toHHmmTime(new Date(this.timeEntry().endTime!))
   );
-
-  formatTime(date: string | null): string {
-    if (date == null) {
-      return '';
-    }
-    return formatDate(date, 'HH:mm', 'en-US', Intl.DateTimeFormat().resolvedOptions().timeZone);
-  }
 
   updateTimeEntryDescription(newDescription: string): void {
     this.timeEntryStore.patchDescription(this.timeEntry(), newDescription);
