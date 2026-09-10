@@ -6,17 +6,17 @@
 .sortable-table__header {
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--muted, #9aa3b2);
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border-strong, #353c4a);
+  border-bottom: 1px solid var(--border-strong);
   cursor: pointer;
   user-select: none;
 }
 
 .sortable-table__header:hover {
-  color: var(--fg, #e8eaf0);
+  color: var(--fg);
 }
 
 .sortable-table__header-arrow,
@@ -40,7 +40,7 @@
 }
 
 .sortable-table__row {
-  border-bottom: 1px solid var(--border, #262c38);
+  border-bottom: 1px solid var(--border);
 }
 
 .sortable-table__row:last-child {
@@ -54,7 +54,7 @@
 .sortable-table__cell {
   padding: 0.625rem 0;
   font-size: 0.9375rem;
-  color: var(--fg, #e8eaf0);
+  color: var(--fg);
 }
 
 .sortable-table__cell--left {

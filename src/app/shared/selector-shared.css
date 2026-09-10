@@ -7,10 +7,10 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.875rem;
-  background: var(--bg, #101318);
-  border: 1px solid var(--border, #262c38);
+  background: var(--bg);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
-  color: var(--fg, #e8eaf0);
+  color: var(--fg);
   font-family: inherit;
   font-size: 0.875rem;
   font-weight: 500;
@@ -19,17 +19,17 @@
 }
 
 .selector__trigger:hover {
-  border-color: var(--border-strong, #353c4a);
+  border-color: var(--border-strong);
 }
 
 .selector__trigger:focus-visible {
-  outline: 2px solid var(--good, #3dd68c);
+  outline: 2px solid var(--good);
   outline-offset: 2px;
 }
 
 .selector__trigger--open {
-  border-color: var(--good, #3dd68c);
-  background: var(--border, #262c38);
+  border-color: var(--good);
+  background: var(--border);
 }
 
 .selector__badge {
@@ -39,8 +39,8 @@
   min-width: 1.125rem;
   height: 1.125rem;
   padding: 0 0.3125rem;
-  background: var(--good, #3dd68c);
-  color: var(--bg, #101318);
+  background: var(--good);
+  color: var(--bg);
   font-size: 0.6875rem;
   font-weight: 600;
   border-radius: 999px;
@@ -58,8 +58,8 @@
 
 .selector__popup {
   position: fixed;
-  background: var(--surface, #161a22);
-  border: 1px solid var(--border, #262c38);
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 8px;
   z-index: 20;
 
@@ -83,7 +83,7 @@
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: var(--border, #262c38) transparent;
+  scrollbar-color: var(--border) transparent;
 }
 
 .selector__popup-list::-webkit-scrollbar {
@@ -91,6 +91,6 @@
 }
 
 .selector__popup-list::-webkit-scrollbar-thumb {
-  background: var(--border, #262c38);
+  background: var(--border);
   border-radius: 8px;
 }

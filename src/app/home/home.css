@@ -1,12 +1,4 @@
 :host {
-  --bg: #101318;
-  --surface: #161a22;
-  --fg: #e8eaf0;
-  --muted: #9aa3b2;
-  --border: #262c38;
-  --border-strong: #353c4a;
-  --good: #3dd68c;
-
   display: block;
   min-height: calc(100dvh - var(--nav-height));
   box-sizing: border-box;

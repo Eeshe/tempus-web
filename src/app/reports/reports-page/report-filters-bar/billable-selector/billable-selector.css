@@ -7,10 +7,10 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.875rem;
-  background: var(--bg, #101318);
-  border: 1px solid var(--border, #262c38);
+  background: var(--bg);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
-  color: var(--fg, #e8eaf0);
+  color: var(--fg);
   font-family: inherit;
   font-size: 0.875rem;
   font-weight: 500;
@@ -19,16 +19,16 @@
 }
 
 .billable:hover {
-  border-color: var(--border-strong, #353c4a);
+  border-color: var(--border-strong);
 }
 
 .billable:focus-visible {
-  outline: 2px solid var(--good, #3dd68c);
+  outline: 2px solid var(--good);
   outline-offset: 2px;
 }
 
 .billable--active .billable__icon {
-  color: var(--good, #3dd68c);
+  color: var(--good);
 }
 
 .billable__icon {

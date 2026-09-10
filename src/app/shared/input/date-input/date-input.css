@@ -12,31 +12,31 @@
   width: 100%;
   box-sizing: border-box;
   padding: 0.75rem 2.5rem 0.75rem 0.875rem;
-  background: var(--bg, #101318);
-  color: var(--fg, #e8eaf0);
+  background: var(--bg);
+  color: var(--fg);
   font-family: inherit;
   font-size: 0.9375rem;
-  border: 1px solid var(--border, #262c38);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   outline: none;
   transition: border-color 120ms ease, box-shadow 120ms ease;
 }
 
 .date-text::placeholder {
-  color: var(--muted, #9aa3b2);
+  color: var(--muted);
 }
 
 .date-text:hover:not(.invalid) {
-  border-color: var(--border-strong, #353c4a);
+  border-color: var(--border-strong);
 }
 
 .date-text:focus {
-  border-color: var(--border-strong, #353c4a);
+  border-color: var(--border-strong);
   box-shadow: 0 0 0 3px rgba(232, 234, 240, 0.06);
 }
 
 .date-text.invalid {
-  border-color: var(--bad, #f2555c);
+  border-color: var(--bad);
 }
 
 .date-text.invalid:focus {
@@ -56,13 +56,13 @@
   padding: 0;
   background: transparent;
   border: none;
-  color: var(--muted, #9aa3b2);
+  color: var(--muted);
   cursor: pointer;
   border-radius: 0.375rem;
 }
 
 .calendar-button:hover {
-  color: var(--fg, #e8eaf0);
+  color: var(--fg);
   background: rgba(232, 234, 240, 0.06);
 }
 

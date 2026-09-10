@@ -8,8 +8,8 @@ button {
   font-family: inherit;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--bg, #101318);
-  background: var(--good, #3dd68c);
+  color: var(--bg);
+  background: var(--good);
   border: none;
   border-radius: 5px;
   cursor: pointer;

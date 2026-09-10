@@ -153,5 +153,5 @@ app-time-input {
 }
 
 .time-entry__icon--delete:hover {
-  background-color: var(--danger);
+  background-color: var(--bad);
 }

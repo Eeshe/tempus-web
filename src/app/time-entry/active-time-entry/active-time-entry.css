@@ -1,13 +1,4 @@
 :host {
-  --bg: #101318;
-  --surface: #161a22;
-  --fg: #e8eaf0;
-  --muted: #9aa3b2;
-  --border: #262c38;
-  --border-strong: #353c4a;
-  --good: #3dd68c;
-  --danger: #e5534b;
-
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -90,7 +81,7 @@
 
 .active-entry__icon--stop {
   --icon: url('/icons/stop.svg');
-  background-color: var(--danger);
+  background-color: var(--bad);
 }
 
 .active-entry__icon--delete {
@@ -98,5 +89,5 @@
 }
 
 .active-entry__icon--delete:hover {
-  background-color: var(--danger);
+  background-color: var(--bad);
 }

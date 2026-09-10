@@ -1,12 +1,6 @@
 @import '../../shared/selector-shared.css';
 
 :host {
-  --surface: #161a22;
-  --fg: #e8eaf0;
-  --muted: #9aa3b2;
-  --border: #262c38;
-  --good: #3dd68c;
-
   display: inline-block;
   font-family: 'Inter', system-ui, sans-serif;
 }
