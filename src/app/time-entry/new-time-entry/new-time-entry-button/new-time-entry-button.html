@@ -1,5 +1,5 @@
 <button (click)="toggleNewTimeEntryFormModal()">New Time Entry</button>
 
 @if (isNewTimeEntryFormModalOpen()) {
-<app-new-time-entry-form-modal (modalCloseEvent)="toggleNewTimeEntryFormModal()"/>
+<app-new-time-entry-form-modal (closeEvent)="toggleNewTimeEntryFormModal()"/>
 }

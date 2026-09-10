@@ -14,5 +14,5 @@
 </div>
 
 @if (isCreateProjectFormOpen()) {
-<app-create-project-form (closeModalEvent)="toggleCreateProjectForm()" (projectCreateEvent)="addCreatedProject($event)"/>
+<app-create-project-form (closeEvent)="toggleCreateProjectForm()" (projectCreateEvent)="addCreatedProject($event)"/>
 }

@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ActiveTimeEntryComponent } from './active-time-entry';
+import { ActiveTimeEntry } from './active-time-entry';
 
-describe('ActiveTimeEntryComponent', () => {
-  let component: ActiveTimeEntryComponent;
-  let fixture: ComponentFixture<ActiveTimeEntryComponent>;
+describe('ActiveTimeEntry', () => {
+  let component: ActiveTimeEntry;
+  let fixture: ComponentFixture<ActiveTimeEntry>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ActiveTimeEntryComponent],
+      imports: [ActiveTimeEntry],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ActiveTimeEntryComponent);
+    fixture = TestBed.createComponent(ActiveTimeEntry);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

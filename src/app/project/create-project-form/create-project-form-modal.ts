@@ -4,6 +4,8 @@ import { form, FormField, required, submit } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import { Project } from '../../model/project.model';
 import { ProjectService } from '../../services/project.service';
+import { AppModal } from '../../shared/modal/modal';
+import { ModalBase } from '../../shared/modal-base';
 
 interface CreateProjectModel {
   name: string;
@@ -12,12 +14,12 @@ interface CreateProjectModel {
 }
 
 @Component({
-  imports: [FormField],
+  imports: [FormField, AppModal],
   selector: 'app-create-project-form',
   styleUrl: './create-project-form-modal.css',
   templateUrl: './create-project-form-modal.html',
 })
-export class CreateProjectFormModal {
+export class CreateProjectFormModal extends ModalBase {
   private readonly projectService: ProjectService = inject(ProjectService);
 
   readonly projectModel = signal<CreateProjectModel>({
@@ -30,12 +32,7 @@ export class CreateProjectFormModal {
     required(fieldPath.isPrivate);
   });
 
-  readonly closeModalEvent = output<void>();
   readonly projectCreateEvent = output<Project>();
-
-  close(): void {
-    this.closeModalEvent.emit();
-  }
 
   onSubmit(event: Event): void {
     event.preventDefault();

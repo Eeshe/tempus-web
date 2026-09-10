@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ProjectSelectorButton } from './project-selector-button';
+import { ProjectTaskSelectorButton } from './project-task-selector-button';
 
-describe('ProjectSelectorButton', () => {
-  let component: ProjectSelectorButton;
-  let fixture: ComponentFixture<ProjectSelectorButton>;
+describe('ProjectTaskSelectorButton', () => {
+  let component: ProjectTaskSelectorButton;
+  let fixture: ComponentFixture<ProjectTaskSelectorButton>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ProjectSelectorButton],
+      imports: [ProjectTaskSelectorButton],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ProjectSelectorButton);
+    fixture = TestBed.createComponent(ProjectTaskSelectorButton);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

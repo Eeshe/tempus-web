@@ -1,10 +1,12 @@
-import { Component, inject, output, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { form, FormField, required, submit, validate } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
 import { Project } from '../../../model/project.model';
 import { ProjectTaskSelectorButton } from '../../../project/project-selector-button/project-task-selector-button';
 import { DateInput } from '../../../shared/input/date-input/date-input';
 import { TimeInput } from '../../../shared/input/time-input/time-input';
+import { AppModal } from '../../../shared/modal/modal';
+import { ModalBase } from '../../../shared/modal-base';
 import { toHHmmTime } from '../../../shared/util/time.util';
 import { TimeEntry } from '../../models/time-entry.model';
 import { TimeEntryService } from '../../services/time-entry.service';
@@ -43,12 +45,12 @@ function isValidDate(date: string | null): boolean {
 }
 
 @Component({
-  imports: [FormField, ProjectTaskSelectorButton, TimeInput, DateInput],
+  imports: [FormField, ProjectTaskSelectorButton, TimeInput, DateInput, AppModal],
   selector: 'app-new-time-entry-form-modal',
   styleUrl: './new-time-entry-form-modal.css',
   templateUrl: './new-time-entry-form-modal.html',
 })
-export class NewTimeEntryFormModal {
+export class NewTimeEntryFormModal extends ModalBase {
   private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
   private readonly timeEntryStore: TimeEntryStore = inject(TimeEntryStore);
 
@@ -76,12 +78,6 @@ export class NewTimeEntryFormModal {
     validate(fieldPath.endTime, (ctx) =>
       ctx.value() === null || isValidTime(ctx.value()) ? null : { kind: 'timeFormat', message: 'Enter a valid time (HHmm)' });
   });
-
-  readonly modalCloseEvent = output<void>();
-
-  close(): void {
-    this.modalCloseEvent.emit();
-  }
 
   assignProject(project: Project): void {
     this.newTimeEntryModel.update(model => ({ ...model, project }));

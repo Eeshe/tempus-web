@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CreateProjectForm } from './create-project-form';
+import { CreateProjectFormModal } from './create-project-form-modal';
 
-describe('CreateProjectForm', () => {
-  let component: CreateProjectForm;
-  let fixture: ComponentFixture<CreateProjectForm>;
+describe('CreateProjectFormModal', () => {
+  let component: CreateProjectFormModal;
+  let fixture: ComponentFixture<CreateProjectFormModal>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CreateProjectForm],
+      imports: [CreateProjectFormModal],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(CreateProjectForm);
+    fixture = TestBed.createComponent(CreateProjectFormModal);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

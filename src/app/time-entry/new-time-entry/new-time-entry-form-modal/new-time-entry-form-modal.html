@@ -1,12 +1,5 @@
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" />
-
-<form class="backdrop" (submit)="onSubmit($event)" (click)="close()">
-  <div class="card" (click)="$event.stopPropagation()">
-    <div class="header">
-      <h1>New time entry</h1>
-      <button type="button" class="close" (click)="close()" aria-label="Close">&times;</button>
-    </div>
-
+<app-modal title="New time entry" (closeEvent)="close()">
+  <form (submit)="onSubmit($event)">
     <div class="row">
       <div class="field">
         <label for="description">Project</label>
@@ -100,5 +93,5 @@
       <button type="button" class="secondary" (click)="close()">Cancel</button>
       <button type="submit" [disabled]="newTimeEntryForm().invalid()">Create time entry</button>
     </div>
-  </div>
-</form>
+  </form>
+</app-modal>
