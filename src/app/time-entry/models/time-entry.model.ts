@@ -1,5 +1,5 @@
-import { Project } from "../../model/project.model";
-import { Task } from "../../model/task.model";
+import { Project } from "../../project/models/project.model";
+import { Task } from "../../task/models/task.model";
 
 export interface TimeEntry {
   id: number;

@@ -2,10 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, output, signal } from '@angular/core';
 import { form, FormField, required, submit } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
-import { Project } from '../../model/project.model';
 import { ProjectService } from '../../services/project.service';
 import { AppModal } from '../../shared/modal/modal';
-import { ModalBase } from '../../shared/modal-base';
+import { ModalBase } from '../../shared/modal/modal-base';
+import { Project } from '../models/project.model';
 
 interface CreateProjectModel {
   name: string;

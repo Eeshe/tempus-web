@@ -1,8 +1,8 @@
 import { formatDate } from "@angular/common";
 import { computed, inject, Service, Signal, signal } from "@angular/core";
-import { Project } from "../../model/project.model";
-import { Task } from "../../model/task.model";
+import { Project } from "../../project/models/project.model";
 import { computeDuration, Duration, durationFromMs, formatHHMMSSTime } from "../../shared/util/time.util";
+import { Task } from "../../task/models/task.model";
 import { TimeEntry } from "../models/time-entry.model";
 import { TimeEntryService } from "../services/time-entry.service";
 

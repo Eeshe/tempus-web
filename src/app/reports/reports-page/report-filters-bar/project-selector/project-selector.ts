@@ -1,7 +1,7 @@
 import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { Project } from '../../../../model/project.model';
+import { Project } from '../../../../project/models/project.model';
 import { ProjectService } from '../../../../services/project.service';
-import { PopupSelectorBase } from '../../../../shared/popup-selector-base';
+import { PopupSelectorBase } from '../../../../shared/selector/popup-selector-base';
 
 @Component({
   imports: [],

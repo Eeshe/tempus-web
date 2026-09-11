@@ -1,12 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
 import { form, FormField, required, submit, validate } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
-import { Project } from '../../../model/project.model';
+import { Project } from '../../../project/models/project.model';
 import { ProjectTaskSelectorButton } from '../../../project/project-selector-button/project-task-selector-button';
 import { DateInput } from '../../../shared/input/date-input/date-input';
 import { TimeInput } from '../../../shared/input/time-input/time-input';
 import { AppModal } from '../../../shared/modal/modal';
-import { ModalBase } from '../../../shared/modal-base';
+import { ModalBase } from '../../../shared/modal/modal-base';
 import { toHHmmTime } from '../../../shared/util/time.util';
 import { TimeEntry } from '../../models/time-entry.model';
 import { TimeEntryService } from '../../services/time-entry.service';

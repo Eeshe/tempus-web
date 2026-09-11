@@ -1,9 +1,9 @@
 import { Component, inject, input, output, signal } from '@angular/core';
-import { PopupSelectorBase } from '../../shared/popup-selector-base';
-import { Project } from '../../model/project.model';
-import { Task } from '../../model/task.model';
 import { ProjectService } from '../../services/project.service';
-import { CreateProjectFormModal } from '../create-project-form/create-project-form-modal';
+import { PopupSelectorBase } from '../../shared/selector/popup-selector-base';
+import { Task } from '../../task/models/task.model';
+import { CreateProjectFormModal } from '../create-project-form-modal/create-project-form-modal';
+import { Project } from '../models/project.model';
 
 @Component({
   imports: [CreateProjectFormModal],

@@ -3,9 +3,15 @@
        [class.modal__card--sm]="size() === 'sm'"
        [class.modal__card--md]="size() === 'md'"
        [class.modal__card--lg]="size() === 'lg'"
-       role="dialog" aria-modal="true" [attr.aria-label]="title()" (click)="$event.stopPropagation()">
+       role="dialog" aria-modal="true" [attr.aria-label]="ariaLabel() || title() || null" (click)="$event.stopPropagation()">
     <div class="modal__header">
-      <h1 class="modal__title">{{ title() }}</h1>
+      <h1 class="modal__title">
+        @if (title()) {
+          {{ title() }}
+        } @else {
+          <ng-content select="[modalTitle]" />
+        }
+      </h1>
       <button type="button" class="modal__close" (click)="close()" aria-label="Close">&times;</button>
     </div>
     <ng-content />

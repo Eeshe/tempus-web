@@ -1,4 +1,4 @@
-@import '../../shared/selector-shared.css';
+@import '../../shared/selector/selector-shared.css';
 
 :host {
   display: inline-block;

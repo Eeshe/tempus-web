@@ -1,5 +1,5 @@
 import { Component, ElementRef, input, output, signal, viewChild } from '@angular/core';
-import { PopupSelectorBase } from '../../../../shared/popup-selector-base';
+import { PopupSelectorBase } from '../../../../shared/selector/popup-selector-base';
 
 @Component({
   imports: [],

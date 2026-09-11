@@ -1,11 +1,8 @@
 <div class="details-container">
   <app-sortable-table
     [columns]="columns"
-    ,
     [rows]="projectReports()"
-    ,
     [trackBy]="trackBy"
-    ,
     [cellTemplates]="{
       project: projectCell,
       duration: durationCell,
@@ -14,7 +11,6 @@
       accumulatedPay: accumulatedPayCell,
     }"
     [clickable]="true"
-    ,
     (rowClickEvent)="openProjectModal($event.project)"
   >
     <ng-template #projectCell let-projectReport>
@@ -37,3 +33,7 @@
     </ng-template>
   </app-sortable-table>
 </div>
+
+@if (openModalProject() != null) {
+  <app-project-modal [project]="openModalProject()!" (closeEvent)="closeProjectModal()" (projectDeleteEvent)="closeProjectModal()"/>
+}

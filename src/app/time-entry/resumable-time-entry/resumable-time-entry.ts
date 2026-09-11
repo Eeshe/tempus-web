@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, input, linkedSignal } from '@angular/core';
-import { Project } from '../../model/project.model';
-import { Task } from '../../model/task.model';
+import { Project } from '../../project/models/project.model';
 import { ProjectTaskSelectorButton } from '../../project/project-selector-button/project-task-selector-button';
 import { TimeInput } from '../../shared/input/time-input/time-input';
 import { DurationPipe } from '../../shared/pipes/duration.pipe';
 import { fromHHmmTime, HHmmToMinutes, toHHmmTime } from '../../shared/util/time.util';
+import { Task } from '../../task/models/task.model';
 import { TimeEntry } from '../models/time-entry.model';
 import { TimeEntryStore } from '../stores/time-entry.store';
 import { TimeEntryBillableButton } from '../time-entry-billable-button/time-entry-billable-button';

@@ -1,0 +1,26 @@
+<app-modal size="lg" (closeEvent)="close()">
+  @if (!isEditingProjectName()) {
+    <div modalTitle>
+      <span>{{project().name}}</span>
+      <button (click)="startProjectNameEdit()">Edit</button>
+    </div>
+  } @else {
+    <app-inline-edit-input modalTitle [value]="project().name" (acceptEvent)="editProjectName($event)" (cancelEvent)="stopProjectNameEdit()"/>
+  }
+
+	<p>Client</p>
+	<p (click)="toggleClientModal()">N/A</p>
+  <div>
+    <app-task-list [tasks]="project().tasks" (taskEditEvent)="editProjectTask($event)" (taskDeleteEvent)="deleteProjectTask($event)"/>
+    <i>If you want to see task metrics, use the </i><a routerLink="/reports">Reports Page</a>
+  </div>
+	<button (click)="toggleDeleteConfirmationModal()">Delete</button>
+</app-modal>
+
+@if (isClientModalOpen()) {
+  <app-client-modal (closeEvent)="toggleClientModal()"/>
+}
+
+@if (isDeleteConfirmationModalOpen()) {
+<app-delete-confirmation-modal [toDeleteName]="project().name" (confirmationOptionSelectEvent)="handleDeleteConfirmation($event)" (closeEvent)="toggleDeleteConfirmationModal()"/>
+}

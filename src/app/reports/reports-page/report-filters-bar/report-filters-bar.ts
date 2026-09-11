@@ -1,7 +1,7 @@
 import { afterNextRender, Component, inject, output, signal } from '@angular/core';
-import { Project } from '../../../model/project.model';
-import { Task } from '../../../model/task.model';
+import { Project } from '../../../project/models/project.model';
 import { formatYYYYMMDDDate } from '../../../shared/util/date.util';
+import { Task } from '../../../task/models/task.model';
 import { Report } from '../../models/report.model';
 import { ReportService } from '../../services/report.service';
 import { BillableSelector } from './billable-selector/billable-selector';

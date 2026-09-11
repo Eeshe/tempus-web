@@ -1,8 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Service } from "@angular/core";
 import { Observable } from "rxjs";
-import { Project } from "../../model/project.model";
-import { Task } from "../../model/task.model";
+import { Project } from "../../project/models/project.model";
+import { Task } from "../../task/models/task.model";
 import { TimeEntry } from "../models/time-entry.model";
 
 interface CreateTimeEntryRequest {

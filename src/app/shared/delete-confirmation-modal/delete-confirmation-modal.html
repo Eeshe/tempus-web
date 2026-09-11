@@ -1,0 +1,4 @@
+<app-modal [title]="'Are you sure you want to delete ' + toDeleteName() + '?'" (closeEvent)="close()">
+	<button (click)="confirmationOptionSelectEvent.emit(false)">Cancel</button>
+	<button (click)="confirmationOptionSelectEvent.emit(true)">Delete</button>
+</app-modal>

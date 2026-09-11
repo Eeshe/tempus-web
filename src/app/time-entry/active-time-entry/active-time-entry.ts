@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, model } from '@angular/core';
 import { map } from 'rxjs';
-import { Project } from '../../model/project.model';
+import { Project } from '../../project/models/project.model';
 import { ProjectTaskSelectorButton } from '../../project/project-selector-button/project-task-selector-button';
 import { TimerService } from '../../shared/services/timer.service';
 import { durationFromMs, formatHHMMSSTime } from '../../shared/util/time.util';

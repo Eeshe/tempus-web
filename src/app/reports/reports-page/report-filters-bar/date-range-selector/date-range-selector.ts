@@ -1,6 +1,6 @@
 import { Component, input, output, signal } from '@angular/core';
-import { PopupSelectorBase } from '../../../../shared/popup-selector-base';
 import { DateInput } from '../../../../shared/input/date-input/date-input';
+import { PopupSelectorBase } from '../../../../shared/selector/popup-selector-base';
 import { formatYYYYMMDDDate } from '../../../../shared/util/date.util';
 
 @Component({

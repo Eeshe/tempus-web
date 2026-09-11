@@ -1,0 +1,21 @@
+<app-sortable-table [columns]="columns"
+                    [rows]="tasks()"
+                    [trackBy]="trackBy"
+                    [cellTemplates]="{
+                     task: taskCell
+    }"
+>
+	<ng-template #taskCell let-task>
+    @if (editedTask() == null) {
+      <p>{{ task.name }}</p>
+    } @else {
+      <app-inline-edit-input [value]="task.name" (acceptEvent)="editTaskName($event)" (cancelEvent)="stopEditingTaskName()"/>
+    }
+		<button (click)="editedTask.set(task)">Edit</button>
+		<button (click)="openDeleteConfirmationModal(task)">Delete</button>
+	</ng-template>
+</app-sortable-table>
+
+@if (deleteConfirmationModalTask() != null) {
+<app-delete-confirmation-modal [toDeleteName]="deleteConfirmationModalTask()!.name" (closeEvent)="closeDeleteConfirmationModal()" (confirmationOptionSelectEvent)="handleDeleteConfirmation($event)"/>
+}

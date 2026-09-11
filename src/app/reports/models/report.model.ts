@@ -1,4 +1,4 @@
-import { Project } from "../../model/project.model";
+import { Project } from "../../project/models/project.model";
 
 export interface ProjectReport {
   project: Project,
