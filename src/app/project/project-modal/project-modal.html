@@ -1,20 +1,28 @@
 <app-modal size="lg" (closeEvent)="close()">
   @if (!isEditingProjectName()) {
-    <div modalTitle>
-      <span>{{project().name}}</span>
-      <button (click)="startProjectNameEdit()">Edit</button>
+    <div modalTitle class="project-modal__title">
+      <span>{{ project().name }}</span>
+      <button type="button" class="project-modal__icon-button project-modal__edit-button" (click)="startProjectNameEdit()" aria-label="Edit project name" title="Edit">
+        <span class="project-modal__glyph project-modal__glyph--edit" aria-hidden="true"></span>
+      </button>
     </div>
   } @else {
     <app-inline-edit-input modalTitle [value]="project().name" (acceptEvent)="editProjectName($event)" (cancelEvent)="stopProjectNameEdit()"/>
   }
 
-	<p>Client</p>
-	<p (click)="toggleClientModal()">N/A</p>
-  <div>
-    <app-task-list [tasks]="project().tasks" (taskEditEvent)="editProjectTask($event)" (taskDeleteEvent)="deleteProjectTask($event)"/>
-    <i>If you want to see task metrics, use the </i><a routerLink="/reports">Reports Page</a>
+  <div class="project-modal__field">
+    <span class="project-modal__field-label">Client</span>
+    <button type="button" class="project-modal__field-value" (click)="toggleClientModal()">N/A</button>
   </div>
-	<button (click)="toggleDeleteConfirmationModal()">Delete</button>
+
+  <div class="project-modal__table">
+    <app-task-list [tasks]="project().tasks" (taskEditEvent)="editProjectTask($event)" (taskDeleteEvent)="deleteProjectTask($event)"/>
+  </div>
+  <p class="project-modal__table-footer"><i>If you want to see task metrics, use the <a routerLink="/reports">Reports Page</a>.</i></p>
+
+  <div class="project-modal__footer">
+    <button type="button" class="project-modal__delete-button" (click)="toggleDeleteConfirmationModal()">Delete</button>
+  </div>
 </app-modal>
 
 @if (isClientModalOpen()) {

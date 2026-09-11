@@ -1,0 +1,146 @@
+.project-modal__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.project-modal__icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: color 120ms ease, background 120ms ease;
+}
+
+.project-modal__icon-button:hover {
+  background: var(--bg);
+}
+
+.project-modal__edit-button:hover {
+  color: var(--good);
+}
+
+.project-modal__glyph {
+  display: block;
+  width: 1rem;
+  height: 1rem;
+  background-color: currentColor;
+  -webkit-mask: var(--icon) center/contain no-repeat;
+  mask: var(--icon) center/contain no-repeat;
+}
+
+.project-modal__glyph--edit {
+  --icon: url('/icons/edit.svg');
+}
+
+.project-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3125rem;
+  flex-shrink: 0;
+}
+
+.project-modal__field-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.project-modal__field-value {
+  padding: 0;
+  text-align: left;
+  background: transparent;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  transition: color 120ms ease;
+}
+
+.project-modal__field-value:hover {
+  color: var(--good);
+}
+
+.project-modal__table {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) transparent;
+}
+
+.project-modal__table::-webkit-scrollbar {
+  width: 6px;
+}
+
+.project-modal__table::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.project-modal__table::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 999px;
+}
+
+.project-modal__table:hover::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+}
+
+.project-modal__table-footer {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.project-modal__table-footer a {
+  color: var(--good);
+  text-decoration: none;
+}
+
+.project-modal__table-footer a:hover {
+  text-decoration: underline;
+}
+
+.project-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.project-modal__delete-button {
+  padding: 0.625rem 1.25rem;
+  background: var(--bad);
+  color: var(--bg);
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: filter 120ms ease;
+}
+
+.project-modal__delete-button:hover {
+  filter: brightness(0.9);
+}
+
+.project-modal__delete-button:focus-visible,
+.project-modal__icon-button:focus-visible {
+  outline: 2px solid var(--good);
+  outline-offset: 2px;
+}
