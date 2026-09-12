@@ -1,11 +1,13 @@
-import { Component, HostListener, input, output } from '@angular/core';
+import { Component, HostListener, input, OnDestroy, output } from '@angular/core';
+
+const openModals: AppModal[] = [];
 
 @Component({
   selector: 'app-modal',
   styleUrl: './modal.css',
   templateUrl: './modal.html',
 })
-export class AppModal {
+export class AppModal implements OnDestroy {
   readonly title = input<string>();
   readonly ariaLabel = input<string>();
   readonly size = input<'sm' | 'md' | 'lg'>('md');
@@ -14,9 +16,21 @@ export class AppModal {
 
   readonly closeEvent = output<void>();
 
+  constructor() {
+    openModals.push(this);
+  }
+
+  ngOnDestroy(): void {
+    const index: number = openModals.indexOf(this);
+    if (index === -1) {
+      return;
+    }
+    openModals.splice(index, 1);
+  }
+
   @HostListener('document:keydown.escape')
   onEscape(): void {
-    if (this.closeOnEscape()) {
+    if (this.closeOnEscape() && openModals[openModals.length - 1] === this) {
       this.closeEvent.emit();
     }
   }
