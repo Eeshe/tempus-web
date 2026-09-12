@@ -17,7 +17,7 @@
 }
 
 .time-group:hover {
-  background: rgba(232, 234, 240, 0.03);
+  background: var(--surface-hover);
   border-color: var(--border-strong);
 }
 

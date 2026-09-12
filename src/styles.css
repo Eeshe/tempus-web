@@ -9,6 +9,7 @@
   --bad: #f2555c;
   --bad-bg: rgba(242, 85, 92, 0.08);
   --good: #3dd68c;
+  --surface-hover: color-mix(in srgb, var(--fg) 3%, var(--surface));
 }
 
 html {
