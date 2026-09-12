@@ -28,11 +28,17 @@ export class AppModal implements OnDestroy {
     openModals.splice(index, 1);
   }
 
-  @HostListener('document:keydown.escape')
-  onEscape(): void {
-    if (this.closeOnEscape() && openModals[openModals.length - 1] === this) {
-      this.closeEvent.emit();
+  @HostListener('document:keydown.escape', ['$event'])
+  attemptClose(event: Event): void {
+    const isTopModal = openModals[openModals.length - 1] === this;
+    if (!this.closeOnEscape() || !isTopModal) {
+      return;
     }
+    if (event.target instanceof HTMLInputElement) {
+      (event.target as HTMLElement).blur();
+      return;
+    }
+    this.closeEvent.emit();
   }
 
   close(): void {
