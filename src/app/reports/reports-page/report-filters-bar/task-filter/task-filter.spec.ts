@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DateRangeSelector } from './date-range-selector';
+import { TaskFilter } from './task-filter';
 
-describe('DateRangeSelector', () => {
-  let component: DateRangeSelector;
-  let fixture: ComponentFixture<DateRangeSelector>;
+describe('TaskFilter', () => {
+  let component: TaskFilter;
+  let fixture: ComponentFixture<TaskFilter>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DateRangeSelector],
+      imports: [TaskFilter],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DateRangeSelector);
+    fixture = TestBed.createComponent(TaskFilter);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

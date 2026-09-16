@@ -5,14 +5,14 @@ import { formatYYYYMMDDDate } from '../../../shared/util/date.util';
 import { Task } from '../../../task/models/task.model';
 import { ProjectReport, Report } from '../../models/report.model';
 import { ReportService } from '../../services/report.service';
-import { BillableSelector } from './billable-selector/billable-selector';
-import { DateRangeSelector } from './date-range-selector/date-range-selector';
-import { DescriptionSelector } from './description-selector/description-selector';
+import { BillableFilter } from './billable-filter/billable-filter';
+import { DateRangeFilter } from './date-range-filter/date-range-filter';
+import { DescriptionFilter } from './description-filter/description-filter';
 import { ProjectFilter } from './project-filter/project-filter';
-import { TaskSelector } from './task-selector/task-selector';
+import { TaskFilter } from './task-filter/task-filter';
 
 @Component({
-  imports: [BillableSelector, DateRangeSelector, DescriptionSelector, ProjectFilter, TaskSelector],
+  imports: [BillableFilter, DateRangeFilter, DescriptionFilter, ProjectFilter, TaskFilter],
   selector: 'app-report-filters-bar',
   styleUrl: './report-filters-bar.css',
   templateUrl: './report-filters-bar.html',

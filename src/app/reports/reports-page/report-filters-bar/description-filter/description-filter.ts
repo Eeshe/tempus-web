@@ -3,11 +3,11 @@ import { PopupSelectorBase } from '../../../../shared/selector/popup-selector-ba
 
 @Component({
   imports: [],
-  selector: 'app-description-selector',
-  styleUrl: './description-selector.css',
-  templateUrl: './description-selector.html',
+  selector: 'app-description-filter',
+  styleUrl: './description-filter.css',
+  templateUrl: './description-filter.html',
 })
-export class DescriptionSelector extends PopupSelectorBase {
+export class DescriptionFilter extends PopupSelectorBase {
   private readonly descriptionInput = viewChild<ElementRef<HTMLInputElement>>('descriptionInput');
 
   readonly descriptions = input<string[]>([]);

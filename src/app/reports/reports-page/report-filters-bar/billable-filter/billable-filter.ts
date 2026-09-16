@@ -2,11 +2,11 @@ import { Component, input, output } from '@angular/core';
 
 @Component({
   imports: [],
-  selector: 'app-billable-selector',
-  styleUrl: './billable-selector.css',
-  templateUrl: './billable-selector.html',
+  selector: 'app-billable-filter',
+  styleUrl: './billable-filter.css',
+  templateUrl: './billable-filter.html',
 })
-export class BillableSelector {
+export class BillableFilter {
   readonly isBillable = input<boolean>(false);
 
   readonly isBillableChangeEvent = output<boolean>();

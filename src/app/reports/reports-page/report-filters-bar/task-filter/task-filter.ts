@@ -6,11 +6,11 @@ import { Task } from '../../../../task/models/task.model';
 
 @Component({
   imports: [],
-  selector: 'app-task-selector',
-  styleUrl: './task-selector.css',
-  templateUrl: './task-selector.html',
+  selector: 'app-task-filter',
+  styleUrl: './task-filter.css',
+  templateUrl: './task-filter.html',
 })
-export class TaskSelector extends PopupSelectorBase {
+export class TaskFilter extends PopupSelectorBase {
   private readonly projectService = inject(ProjectService);
 
   readonly selectedTasks = input<Task[]>([]);

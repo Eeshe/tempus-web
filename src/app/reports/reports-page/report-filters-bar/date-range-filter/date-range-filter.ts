@@ -5,11 +5,11 @@ import { formatYYYYMMDDDate } from '../../../../shared/util/date.util';
 
 @Component({
   imports: [DateInput],
-  selector: 'app-date-range-selector',
-  styleUrl: './date-range-selector.css',
-  templateUrl: './date-range-selector.html',
+  selector: 'app-date-range-filter',
+  styleUrl: './date-range-filter.css',
+  templateUrl: './date-range-filter.html',
 })
-export class DateRangeSelector extends PopupSelectorBase {
+export class DateRangeFilter extends PopupSelectorBase {
   readonly startDate = input<string | null>(null);
   readonly endDate = input<string | null>(null);
 

@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { DescriptionSelector } from './description-selector';
+import { DateRangeFilter } from './date-range-filter';
 
-describe('DescriptionSelector', () => {
-  let component: DescriptionSelector;
-  let fixture: ComponentFixture<DescriptionSelector>;
+describe('DateRangeFilter', () => {
+  let component: DateRangeFilter;
+  let fixture: ComponentFixture<DateRangeFilter>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DescriptionSelector],
+      imports: [DateRangeFilter],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DescriptionSelector);
+    fixture = TestBed.createComponent(DateRangeFilter);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
