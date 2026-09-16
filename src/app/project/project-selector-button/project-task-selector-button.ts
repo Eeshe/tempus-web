@@ -43,10 +43,12 @@ export class ProjectTaskSelectorButton extends ProjectPopupSelectorBase {
   addCreatedProject(newProject: Project): void {
     this.projects.update(projects => [...projects, newProject]);
     this.projectSelectEvent.emit(newProject);
+    this.toggle();
   }
 
   addCreatedTask(project: Project, task: Task): void {
     this.taskSelectEvent.emit({ newProject: project, newTask: task });
+    this.toggle();
   }
 
   toggleCreateProjectForm(): void {

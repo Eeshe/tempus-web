@@ -26,7 +26,7 @@ export class ReportFiltersBar {
   readonly tasks = signal<Task[]>([]);
   readonly clients = signal<Client[]>([]);
   readonly descriptions = signal<string[]>([]);
-  readonly isBillable = signal<boolean>(false);
+  readonly isBillable = signal<boolean | null>(null);
 
   readonly reportGenerateEvent = output<Report<ProjectReport>>();
 
@@ -62,7 +62,7 @@ export class ReportFiltersBar {
     this.generateReport();
   }
 
-  setBillable(isBillable: boolean): void {
+  setBillable(isBillable: boolean | null): void {
     this.isBillable.set(isBillable);
     this.generateReport();
   }

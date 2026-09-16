@@ -1,8 +1,8 @@
-<app-modal title="New time entry" (closeEvent)="close()">
+<app-modal title="New Time Entry" (closeEvent)="close()">
   <form (submit)="onSubmit($event)">
     <div class="row">
       <div class="field">
-        <label for="description">Project</label>
+        <label for="description">Project/Task</label>
         <app-project-task-selector-button [selectedProject]="newTimeEntryModel().project" [selectedTask]="newTimeEntryModel().task" (projectSelectEvent)="assignProject($event)" (taskSelectEvent)="assignTask($event.newProject, $event.newTask)"/>
       </div>
     </div>
