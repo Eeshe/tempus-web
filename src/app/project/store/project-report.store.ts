@@ -50,8 +50,13 @@ export class ProjectReportStore {
       this.replace(patchedProject));
   }
 
-  editProjectClient(project: Project, newClient: Client | null) {
+  editProjectClient(project: Project, newClient: Client | null): void {
     this.projectService.patchProjectClient(project, newClient).subscribe(patchedProject =>
+      this.replace(patchedProject));
+  }
+
+  editProjectHourlyRate(project: Project, newHourlyRate: number | null): void {
+    this.projectService.patchProjectHourlyRate(project, newHourlyRate).subscribe(patchedProject =>
       this.replace(patchedProject));
   }
 

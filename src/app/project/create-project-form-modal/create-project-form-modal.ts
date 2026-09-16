@@ -1,7 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, inject, output, signal } from '@angular/core';
-import { form, FormField, required, submit } from '@angular/forms/signals';
+import { form, FormField, min, required, submit } from '@angular/forms/signals';
 import { firstValueFrom } from 'rxjs';
+import { ClientSelectorButton } from '../../client/client-selector-button/client-selector-button';
+import { Client } from '../../client/models/client.model';
 import { ProjectService } from '../../services/project.service';
 import { AppModal } from '../../shared/modal/modal';
 import { ModalBase } from '../../shared/modal/modal-base';
@@ -10,11 +12,12 @@ import { Project } from '../models/project.model';
 interface CreateProjectModel {
   name: string;
   isPrivate: boolean;
-  clientId: number | null;
+  client: Client | null;
+  hourlyRate: number | null;
 }
 
 @Component({
-  imports: [FormField, AppModal],
+  imports: [FormField, AppModal, ClientSelectorButton],
   selector: 'app-create-project-form',
   styleUrl: './create-project-form-modal.css',
   templateUrl: './create-project-form-modal.html',
@@ -25,14 +28,23 @@ export class CreateProjectFormModal extends ModalBase {
   readonly projectModel = signal<CreateProjectModel>({
     name: "",
     isPrivate: true,
-    clientId: null,
+    client: null,
+    hourlyRate: null,
   });
   readonly projectForm = form(this.projectModel, (fieldPath) => {
     required(fieldPath.name, { message: "You must provide a project name" });
     required(fieldPath.isPrivate);
+    min(fieldPath.hourlyRate, 0, { message: "Hourly rate cannot be negative" });
   });
 
   readonly projectCreateEvent = output<Project>();
+
+  changeClient(client: Client | null): void {
+    this.projectModel.update(model => ({
+      ...model,
+      client: client,
+    }));
+  }
 
   onSubmit(event: Event): void {
     event.preventDefault();
@@ -42,7 +54,8 @@ export class CreateProjectFormModal extends ModalBase {
         const project: Project = await firstValueFrom(this.projectService.createProject(
           this.projectModel().name,
           this.projectModel().isPrivate,
-          this.projectModel().clientId
+          this.projectModel().client,
+          this.projectModel().hourlyRate
         ));
         this.projectCreateEvent.emit(project);
         this.close();

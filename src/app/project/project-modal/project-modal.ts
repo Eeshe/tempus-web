@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, inject, input, linkedSignal, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClientSelectorButton } from '../../client/client-selector-button/client-selector-button';
 import { Client } from '../../client/models/client.model';
@@ -33,6 +33,9 @@ export class ProjectModal extends ModalBase {
 
   readonly isEditingName = signal<boolean>(false);
   readonly isDeleteConfirmationModalOpen = signal<boolean>(false);
+  readonly hourlyRateDraft = linkedSignal<string>(() =>
+    this.project().hourlyRate?.toString() ?? '');
+  readonly hourlyRateError = signal<string | null>(null);
 
   startProjectNameEdit(): void {
     this.isEditingName.set(true);
@@ -49,6 +52,41 @@ export class ProjectModal extends ModalBase {
 
   editProjectClient(newClient: Client | null): void {
     this.projectReportStore.editProjectClient(this.project(), newClient);
+  }
+
+  updateHourlyRateDraft(event: Event): void {
+    this.hourlyRateDraft.set((event.target as HTMLInputElement).value);
+  }
+
+  commitHourlyRate(): void {
+    const raw = this.hourlyRateDraft().trim();
+    if (raw === '') {
+      this.hourlyRateError.set(null);
+      this.hourlyRateDraft.set(this.project().hourlyRate?.toString() ?? '');
+      return;
+    }
+    const parsed = Number(raw);
+    if (!Number.isFinite(parsed) || parsed < 0) {
+      this.hourlyRateError.set('Hourly rate cannot be negative');
+      return;
+    }
+    this.hourlyRateError.set(null);
+    if (parsed === this.project().hourlyRate) {
+      return;
+    }
+    this.projectReportStore.editProjectHourlyRate(this.project(), parsed);
+  }
+
+  acceptChanges(event: Event): void {
+    event.preventDefault();
+    (event.target as HTMLInputElement).blur();
+  }
+
+  discardChanges(event: Event): void {
+    event.preventDefault();
+    this.hourlyRateDraft.set(this.project().hourlyRate?.toString() ?? '');
+    this.hourlyRateError.set(null);
+    (event.target as HTMLInputElement).blur();
   }
 
   editProjectTask(task: Task): void {

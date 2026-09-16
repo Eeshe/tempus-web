@@ -72,6 +72,59 @@
   color: var(--good);
 }
 
+.project-modal__rate-input {
+  position: relative;
+  width: fit-content;
+}
+
+.project-modal__rate-prefix {
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.9375rem;
+  pointer-events: none;
+}
+
+.project-modal__rate-input input {
+  width: calc(4ch + 2.625rem);
+  box-sizing: border-box;
+  padding: 0.75rem 0.875rem 0.75rem 1.75rem;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 0.9375rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.project-modal__rate-input input:focus {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 3px rgba(232, 234, 240, 0.06);
+}
+
+.project-modal__rate-input input[type="number"]::-webkit-outer-spin-button,
+.project-modal__rate-input input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.project-modal__rate-input input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.project-modal__field:has(.project-modal__field-error) input {
+  border-color: var(--bad);
+}
+
+.project-modal__field-error {
+  font-size: 0.8rem;
+  color: var(--bad);
+}
+
 .project-modal__table {
   flex: 1 1 auto;
   min-height: 0;

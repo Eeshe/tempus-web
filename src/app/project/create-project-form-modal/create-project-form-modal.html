@@ -13,24 +13,42 @@
         }
       </div>
 
+      <div class="field">
+        <label for="hourlyRate">Hourly Rate</label>
+        <div class="input-group">
+          <span class="prefix" aria-hidden="true">$</span>
+          <input id="hourlyRate" type="number" step="0.01" inputmode="decimal"
+                 placeholder="0.00" [formField]="projectForm.hourlyRate" />
+        </div>
+        @if (projectForm.hourlyRate().invalid() && projectForm.hourlyRate().touched()) {
+          <div class="error">
+            @for (error of projectForm.hourlyRate().errors(); track error.kind) {
+              <span>{{ error.message }}</span>
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="clientId">Client</label>
+        <app-client-selector-button [selectedClient]="projectModel().client" (clientSelectEvent)="changeClient($event)"/>
+        @if (projectForm.client().invalid() && projectForm.client().touched()) {
+          <div class="error">
+            @for (error of projectForm.client().errors(); track error.kind) {
+              <span>{{ error.message }}</span>
+            }
+          </div>
+        }
+      </div>
+
       <div class="field checkbox-field">
         <label for="isPrivate">Private</label>
         <div class="control">
           <input id="isPrivate" type="checkbox" [formField]="projectForm.isPrivate" />
         </div>
       </div>
-    </div>
-
-    <div class="field">
-      <label for="clientId">Client ID</label>
-      <input id="clientId" type="number" [formField]="projectForm.clientId" />
-      @if (projectForm.clientId().invalid() && projectForm.clientId().touched()) {
-        <div class="error">
-          @for (error of projectForm.clientId().errors(); track error.kind) {
-            <span>{{ error.message }}</span>
-          }
-        </div>
-      }
     </div>
 
     @if (projectForm().errors().length > 0) {

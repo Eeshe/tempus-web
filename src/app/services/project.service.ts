@@ -8,12 +8,14 @@ interface CreateProjectRequest {
   name: string;
   isPrivate: boolean;
   clientId: number | null;
+  hourlyRate: number | null;
 }
 
 interface PatchProjectRequest {
   name: string | null;
   isPrivate: boolean | null;
   clientId: number | null;
+  hourlyRate: number | null;
 }
 
 @Service()
@@ -25,11 +27,13 @@ export class ProjectService {
     return this.http.get<Project[]>(this.url, { withCredentials: true });
   }
 
-  createProject(name: string, isPrivate: boolean, clientId: number | null): Observable<Project> {
+  createProject(name: string, isPrivate: boolean, client: Client | null, hourlyRate: number | null): Observable<Project> {
+    const clientId: number | null = client?.id ?? null;
     const createProjectRequest: CreateProjectRequest = {
       name: name,
       isPrivate: isPrivate,
       clientId: clientId,
+      hourlyRate: hourlyRate,
     };
     return this.http.post<Project>(this.url, createProjectRequest, { withCredentials: true });
   }
@@ -42,9 +46,16 @@ export class ProjectService {
   }
 
   patchProjectClient(project: Project, newClient: Client | null): Observable<Project> {
-    const clientId: number | null = newClient == null ? null : newClient.id;
+    const clientId: number | null = newClient?.id ?? null;
     const patchProjectRequest: Partial<PatchProjectRequest> = {
       clientId
+    }
+    return this.http.patch<Project>(`${this.url}/${project.id}`, patchProjectRequest, { withCredentials: true });
+  }
+
+  patchProjectHourlyRate(project: Project, newHourlyRate: number | null): Observable<Project> {
+    const patchProjectRequest: Partial<PatchProjectRequest> = {
+      hourlyRate: newHourlyRate,
     }
     return this.http.patch<Project>(`${this.url}/${project.id}`, patchProjectRequest, { withCredentials: true });
   }
