@@ -44,4 +44,14 @@ export class AppModal implements OnDestroy {
   close(): void {
     this.closeEvent.emit();
   }
+
+  onBackdropClick(event: MouseEvent): void {
+    if (event.target !== event.currentTarget) {
+      return;
+    }
+    if (!this.closeOnBackdropClick()) {
+      return;
+    }
+    this.close();
+  }
 }
