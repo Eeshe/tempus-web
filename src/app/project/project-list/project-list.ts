@@ -34,7 +34,7 @@ export class ProjectList {
       key: "client",
       label: "Client",
       align: "left",
-      sortValue: (projectReport) => projectReport.project.client.name,
+      sortValue: (projectReport) => projectReport.project.client?.name ?? "",
     },
     {
       key: "hourlyRate",

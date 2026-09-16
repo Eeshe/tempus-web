@@ -25,7 +25,7 @@ export class SortableTable<T> {
   readonly rowClickEvent = output<T>();
 
   readonly sortColumn = signal<string>('');
-  readonly sortDirection = signal<'asc' | 'desc'>('desc');
+  readonly sortDirection = signal<'asc' | 'desc'>('asc');
 
   readonly activeSortColumn = computed<string>(() => {
     const selected = this.sortColumn();
@@ -50,7 +50,7 @@ export class SortableTable<T> {
   toggleSort(newSortColumn: string): void {
     if (newSortColumn !== this.activeSortColumn()) {
       this.sortColumn.set(newSortColumn);
-      this.sortDirection.set('desc');
+      this.sortDirection.set('asc');
       return;
     }
     this.sortDirection.update((current) => (current === 'asc' ? 'desc' : 'asc'));
