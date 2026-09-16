@@ -1,5 +1,5 @@
 import { Component, signal } from '@angular/core';
-import { Report } from '../models/report.model';
+import { ProjectReport, Report } from '../models/report.model';
 import { ReportDetailsList } from './report-details-list/report-details-list';
 import { ReportFiltersBar } from './report-filters-bar/report-filters-bar';
 
@@ -10,8 +10,8 @@ import { ReportFiltersBar } from './report-filters-bar/report-filters-bar';
   templateUrl: './reports-page.html',
 })
 export class ReportsPage {
-  readonly currentReport = signal<Report>({
+  readonly currentReport = signal<Report<ProjectReport>>({
     totalTrackedTimeMillis: 0,
-    projectReportEntries: []
+    reportEntries: []
   });
 }

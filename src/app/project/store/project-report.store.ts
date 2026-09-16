@@ -1,5 +1,6 @@
 import { inject, Service, Signal, signal } from "@angular/core";
 import { forkJoin } from "rxjs";
+import { Client } from "../../client/models/client.model";
 import { ProjectReport } from "../../reports/models/report.model";
 import { ReportService } from "../../reports/services/report.service";
 import { ProjectService } from "../../services/project.service";
@@ -19,8 +20,8 @@ export class ProjectReportStore {
 
   load(): void {
     this.projectService.listProjects().subscribe(projects =>
-      forkJoin(projects.map(project => this.reportService.generateProjectReport(project))).subscribe(reports => {
-        let projectReports: ProjectReport[] = reports.flatMap(report => report.projectReportEntries);
+      forkJoin(projects.map(project => this.reportService.generateAllTimeProjectReportByProject(project))).subscribe(reports => {
+        let projectReports: ProjectReport[] = reports.flatMap(report => report.reportEntries);
         projectReports = this.populateMissingProjects(projects, projectReports);
 
         this._projectReports.set(projectReports);
@@ -46,6 +47,11 @@ export class ProjectReportStore {
 
   editProjectName(project: Project, newName: string): void {
     this.projectService.patchProjectName(project, newName).subscribe(patchedProject =>
+      this.replace(patchedProject));
+  }
+
+  editProjectClient(project: Project, newClient: Client | null) {
+    this.projectService.patchProjectClient(project, newClient).subscribe(patchedProject =>
       this.replace(patchedProject));
   }
 

@@ -1,4 +1,4 @@
-<button #triggerButton type="button" class="project-item" aria-haspopup="dialog" [attr.aria-expanded]="isOpen()" (click)="toggle()">{{formatDisplayText()}}</button>
+<button #triggerButton type="button" class="project-item" aria-haspopup="dialog" [attr.aria-expanded]="isOpen()" (click)="toggle()">{{displayText()}}</button>
 
 <div class="selector__popup" [class.selector__popup--open]="isOpen()"
      [style.top.px]="popupPosition().top" [style.left.px]="popupPosition().left">
@@ -13,6 +13,6 @@
   <button type="button" class="popup__new" (click)="toggleCreateProjectForm()">New Project</button>
 </div>
 
-@if (isCreateProjectFormOpen()) {
+@if (isCreateProjectFormModalOpen()) {
 <app-create-project-form (closeEvent)="toggleCreateProjectForm()" (projectCreateEvent)="addCreatedProject($event)"/>
 }

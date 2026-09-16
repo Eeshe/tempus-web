@@ -1,3 +1,4 @@
+import { Client } from "../../client/models/client.model";
 import { Project } from "../../project/models/project.model";
 
 export interface ProjectReport {
@@ -5,7 +6,12 @@ export interface ProjectReport {
   trackedTimeMillis: number
 }
 
-export interface Report {
+export interface ClientReport {
+  client: Client,
+  trackedTimeMillis: number
+}
+
+export interface Report<T> {
   totalTrackedTimeMillis: number,
-  projectReportEntries: ProjectReport[],
+  reportEntries: T[],
 }

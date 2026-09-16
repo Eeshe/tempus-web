@@ -1,4 +1,4 @@
-import { Component, inject, input, output, signal } from '@angular/core';
+import { Component, computed, inject, input, output, signal } from '@angular/core';
 import { ProjectService } from '../../services/project.service';
 import { PopupSelectorBase } from '../../shared/selector/popup-selector-base';
 import { Task } from '../../task/models/task.model';
@@ -16,14 +16,7 @@ export class ProjectTaskSelectorButton extends PopupSelectorBase {
 
   readonly selectedProject = input<Project | null>();
   readonly selectedTask = input<Task | null>();
-  readonly projects = signal<Project[]>([]);
-
-  readonly isCreateProjectFormOpen = signal<boolean>(false);
-
-  readonly projectSelectEvent = output<Project>();
-  readonly taskSelectEvent = output<{ newProject: Project, newTask: Task }>();
-
-  formatDisplayText(): string {
+  readonly displayText = computed<string>(() => {
     if (this.selectedProject() == null) {
       return "Select a Project";
     }
@@ -31,7 +24,14 @@ export class ProjectTaskSelectorButton extends PopupSelectorBase {
       return this.selectedProject()!.name;
     }
     return `${this.selectedProject()!.name}:${this.selectedTask()!.name}`;
-  }
+
+  });
+
+  readonly projects = signal<Project[]>([]);
+  readonly isCreateProjectFormModalOpen = signal<boolean>(false);
+
+  readonly projectSelectEvent = output<Project>();
+  readonly taskSelectEvent = output<{ newProject: Project, newTask: Task }>();
 
   protected override openPopup(): void {
     super.openPopup();
@@ -58,6 +58,6 @@ export class ProjectTaskSelectorButton extends PopupSelectorBase {
   }
 
   toggleCreateProjectForm(): void {
-    this.isCreateProjectFormOpen.update(value => !value);
+    this.isCreateProjectFormModalOpen.update(value => !value);
   }
 }

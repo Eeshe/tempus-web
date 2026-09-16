@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Service } from "@angular/core";
 import { Observable } from "rxjs";
+import { Client } from "../client/models/client.model";
 import { Project } from "../project/models/project.model";
 
 interface CreateProjectRequest {
@@ -36,6 +37,14 @@ export class ProjectService {
   patchProjectName(project: Project, newName: string): Observable<Project> {
     const patchProjectRequest: Partial<PatchProjectRequest> = {
       name: newName,
+    }
+    return this.http.patch<Project>(`${this.url}/${project.id}`, patchProjectRequest, { withCredentials: true });
+  }
+
+  patchProjectClient(project: Project, newClient: Client | null): Observable<Project> {
+    const clientId: number | null = newClient == null ? null : newClient.id;
+    const patchProjectRequest: Partial<PatchProjectRequest> = {
+      clientId
     }
     return this.http.patch<Project>(`${this.url}/${project.id}`, patchProjectRequest, { withCredentials: true });
   }

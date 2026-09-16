@@ -1,8 +1,9 @@
 import { afterNextRender, Component, inject, output, signal } from '@angular/core';
+import { Client } from '../../../client/models/client.model';
 import { Project } from '../../../project/models/project.model';
 import { formatYYYYMMDDDate } from '../../../shared/util/date.util';
 import { Task } from '../../../task/models/task.model';
-import { Report } from '../../models/report.model';
+import { ProjectReport, Report } from '../../models/report.model';
 import { ReportService } from '../../services/report.service';
 import { BillableSelector } from './billable-selector/billable-selector';
 import { DateRangeSelector } from './date-range-selector/date-range-selector';
@@ -23,10 +24,11 @@ export class ReportFiltersBar {
   readonly endDate = signal<string | null>(null);
   readonly projects = signal<Project[]>([]);
   readonly tasks = signal<Task[]>([]);
+  readonly clients = signal<Client[]>([]);
   readonly descriptions = signal<string[]>([]);
   readonly isBillable = signal<boolean>(false);
 
-  readonly reportGenerateEvent = output<Report>();
+  readonly reportGenerateEvent = output<Report<ProjectReport>>();
 
   constructor() {
     afterNextRender(() => {
@@ -69,11 +71,12 @@ export class ReportFiltersBar {
     if (this.startDate() == null || this.endDate() == null) {
       return;
     }
-    this.reportService.generateReport(
+    this.reportService.generateProjectReport(
       this.startDate()!,
       this.endDate()!,
       this.projects(),
       this.tasks(),
+      this.clients(),
       this.descriptions(),
       this.isBillable(),
     ).subscribe(report => {

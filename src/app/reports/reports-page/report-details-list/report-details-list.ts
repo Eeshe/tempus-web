@@ -11,7 +11,7 @@ import { ProjectReport, Report } from '../../models/report.model';
   templateUrl: './report-details-list.html',
 })
 export class ReportDetailsList {
-  readonly report = input.required<Report>();
+  readonly report = input.required<Report<ProjectReport>>();
 
   readonly columns: SortableColumn<ProjectReport>[] = [
     {

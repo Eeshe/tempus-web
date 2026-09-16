@@ -1,6 +1,7 @@
 import { Component, inject, input, output, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ClientModal } from '../../client/client-modal/client-modal';
+import { ClientSelectorButton } from '../../client/client-selector-button/client-selector-button';
+import { Client } from '../../client/models/client.model';
 import { DeleteConfirmationModal } from '../../shared/delete-confirmation-modal/delete-confirmation-modal';
 import { InlineEditInput } from '../../shared/input/inline-edit-input/inline-edit-input';
 import { AppModal } from '../../shared/modal/modal';
@@ -15,7 +16,7 @@ import { ProjectReportStore } from '../store/project-report.store';
     AppModal,
     RouterLink,
     InlineEditInput,
-    ClientModal,
+    ClientSelectorButton,
     TaskList,
     DeleteConfirmationModal
   ],
@@ -30,12 +31,11 @@ export class ProjectModal extends ModalBase {
 
   readonly projectDeleteEvent = output<void>();
 
-  readonly isEditingProjectName = signal<boolean>(false);
+  readonly isEditingName = signal<boolean>(false);
   readonly isDeleteConfirmationModalOpen = signal<boolean>(false);
-  readonly isClientModalOpen = signal<boolean>(false);
 
   startProjectNameEdit(): void {
-    this.isEditingProjectName.set(true);
+    this.isEditingName.set(true);
   }
 
   editProjectName(newName: string): void {
@@ -44,7 +44,19 @@ export class ProjectModal extends ModalBase {
   }
 
   stopProjectNameEdit(): void {
-    this.isEditingProjectName.set(false);
+    this.isEditingName.set(false);
+  }
+
+  editProjectClient(newClient: Client | null): void {
+    this.projectReportStore.editProjectClient(this.project(), newClient);
+  }
+
+  editProjectTask(task: Task): void {
+    this.projectReportStore.editProjectTask(this.project(), task);
+  }
+
+  deleteProjectTask(task: Task): void {
+    this.projectReportStore.deleteProjectTask(this.project(), task);
   }
 
   toggleDeleteConfirmationModal(): void {
@@ -57,17 +69,5 @@ export class ProjectModal extends ModalBase {
       this.projectDeleteEvent.emit();
     }
     this.toggleDeleteConfirmationModal();
-  }
-
-  toggleClientModal(): void {
-    this.isClientModalOpen.update(value => !value);
-  }
-
-  editProjectTask(task: Task): void {
-    this.projectReportStore.editProjectTask(this.project(), task);
-  }
-
-  deleteProjectTask(task: Task): void {
-    this.projectReportStore.deleteProjectTask(this.project(), task);
   }
 }

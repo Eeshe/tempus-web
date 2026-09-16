@@ -20,8 +20,7 @@
       {{ projectReport.trackedTimeMillis | msToHHMMSS }}
     </ng-template>
     <ng-template #clientCell let-projectReport>
-      <!-- TODO -->
-      {{ projectReport.project.clientId ?? '-' }}
+      {{ projectReport.project.client == null ? '-' : projectReport.project.client.name }}
     </ng-template>
     <ng-template #hourlyRateCell let-projectReport>
       {{ projectReport.project.hourlyRate ?? '-' }}

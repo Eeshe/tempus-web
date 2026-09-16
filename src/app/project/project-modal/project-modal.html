@@ -1,5 +1,5 @@
 <app-modal size="lg" (closeEvent)="close()">
-  @if (!isEditingProjectName()) {
+  @if (!isEditingName()) {
     <div modalTitle class="project-modal__title">
       <span>{{ project().name }}</span>
       <button type="button" class="project-modal__icon-button project-modal__edit-button" (click)="startProjectNameEdit()" aria-label="Edit project name" title="Edit">
@@ -12,7 +12,7 @@
 
   <div class="project-modal__field">
     <span class="project-modal__field-label">Client</span>
-    <button type="button" class="project-modal__field-value" (click)="toggleClientModal()">N/A</button>
+    <app-client-selector-button [selectedClient]="project().client" (clientSelectEvent)="editProjectClient($event)"/>
   </div>
 
   <div class="project-modal__table">
@@ -24,10 +24,6 @@
     <button type="button" class="project-modal__delete-button" (click)="toggleDeleteConfirmationModal()">Delete</button>
   </div>
 </app-modal>
-
-@if (isClientModalOpen()) {
-  <app-client-modal (closeEvent)="toggleClientModal()"/>
-}
 
 @if (isDeleteConfirmationModalOpen()) {
 <app-delete-confirmation-modal [toDeleteName]="project().name" (confirmationOptionSelectEvent)="handleDeleteConfirmation($event)" (closeEvent)="toggleDeleteConfirmationModal()"/>

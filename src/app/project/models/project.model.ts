@@ -1,3 +1,4 @@
+import { Client } from "../../client/models/client.model";
 import { Task } from "../../task/models/task.model";
 
 export interface Project {
@@ -7,6 +8,6 @@ export interface Project {
   isPrivate: boolean;
   hourlyRate: number;
   tasks: Task[],
-  clientId: number;
+  client: Client;
   createdAt: string;
 }

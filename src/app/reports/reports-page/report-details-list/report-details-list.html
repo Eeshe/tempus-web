@@ -5,7 +5,7 @@
 <div class="details-container">
   <app-sortable-table
     [columns]="columns"
-    [rows]="report().projectReportEntries"
+    [rows]="report().reportEntries"
     [trackBy]="trackBy"
     [cellTemplates]="{ project: projectCell, duration: durationCell }"
   >
