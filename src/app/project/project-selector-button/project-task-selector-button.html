@@ -4,11 +4,25 @@
      [style.top.px]="popupPosition().top" [style.left.px]="popupPosition().left">
   <div class="selector__popup-list">
     @for (project of projects(); track project.id) {
-      <button type="button" class="project-item" [attr.title]="project.name" (click)="changeTimeEntryProject(project)">{{ project.name }}</button>
-      @for (task of project.tasks; track task.id) {
-        <button type="button" class="task-item" [attr.title]="task.name" (click)="changeTimeEntryTask(project, task)">{{ task.name }}</button>
-      }
-      <button type="button" class="popup__new popup__new--task" (click)="setCreateTaskFormModalProject(project)">New Task</button>
+      <div class="project-group">
+        <div class="project-row">
+          <button type="button" class="project-item" [attr.title]="project.name" (click)="changeTimeEntryProject(project)">{{ project.name }}</button>
+          <button type="button" class="project-toggle"
+                  [class.project-toggle--expanded]="isProjectExpanded(project)"
+                  [attr.aria-expanded]="isProjectExpanded(project)"
+                  [attr.aria-label]="'Toggle tasks for ' + project.name"
+                  (click)="toggleProjectTasks(project)"></button>
+        </div>
+
+        @if (isProjectExpanded(project)) {
+          <div class="project-tasks">
+            @for (task of project.tasks; track task.id) {
+              <button type="button" class="task-item" [attr.title]="task.name" (click)="changeTimeEntryTask(project, task)">{{ task.name }}</button>
+            }
+            <button type="button" class="popup__new popup__new--task" (click)="setCreateTaskFormModalProject(project)">New Task</button>
+          </div>
+        }
+      </div>
     }
   </div>
   <button type="button" class="popup__new" (click)="toggleCreateProjectForm()">New Project</button>

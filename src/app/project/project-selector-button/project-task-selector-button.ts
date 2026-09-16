@@ -26,6 +26,7 @@ export class ProjectTaskSelectorButton extends ProjectPopupSelectorBase {
 
   readonly isCreateProjectFormModalOpen = signal<boolean>(false);
   readonly createTaskFormModalProject = signal<Project | null>(null);
+  readonly expandedProjectIds = signal<Set<number>>(new Set());
 
   readonly projectSelectEvent = output<Project>();
   readonly taskSelectEvent = output<{ newProject: Project, newTask: Task }>();
@@ -57,5 +58,21 @@ export class ProjectTaskSelectorButton extends ProjectPopupSelectorBase {
 
   setCreateTaskFormModalProject(project: Project | null): void {
     this.createTaskFormModalProject.set(project);
+  }
+
+  isProjectExpanded(project: Project): boolean {
+    return this.expandedProjectIds().has(project.id);
+  }
+
+  toggleProjectTasks(project: Project): void {
+    this.expandedProjectIds.update(ids => {
+      const next = new Set(ids);
+      if (next.has(project.id)) {
+        next.delete(project.id);
+      } else {
+        next.add(project.id);
+      }
+      return next;
+    });
   }
 }
