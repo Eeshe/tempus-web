@@ -1,6 +1,6 @@
 <div class="bar">
 	<app-date-range-selector [startDate]="startDate()" [endDate]="endDate()" (startDateChangeEvent)="setStartDate($event)" (endDateChangeEvent)="setEndDate($event)"/>
-	<app-project-selector [selectedProjects]="projects()" (selectedProjectsChangeEvent)="setProjects($event)"/>
+	<app-project-filter [selectedProjects]="projects()" (selectedProjectsChangeEvent)="setProjects($event)"/>
 	<app-task-selector [selectedTasks]="tasks()" [selectedProjects]="projects()" (selectedTasksChangeEvent)="setTasks($event)"/>
 	<app-description-selector [descriptions]="descriptions()" (descriptionsChangeEvent)="setDescriptions($event)"/>
 	<app-billable-selector [isBillable]="isBillable()" (isBillableChangeEvent)="setBillable($event)"/>

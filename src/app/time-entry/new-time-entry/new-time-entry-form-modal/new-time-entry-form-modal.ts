@@ -8,6 +8,7 @@ import { TimeInput } from '../../../shared/input/time-input/time-input';
 import { AppModal } from '../../../shared/modal/modal';
 import { ModalBase } from '../../../shared/modal/modal-base';
 import { toHHmmTime } from '../../../shared/util/time.util';
+import { Task } from '../../../task/models/task.model';
 import { TimeEntry } from '../../models/time-entry.model';
 import { TimeEntryService } from '../../services/time-entry.service';
 import { TimeEntryStore } from '../../stores/time-entry.store';
@@ -15,7 +16,7 @@ import { TimeEntryStore } from '../../stores/time-entry.store';
 interface NewTimeEntryModel {
   project: Project | null;
   description: string;
-  task: null;
+  task: Task | null;
   billable: boolean;
   startDate: string;
   startTime: string;
@@ -80,7 +81,11 @@ export class NewTimeEntryFormModal extends ModalBase {
   });
 
   assignProject(project: Project): void {
-    this.newTimeEntryModel.update(model => ({ ...model, project }));
+    this.newTimeEntryModel.update(model => ({ ...model, project, task: null, }));
+  }
+
+  assignTask(project: Project, task: Task | null): void {
+    this.newTimeEntryModel.update(model => ({ ...model, project, task }));
   }
 
   onSubmit(event: Event): void {

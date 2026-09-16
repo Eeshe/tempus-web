@@ -1,19 +1,17 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
-import { ProjectService } from '../../services/project.service';
-import { PopupSelectorBase } from '../../shared/selector/popup-selector-base';
+import { Component, computed, input, output, signal } from '@angular/core';
+import { CreateTaskFormModal } from '../../task/create-task-form-modal/create-task-form-modal';
 import { Task } from '../../task/models/task.model';
 import { CreateProjectFormModal } from '../create-project-form-modal/create-project-form-modal';
 import { Project } from '../models/project.model';
+import { ProjectPopupSelectorBase } from '../project-popup-selector-base';
 
 @Component({
-  imports: [CreateProjectFormModal],
+  imports: [CreateProjectFormModal, CreateTaskFormModal],
   selector: 'app-project-task-selector-button',
   styleUrl: './project-task-selector-button.css',
   templateUrl: './project-task-selector-button.html',
 })
-export class ProjectTaskSelectorButton extends PopupSelectorBase {
-  private readonly projectService: ProjectService = inject(ProjectService);
-
+export class ProjectTaskSelectorButton extends ProjectPopupSelectorBase {
   readonly selectedProject = input<Project | null>();
   readonly selectedTask = input<Task | null>();
   readonly displayText = computed<string>(() => {
@@ -24,23 +22,13 @@ export class ProjectTaskSelectorButton extends PopupSelectorBase {
       return this.selectedProject()!.name;
     }
     return `${this.selectedProject()!.name}:${this.selectedTask()!.name}`;
-
   });
 
-  readonly projects = signal<Project[]>([]);
   readonly isCreateProjectFormModalOpen = signal<boolean>(false);
+  readonly createTaskFormModalProject = signal<Project | null>(null);
 
   readonly projectSelectEvent = output<Project>();
   readonly taskSelectEvent = output<{ newProject: Project, newTask: Task }>();
-
-  protected override openPopup(): void {
-    super.openPopup();
-
-    this.projectService.listProjects().subscribe(
-      fetchedProjects => this.projects.set(fetchedProjects.sort((projectA, projectB) =>
-        projectA.name.localeCompare(projectB.name, undefined, { sensitivity: "base" })))
-    );
-  }
 
   changeTimeEntryProject(clickedProject: Project): void {
     this.projectSelectEvent.emit(clickedProject);
@@ -57,7 +45,15 @@ export class ProjectTaskSelectorButton extends PopupSelectorBase {
     this.projectSelectEvent.emit(newProject);
   }
 
+  addCreatedTask(project: Project, task: Task): void {
+    this.taskSelectEvent.emit({ newProject: project, newTask: task });
+  }
+
   toggleCreateProjectForm(): void {
     this.isCreateProjectFormModalOpen.update(value => !value);
+  }
+
+  setCreateTaskFormModalProject(project: Project | null): void {
+    this.createTaskFormModalProject.set(project);
   }
 }

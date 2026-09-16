@@ -18,7 +18,7 @@ interface CreateProjectModel {
 
 @Component({
   imports: [FormField, AppModal, ClientSelectorButton],
-  selector: 'app-create-project-form',
+  selector: 'app-create-project-form-modal',
   styleUrl: './create-project-form-modal.css',
   templateUrl: './create-project-form-modal.html',
 })

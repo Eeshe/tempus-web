@@ -8,11 +8,11 @@ import { ReportService } from '../../services/report.service';
 import { BillableSelector } from './billable-selector/billable-selector';
 import { DateRangeSelector } from './date-range-selector/date-range-selector';
 import { DescriptionSelector } from './description-selector/description-selector';
-import { ProjectSelector } from './project-selector/project-selector';
+import { ProjectFilter } from './project-filter/project-filter';
 import { TaskSelector } from './task-selector/task-selector';
 
 @Component({
-  imports: [BillableSelector, DateRangeSelector, DescriptionSelector, ProjectSelector, TaskSelector],
+  imports: [BillableSelector, DateRangeSelector, DescriptionSelector, ProjectFilter, TaskSelector],
   selector: 'app-report-filters-bar',
   styleUrl: './report-filters-bar.css',
   templateUrl: './report-filters-bar.html',
