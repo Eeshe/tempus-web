@@ -8,7 +8,7 @@
       @for (task of project.tasks; track task.id) {
         <button type="button" class="task-item" [attr.title]="task.name" (click)="changeTimeEntryTask(project, task)">{{ task.name }}</button>
       }
-      <button type="button" class="task-item" (click)="setCreateTaskFormModalProject(project)">New Task</button>
+      <button type="button" class="popup__new popup__new--task" (click)="setCreateTaskFormModalProject(project)">New Task</button>
     }
   </div>
   <button type="button" class="popup__new" (click)="toggleCreateProjectForm()">New Project</button>

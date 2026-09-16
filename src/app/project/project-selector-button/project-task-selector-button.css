@@ -50,7 +50,6 @@
 .project-item:focus-visible,
 .task-item:hover,
 .task-item:focus-visible {
-  text-decoration: underline;
   color: var(--good);
 }
 
@@ -83,4 +82,9 @@
 .popup__new:focus-visible {
   outline: 2px solid var(--good);
   outline-offset: 2px;
+}
+
+.popup__new--task {
+  padding: 0 0 0 1.25rem;
+  border-top: none;
 }
