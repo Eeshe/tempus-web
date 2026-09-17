@@ -1,8 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { ResumableTimeEntryGroup } from './resumable-time-entry-group';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TimeEntry } from '../models/time-entry.model';
+import { ResumableTimeEntryGroup } from './resumable-time-entry-group';
 
 describe('ResumableTimeEntryGroup', () => {
   let component: ResumableTimeEntryGroup;
@@ -12,7 +12,6 @@ describe('ResumableTimeEntryGroup', () => {
     {
       id: 1,
       userId: 1,
-      groupId: null,
       project: { id: 1, name: 'Tempus', userId: 1, isPrivate: false, hourlyRate: 0, tasks: [], clientId: 1, createdAt: '2026-01-01T00:00:00Z' },
       task: null,
       description: 'Test description',

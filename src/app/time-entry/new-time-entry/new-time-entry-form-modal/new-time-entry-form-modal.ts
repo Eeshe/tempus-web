@@ -95,7 +95,6 @@ export class NewTimeEntryFormModal extends ModalBase {
       try {
         const model = this.newTimeEntryModel();
         const createdTimeEntry: TimeEntry = await firstValueFrom(this.timeEntryService.createTimeEntry(
-          null,
           model.project!.id,
           null,
           model.description,

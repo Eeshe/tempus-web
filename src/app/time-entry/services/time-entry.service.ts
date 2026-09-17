@@ -7,7 +7,6 @@ import { TimeEntryPage } from "../models/time-entry-page.model";
 import { TimeEntry } from "../models/time-entry.model";
 
 interface CreateTimeEntryRequest {
-  groupId: number | null;
   projectId: number;
   taskId: number | null;
   description: string | null;
@@ -17,7 +16,6 @@ interface CreateTimeEntryRequest {
 }
 
 interface PatchTimeEntryRequest {
-  groupId: number
   userId: number
   projectId: number
   taskId: number | null,
@@ -42,7 +40,6 @@ export class TimeEntryService {
   }
 
   createTimeEntry(
-    groupId: number | null,
     projectId: number,
     taskId: number | null,
     description: string | null,
@@ -51,7 +48,6 @@ export class TimeEntryService {
     endTime: string | null
   ): Observable<TimeEntry> {
     const createRequest: CreateTimeEntryRequest = {
-      groupId,
       projectId,
       taskId,
       description,
@@ -64,7 +60,6 @@ export class TimeEntryService {
 
   resumeTimeEntry(timeEntry: TimeEntry): Observable<TimeEntry> {
     const createRequest: CreateTimeEntryRequest = {
-      groupId: timeEntry.groupId,
       projectId: timeEntry.project.id,
       taskId: timeEntry.task ? timeEntry.task.id : null,
       description: timeEntry.description,

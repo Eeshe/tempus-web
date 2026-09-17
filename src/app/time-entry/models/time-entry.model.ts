@@ -4,7 +4,6 @@ import { Task } from "../../task/models/task.model";
 export interface TimeEntry {
   id: number;
   userId: number;
-  groupId: number | null;
   project: Project;
   task: Task | null;
   description: string | null;
