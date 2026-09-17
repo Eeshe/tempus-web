@@ -1,8 +1,9 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { inject, Service } from "@angular/core";
 import { Observable } from "rxjs";
 import { Project } from "../../project/models/project.model";
 import { Task } from "../../task/models/task.model";
+import { TimeEntryPage } from "../models/time-entry-page.model";
 import { TimeEntry } from "../models/time-entry.model";
 
 interface CreateTimeEntryRequest {
@@ -31,8 +32,14 @@ export class TimeEntryService {
   private readonly url: string = "/api/v1/time-entries";
   private http: HttpClient = inject(HttpClient);
 
-  listTimeEntries(): Observable<TimeEntry[]> {
-    return this.http.get<TimeEntry[]>(this.url, { withCredentials: true });
+  listTimeEntries(cursor: string | null): Observable<TimeEntryPage> {
+    const params: HttpParams = new HttpParams()
+      .set("size", 10);
+    if (cursor != null) {
+      params.set("cursor", cursor);
+    }
+
+    return this.http.get<TimeEntryPage>(this.url, { params: params, withCredentials: true });
   }
 
   createTimeEntry(

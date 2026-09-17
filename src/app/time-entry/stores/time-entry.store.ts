@@ -3,6 +3,7 @@ import { computed, inject, Service, Signal, signal } from "@angular/core";
 import { Project } from "../../project/models/project.model";
 import { computeDuration, Duration, durationFromMs, formatHHMMSSTime } from "../../shared/util/time.util";
 import { Task } from "../../task/models/task.model";
+import { createEmptyTimeEntryPage, TimeEntryPage } from "../models/time-entry-page.model";
 import { TimeEntry } from "../models/time-entry.model";
 import { TimeEntryService } from "../services/time-entry.service";
 
@@ -18,15 +19,19 @@ export interface DayGroupedTimeEntries {
 export class TimeEntryStore {
   private readonly timeEntryService: TimeEntryService = inject(TimeEntryService);
 
-  private readonly _timeEntries = signal<TimeEntry[]>([]);
+  private readonly _timeEntryPage = signal<TimeEntryPage>(createEmptyTimeEntryPage());
 
+  readonly timeEntryPage: Signal<TimeEntryPage> = this._timeEntryPage.asReadonly();
   readonly timeEntries: Signal<TimeEntry[]> = computed(() => {
-    return this._timeEntries().sort((timeEntryA, timeEntryB) =>
+    return this.timeEntryPage().content.sort((timeEntryA, timeEntryB) =>
       timeEntryA.startTime.localeCompare(timeEntryB.startTime, undefined)).reverse()
   });
 
   readonly activeTimeEntries = computed<TimeEntry[]>(() => {
-    return this._timeEntries().filter(timeEntry => timeEntry.endTime === null);
+    if (this.timeEntryPage == null) {
+      return [];
+    }
+    return this.timeEntries().filter(timeEntry => timeEntry.endTime === null);
   });
 
   readonly dayGroupedTimeEntries = computed<DayGroupedTimeEntries[]>(() => this.groupTimeEntriesByDay());
@@ -88,9 +93,9 @@ export class TimeEntryStore {
     return date ? formatDate(date, 'EEEE, MMM d', 'en-US') : 'Unknown';
   }
 
-  load(): void {
-    this.timeEntryService.listTimeEntries().subscribe(timeEntries => {
-      this._timeEntries.set(timeEntries);
+  loadPage(cursor: string | null = null): void {
+    this.timeEntryService.listTimeEntries(cursor).subscribe(timeEntryPage => {
+      this._timeEntryPage.set(timeEntryPage);
     })
   }
 
@@ -101,7 +106,7 @@ export class TimeEntryStore {
   }
 
   add(timeEntry: TimeEntry): void {
-    this._timeEntries.update(timeEntries => [...timeEntries, timeEntry]);
+    this.loadPage(this._timeEntryPage().nextCursor);
   }
 
   stopActive(timeEntry: TimeEntry): void {
@@ -110,9 +115,10 @@ export class TimeEntryStore {
 
   delete(timeEntry: TimeEntry): void {
     this.timeEntryService.deleteTimeEntry(timeEntry).subscribe(() =>
-      this._timeEntries.update((timeEntries) =>
-        timeEntries.filter((oldTimeEntry) => oldTimeEntry.id !== timeEntry.id),
-      ));
+      this._timeEntryPage.update(timeEntryPage => ({
+        ...timeEntryPage,
+        content: timeEntryPage.content.filter(previousTimeEntry => previousTimeEntry.id !== timeEntry.id),
+      })));
   }
 
   patchDescription(timeEntry: TimeEntry, newDescription: string): void {
@@ -146,9 +152,13 @@ export class TimeEntryStore {
   }
 
   private replace(updatedTimeEntry: TimeEntry): void {
-    this._timeEntries.update((timeEntries) =>
-      timeEntries.map(timeEntry =>
+    this._timeEntryPage.update((timeEntryPage) =>
+    ({
+      ...timeEntryPage,
+      content: timeEntryPage.content.map(timeEntry =>
         timeEntry.id === updatedTimeEntry.id ?
-          updatedTimeEntry : timeEntry));
+          updatedTimeEntry : timeEntry)
+    })
+    );
   }
 }

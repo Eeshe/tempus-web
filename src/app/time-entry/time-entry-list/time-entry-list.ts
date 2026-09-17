@@ -1,26 +1,29 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject, Signal } from '@angular/core';
 import { map } from 'rxjs';
+import { PageNavigator } from '../../shared/pagination/page-navigator/page-navigator';
+import { PagedListBase } from '../../shared/pagination/paged-list-base';
 import { TimerService } from '../../shared/services/timer.service';
 import { computeDuration, durationFromMs, formatHHMMSSTime } from '../../shared/util/time.util';
 import { ActiveTimeEntry } from '../active-time-entry/active-time-entry';
+import { TimeEntryPage } from '../models/time-entry-page.model';
 import { TimeEntry } from '../models/time-entry.model';
 import { ResumableTimeEntryGroup } from '../resumable-time-entry-group/resumable-time-entry-group';
 import { DayGroupedTimeEntries, TimeEntryStore } from '../stores/time-entry.store';
 
 @Component({
-  imports: [ActiveTimeEntry, ResumableTimeEntryGroup, AsyncPipe],
+  imports: [ActiveTimeEntry, PageNavigator, ResumableTimeEntryGroup, AsyncPipe],
   selector: 'app-time-entry-list',
   styleUrl: './time-entry-list.css',
   templateUrl: './time-entry-list.html',
 })
-export class TimeEntryList {
+export class TimeEntryList extends PagedListBase {
   private readonly timeEntryStore: TimeEntryStore = inject(TimeEntryStore);
   private readonly timerService: TimerService = inject(TimerService);
 
-  readonly timeEntries: Signal<TimeEntry[]> = this.timeEntryStore.timeEntries;
+  readonly timeEntryPage: Signal<TimeEntryPage> = this.timeEntryStore.timeEntryPage;
   readonly activeTimeEntries: Signal<TimeEntry[]> = this.timeEntryStore.activeTimeEntries;
-  readonly dayGroupedTimeEntries = this.timeEntryStore.dayGroupedTimeEntries;
+  readonly dayGroupedTimeEntries: Signal<DayGroupedTimeEntries[]> = this.timeEntryStore.dayGroupedTimeEntries;
 
   readonly todayFormattedTime$ = this.timerService.oneSecondTick$.pipe(map(() => {
     const allTodayTimeEntries: TimeEntry[] = Array.from(this.dayGroupedTimeEntries()[0].allEntries.values()).flat();
@@ -34,7 +37,21 @@ export class TimeEntryList {
   }));
 
   constructor() {
-    this.timeEntryStore.load();
+    super();
+
+    this.timeEntryStore.loadPage();
+  }
+
+  override increasePage(): void {
+    this.timeEntryStore.loadPage(this.timeEntryPage().nextCursor);
+  }
+
+  override decreasePage(): void {
+    this.timeEntryStore.loadPage(this.timeEntryPage().previousCursor);
+  }
+
+  override updatePage(): void {
+
   }
 
   countTotalTimeEntries(map: Map<string, TimeEntry[]>): number {
