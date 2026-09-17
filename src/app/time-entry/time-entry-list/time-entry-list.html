@@ -3,7 +3,6 @@
 <br>
 }
 
-<app-page-navigator [page]="timeEntryPage()" (previousPageEvent)="decreasePage()" (nextPageEvent)="increasePage()"/>
 @for(dayGroup of dayGroupedTimeEntries(); track dayGroup.formattedDate) {
   @if(countTotalTimeEntries(dayGroup.endedEntries) > 0) {
     <section class="day">

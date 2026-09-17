@@ -33,12 +33,11 @@ export class TimeEntryService {
   private http: HttpClient = inject(HttpClient);
 
   listTimeEntries(cursor: string | null): Observable<TimeEntryPage> {
-    const params: HttpParams = new HttpParams()
-      .set("size", 10);
-    if (cursor != null) {
-      params.set("cursor", cursor);
-    }
+    let params: HttpParams = new HttpParams().set("size", 10);
 
+    if (cursor != null) {
+      params = params.set("cursor", cursor);
+    }
     return this.http.get<TimeEntryPage>(this.url, { params: params, withCredentials: true });
   }
 

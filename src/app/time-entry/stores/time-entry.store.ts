@@ -94,7 +94,9 @@ export class TimeEntryStore {
   }
 
   loadPage(cursor: string | null = null): void {
+    console.log("NEW CURSOR: " + cursor);
     this.timeEntryService.listTimeEntries(cursor).subscribe(timeEntryPage => {
+      console.log(timeEntryPage);
       this._timeEntryPage.set(timeEntryPage);
     })
   }
