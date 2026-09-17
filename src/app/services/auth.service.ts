@@ -1,38 +1,35 @@
 import { HttpClient } from "@angular/common/http";
-import { inject, Service } from "@angular/core";
-import { BehaviorSubject, catchError, map, Observable, of, tap } from "rxjs";
+import { inject, Service, Signal, signal } from "@angular/core";
+import { Observable, tap } from "rxjs";
 
 @Service()
 export class AuthService {
   private readonly http: HttpClient = inject(HttpClient);
-  private readonly authState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private readonly baseUrl = "/api/v1/auth";
 
-  isAuthenticated(): Observable<boolean> {
-    return this.http.get(`${this.baseUrl}/me`).pipe(
-      map(() => true),
-      catchError(() => of(false)),
-      tap(isAuthenticated => this.authState.next(isAuthenticated))
+  private readonly _isAuthenticated = signal<boolean>(false);
+
+  readonly isAuthenticated: Signal<boolean> = this._isAuthenticated.asReadonly();
+
+  register(username: string, password: string): Observable<void> {
+    return this.makePostRequest("register", username, password).pipe(
+      tap(() => this._isAuthenticated.set(true))
     );
   }
 
-  register(username: string, password: string) {
-    return this.makePostRequest("register", username, password);
-  }
-
-  login(username: string, password: string) {
+  login(username: string, password: string): Observable<void> {
     return this.makePostRequest("login", username, password).pipe(
-      tap(() => this.authState.next(true))
+      tap(() => this._isAuthenticated.set(true))
     );
   }
 
   logout(): Observable<void> {
     return this.http.post<void>(`${this.baseUrl}/logout`, {}, { withCredentials: true }).pipe(
-      tap(() => this.authState.next(false))
+      tap(() => this._isAuthenticated.set(false))
     );
   }
 
-  private makePostRequest(endpoint: string, username: string, password: string) {
-    return this.http.post(`${this.baseUrl}/${endpoint}`, { username, password });
+  private makePostRequest(endpoint: string, username: string, password: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/${endpoint}`, { username, password });
   }
 }
