@@ -33,7 +33,7 @@ export class TimeEntryService {
   private http: HttpClient = inject(HttpClient);
 
   listTimeEntries(cursor: string | null): Observable<TimeEntryPage> {
-    let params: HttpParams = new HttpParams().set("size", 10);
+    let params: HttpParams = new HttpParams().set("size", 50);
 
     if (cursor != null) {
       params = params.set("cursor", cursor);
