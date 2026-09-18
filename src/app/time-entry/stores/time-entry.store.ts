@@ -95,7 +95,6 @@ export class TimeEntryStore {
 
   loadPage(cursor: string | null = null): void {
     this.timeEntryService.listTimeEntries(cursor).subscribe(timeEntryPage => {
-      console.log(timeEntryPage);
       this._timeEntryPage.set(timeEntryPage);
     })
   }

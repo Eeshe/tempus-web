@@ -17,7 +17,7 @@ export const authErrorInterceptor: HttpInterceptorFn = (request, next) => {
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
       const isAuthRequest = request.url.startsWith(AUTH_BASE_URL);
-      const isSyncRequest = request.url.startsWith("api/v1/sync");
+      const isSyncRequest = request.url.startsWith("/api/v1/sync");
 
       if (error.status === 401 && !isAuthRequest && !isSyncRequest && router.url !== "/login") {
         authService.markUnauthenticated();

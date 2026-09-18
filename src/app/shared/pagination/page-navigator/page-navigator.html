@@ -8,7 +8,7 @@
   ></button>
   <span class="page-navigator__label">
     <span class="page-navigator__label-text">Page</span>
-    <span class="page-navigator__label-value">{{ page().page + 1 }}/{{ page().totalPages }}</span>
+    <span class="page-navigator__label-value">{{ page().page + 1 }}/{{ formattedTotalPages() }}</span>
   </span>
   <button
     class="page-navigator__button page-navigator__button--next"

@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { Page } from '../../models/page.model';
 
 @Component({
@@ -9,6 +9,8 @@ import { Page } from '../../models/page.model';
 })
 export class PageNavigator {
   readonly page = input.required<Page>();
+
+  readonly formattedTotalPages = computed<string>(() => Math.max(1, this.page().totalPages).toString());
 
   readonly previousPageEvent = output<void>();
   readonly nextPageEvent = output<void>();
