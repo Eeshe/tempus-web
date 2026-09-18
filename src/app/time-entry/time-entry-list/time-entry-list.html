@@ -1,6 +1,5 @@
 @for(activeTimeEntry of activeTimeEntries(); track activeTimeEntry.id) {
 <app-active-time-entry [activeTimeEntry]="activeTimeEntry"/>
-<br>
 }
 
 @for(dayGroup of dayGroupedTimeEntries(); track dayGroup.formattedDate) {
