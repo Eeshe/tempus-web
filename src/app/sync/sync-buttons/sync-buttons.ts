@@ -1,4 +1,4 @@
-import { afterNextRender, Component, computed, ElementRef, HostListener, inject, signal, viewChild } from '@angular/core';
+import { afterNextRender, Component, computed, HostListener, inject, signal } from '@angular/core';
 import { timer } from 'rxjs';
 import { PopupSelectorBase } from '../../shared/selector/popup-selector-base';
 import { SyncData } from '../model/sync-data.model';
@@ -12,7 +12,8 @@ import { SyncDataService } from '../service/sync-data.service';
 })
 export class SyncButtons extends PopupSelectorBase {
   private readonly syncDataService: SyncDataService = inject(SyncDataService);
-  private readonly popup = viewChild<ElementRef<HTMLDivElement>>('popup');
+
+  protected override readonly alignPopupRight: boolean = true;
 
   private isPinned: boolean = false;
   private closeTimer: ReturnType<typeof setTimeout> | null = null;
@@ -31,13 +32,15 @@ export class SyncButtons extends PopupSelectorBase {
   });
 
   readonly formattedLastImportTime = computed<string>(() =>
-    this.formatSnapshotTime(this.syncData()?.remoteSnapshotTime ?? null));
+    this.formatSnapshotTime(this.syncData()?.remoteSnapshotTime ?? null),
+  );
   readonly formattedLastExportTime = computed<string>(() =>
-    this.formatSnapshotTime(this.syncData()?.localSnapshotTime ?? null));
+    this.formatSnapshotTime(this.syncData()?.localSnapshotTime ?? null),
+  );
 
   private formatSnapshotTime(dateStr: string | null): string {
     if (dateStr == null) {
-      return "N/A";
+      return 'N/A';
     }
     const date: Date = new Date(dateStr);
     const now: Date = new Date();
@@ -52,32 +55,27 @@ export class SyncButtons extends PopupSelectorBase {
     yesterday.setDate(yesterday.getDate() - 1);
     const isYesterday: boolean = this.isSameDay(date, yesterday);
 
-    const dayLabel: string = isToday ? 'Today' : (isYesterday ? 'Yesterday' :
-      date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', }));
+    const dayLabel: string = isToday
+      ? 'Today'
+      : isYesterday
+        ? 'Yesterday'
+        : date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
     return `${dayLabel}, ${timeStr}`;
   }
 
   private isSameDay(a: Date, b: Date): boolean {
-    return a.getFullYear() === b.getFullYear() &&
+    return (
+      a.getFullYear() === b.getFullYear() &&
       a.getMonth() === b.getMonth() &&
-      a.getDate() === b.getDate();
+      a.getDate() === b.getDate()
+    );
   }
 
   constructor() {
     super();
 
     afterNextRender(() => timer(1000, 5000).subscribe(() => this.updateSyncData()));
-  }
-
-  protected override openPopup(): void {
-    const button: HTMLButtonElement | undefined = this.triggerButton()?.nativeElement;
-    if (!button) {
-      return;
-    }
-    const rect: DOMRect = button.getBoundingClientRect();
-    const width: number = this.popup()?.nativeElement.offsetWidth ?? 0;
-    this.popupPosition.set({ top: rect.bottom + 4, left: rect.right - width });
   }
 
   @HostListener('mouseenter')
@@ -149,6 +147,6 @@ export class SyncButtons extends PopupSelectorBase {
   }
 
   private updateSyncData(): void {
-    this.syncDataService.getSyncData().subscribe(syncData => this.syncData.set(syncData));
+    this.syncDataService.getSyncData().subscribe((syncData) => this.syncData.set(syncData));
   }
 }

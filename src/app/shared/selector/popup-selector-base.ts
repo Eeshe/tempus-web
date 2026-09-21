@@ -6,6 +6,8 @@ import { Directive, ElementRef, HostListener, inject, signal, viewChild } from '
 export abstract class PopupSelectorBase {
   protected readonly hostElement: ElementRef = inject(ElementRef);
   protected readonly triggerButton = viewChild<ElementRef<HTMLButtonElement>>('triggerButton');
+  protected readonly popup = viewChild<ElementRef<HTMLDivElement>>('popup');
+  protected readonly alignPopupRight: boolean = false;
 
   readonly isOpen = signal<boolean>(false);
   readonly popupPosition = signal<{ top: number; left: number }>({ top: 0, left: 0 });
@@ -23,7 +25,9 @@ export abstract class PopupSelectorBase {
       return;
     }
     const rect: DOMRect = button.getBoundingClientRect();
-    this.popupPosition.set({ top: rect.bottom + 4, left: rect.left });
+    const width: number = this.popup()?.nativeElement.offsetWidth ?? 0;
+    const left: number = this.alignPopupRight ? rect.right - width : rect.left;
+    this.popupPosition.set({ top: rect.bottom + 4, left });
   }
 
   @HostListener('document:click', ['$event'])

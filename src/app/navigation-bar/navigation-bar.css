@@ -31,7 +31,9 @@
   text-decoration: none;
   font-size: 0.875rem;
   font-weight: 500;
-  transition: background-color 120ms ease, color 120ms ease;
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
 }
 
 .nav__link:hover {
@@ -61,28 +63,4 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-}
-
-.nav__logout {
-  --icon: url('/icons/logout.svg');
-
-  display: flex;
-  width: 1.5rem;
-  height: 1.5rem;
-  padding: 0;
-  border: none;
-  background-color: var(--bad);
-  -webkit-mask: var(--icon) center/contain no-repeat;
-  mask: var(--icon) center/contain no-repeat;
-  cursor: pointer;
-  transition: background-color 120ms ease, transform 120ms ease;
-}
-
-.nav__logout:hover {
-  transform: scale(1.08);
-}
-
-.nav__logout:focus-visible {
-  outline: 2px solid var(--good);
-  outline-offset: 2px;
 }

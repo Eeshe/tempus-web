@@ -6,45 +6,52 @@ import { authGuard } from './guards/auth.guard';
 import { Home } from './home/home';
 import { ProjectsPage } from './project/projects-page/projects-page';
 import { ReportsPage } from './reports/reports-page/reports-page';
+import { SettingsPage } from './settings/settings-page/settings-page';
 
 export const routes: Routes = [
   {
-    path: "",
-    pathMatch: "full",
-    redirectTo: "home",
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'home',
   },
   {
-    path: "register",
-    title: "Register",
+    path: 'register',
+    title: 'Register',
     component: RegisterForm,
   },
   {
-    path: "login",
-    title: "Login",
+    path: 'login',
+    title: 'Login',
     component: LoginForm,
   },
   {
-    path: "home",
-    title: "Home",
+    path: 'home',
+    title: 'Home',
     component: Home,
     canActivate: [authGuard],
   },
   {
-    path: "reports",
-    title: "Reports",
+    path: 'reports',
+    title: 'Reports',
     component: ReportsPage,
     canActivate: [authGuard],
   },
   {
-    path: "projects",
-    title: "Projects",
+    path: 'projects',
+    title: 'Projects',
     component: ProjectsPage,
     canActivate: [authGuard],
   },
   {
-    path: "clients",
-    title: "Clients",
+    path: 'clients',
+    title: 'Clients',
     component: ClientsPage,
     canActivate: [authGuard],
-  }
+  },
+  {
+    path: 'settings',
+    title: 'Settings',
+    component: SettingsPage,
+    canActivate: [authGuard],
+  },
 ];
