@@ -1,7 +1,8 @@
-@for(activeTimeEntry of activeTimeEntries(); track activeTimeEntry.id) {
-<app-active-time-entry [activeTimeEntry]="activeTimeEntry"/>
-<br>
-}
+<div class="active-entries">
+  @for(activeTimeEntry of activeTimeEntries(); track activeTimeEntry.id) {
+  <app-active-time-entry [activeTimeEntry]="activeTimeEntry"/>
+  }
+</div>
 
 @for(dayGroup of dayGroupedTimeEntries(); track dayGroup.formattedDate) {
   @if(countTotalTimeEntries(dayGroup.endedEntries) > 0) {

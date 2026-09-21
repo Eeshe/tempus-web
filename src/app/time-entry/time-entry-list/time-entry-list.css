@@ -1,3 +1,9 @@
+.active-entries {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
 .day {
   display: flex;
   flex-direction: column;

@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject, Signal } from '@angular/core';
+import { Component, HostListener, inject, Signal } from '@angular/core';
 import { map } from 'rxjs';
 import { PageNavigator } from '../../shared/pagination/page-navigator/page-navigator';
 import { PagedListBase } from '../../shared/pagination/paged-list-base';
@@ -67,5 +67,17 @@ export class TimeEntryList extends PagedListBase {
 
   hasAtLeastOneEndedTimeEntry(timeEntries: TimeEntry[]): boolean {
     return timeEntries.some(timeEntry => timeEntry.endTime != null);
+  }
+
+  @HostListener("document:keydown.s")
+  stopFirstActiveTimeEntry(): void {
+    const activeElement: Element | null = document.activeElement;
+    if (activeElement instanceof HTMLInputElement) {
+      return;
+    }
+    if (this.activeTimeEntries().length == 0) {
+      return;
+    }
+    this.timeEntryStore.stopActive(this.activeTimeEntries()[0]);
   }
 }
