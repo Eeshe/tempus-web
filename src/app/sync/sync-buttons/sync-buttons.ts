@@ -81,7 +81,7 @@ export class SyncButtons extends PopupSelectorBase {
   @HostListener('mouseenter')
   onMouseEnter(): void {
     this.cancelClose();
-    if (!this.isOpen()) {
+    if (this.isOpen()) {
       return;
     }
     this.openPopup();
