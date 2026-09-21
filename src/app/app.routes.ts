@@ -6,6 +6,7 @@ import { authGuard } from './guards/auth.guard';
 import { Home } from './home/home';
 import { ProjectsPage } from './project/projects-page/projects-page';
 import { ReportsPage } from './reports/reports-page/reports-page';
+import { MigrationSettings } from './settings/migration-settings/migration-settings';
 import { SettingsPage } from './settings/settings-page/settings-page';
 
 export const routes: Routes = [
@@ -53,5 +54,17 @@ export const routes: Routes = [
     title: 'Settings',
     component: SettingsPage,
     canActivate: [authGuard],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: 'migration',
+      },
+      {
+        path: 'migration',
+        title: 'Migration',
+        component: MigrationSettings,
+      },
+    ],
   },
 ];

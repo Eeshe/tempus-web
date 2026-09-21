@@ -1,4 +1,18 @@
 <section class="settings">
-  <h1 class="settings__title">Settings</h1>
-  <p class="settings__hint">Settings will be available here soon.</p>
+  <aside class="settings__sidebar">
+    <nav class="settings__nav" aria-label="Settings sections">
+      @for (item of navItems; track item.route) {
+        <a
+          class="settings__nav-item"
+          [routerLink]="item.route"
+          routerLinkActive="settings__nav-item--active"
+          >{{ item.label }}</a
+        >
+      }
+    </nav>
+  </aside>
+
+  <div class="settings__content">
+    <router-outlet />
+  </div>
 </section>

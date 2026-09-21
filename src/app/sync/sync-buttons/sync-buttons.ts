@@ -93,7 +93,7 @@ export class SyncButtons extends PopupSelectorBase {
     if (this.isPinned) {
       return;
     }
-    this.closePopup();
+    this.cancelClose();
     this.closeTimer = setTimeout(() => this.closePopup(), 150);
   }
 
