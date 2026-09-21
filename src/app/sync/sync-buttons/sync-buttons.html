@@ -1,3 +1,40 @@
-<button class="sync-icon sync-icon--import" type="button" aria-label="Import" [title]="'Last import: ' + formattedLastImportTime()" [disabled]="!canImport()" (click)="triggerImport()"></button>
-<button class="sync-icon sync-icon--export" type="button" aria-label="Export" [title]="'Last export: ' + formattedLastExportTime()" [disabled]="canImport()" (click)="triggerExport()"></button>
+<button #triggerButton
+        type="button"
+        class="sync-trigger"
+        [class.sync-trigger--ready]="canImport()"
+        aria-label="Sync"
+        aria-haspopup="dialog"
+        [attr.aria-expanded]="isOpen()"
+        [class.sync-trigger--open]="isOpen()"
+        (click)="onTriggerClick()"
+></button>
 
+<div #popup
+     class="selector__popup sync__popup"
+     role="dialog"
+     aria-label="Sync actions"
+     [class.selector__popup--open]="isOpen()"
+     [style.top.px]="popupPosition().top"
+     [style.left.px]="popupPosition().left"
+>
+	<button type="button"
+	        class="sync-action sync-action--import"
+	        [class.sync-action--ready]="canImport()"
+	        [title]="'Last import: ' + formattedLastImportTime()"
+	        [disabled]="!canImport()"
+	        (click)="triggerImport()"
+	>
+		<span class="sync-action__icon sync-action__icon--import"></span>
+		<span class="sync-action__label">Import</span>
+	</button>
+
+	<button type="button"
+	        class="sync-action sync-action--export"
+	        [title]="'Last export: ' + formattedLastExportTime()"
+	        [disabled]="canImport()"
+	        (click)="triggerExport()"
+	>
+		<span class="sync-action__icon sync-action__icon--export"></span>
+		<span class="sync-action__label">Export</span>
+	</button>
+</div>

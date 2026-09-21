@@ -1,5 +1,6 @@
-import { afterNextRender, Component, computed, inject, signal } from '@angular/core';
+import { afterNextRender, Component, computed, ElementRef, HostListener, inject, signal, viewChild } from '@angular/core';
 import { timer } from 'rxjs';
+import { PopupSelectorBase } from '../../shared/selector/popup-selector-base';
 import { SyncData } from '../model/sync-data.model';
 import { SyncDataService } from '../service/sync-data.service';
 
@@ -9,8 +10,12 @@ import { SyncDataService } from '../service/sync-data.service';
   styleUrl: './sync-buttons.css',
   templateUrl: './sync-buttons.html',
 })
-export class SyncButtons {
+export class SyncButtons extends PopupSelectorBase {
   private readonly syncDataService: SyncDataService = inject(SyncDataService);
+  private readonly popup = viewChild<ElementRef<HTMLDivElement>>('popup');
+
+  private isPinned: boolean = false;
+  private closeTimer: ReturnType<typeof setTimeout> | null = null;
 
   readonly syncData = signal<SyncData | null>(null);
 
@@ -60,11 +65,80 @@ export class SyncButtons {
   }
 
   constructor() {
+    super();
+
     afterNextRender(() => timer(1000, 5000).subscribe(() => this.updateSyncData()));
   }
 
+  protected override openPopup(): void {
+    const button: HTMLButtonElement | undefined = this.triggerButton()?.nativeElement;
+    if (!button) {
+      return;
+    }
+    const rect: DOMRect = button.getBoundingClientRect();
+    const width: number = this.popup()?.nativeElement.offsetWidth ?? 0;
+    this.popupPosition.set({ top: rect.bottom + 4, left: rect.right - width });
+  }
+
+  @HostListener('mouseenter')
+  onMouseEnter(): void {
+    this.cancelClose();
+    if (!this.isOpen()) {
+      return;
+    }
+    this.openPopup();
+    this.isOpen.set(true);
+  }
+
+  @HostListener('mouseleave')
+  onMouseLeave(): void {
+    if (this.isPinned) {
+      return;
+    }
+    this.closePopup();
+    this.closeTimer = setTimeout(() => this.closePopup(), 150);
+  }
+
+  onTriggerClick(): void {
+    this.cancelClose();
+    if (this.isOpen() && this.isPinned) {
+      this.closePopup();
+      return;
+    }
+    if (!this.isOpen()) {
+      this.openPopup();
+      this.isOpen.set(true);
+    }
+    this.isPinned = true;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onOutsideClick(event: MouseEvent): void {
+    if (this.hostElement.nativeElement.contains(event.target)) {
+      return;
+    }
+    this.isPinned = false;
+    this.cancelClose();
+  }
+
+  private closePopup(): void {
+    this.isOpen.set(false);
+    this.isPinned = false;
+  }
+
+  private cancelClose(): void {
+    if (this.closeTimer == null) {
+      return;
+    }
+    clearTimeout(this.closeTimer);
+    this.closeTimer = null;
+  }
+
   triggerExport(): void {
-    this.syncDataService.triggerExport().subscribe(() => this.updateSyncData());
+    this.syncDataService.triggerExport().subscribe(() => {
+      this.updateSyncData();
+      this.closePopup();
+    });
   }
 
   triggerImport(): void {
