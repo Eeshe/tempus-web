@@ -15,9 +15,25 @@
   font-weight: 700;
 }
 
-.migration__option {
-  margin: 0;
-  color: var(--fg);
+.migration__import-button {
+  align-self: flex-start;
+  padding: 0.75rem 1rem;
+  background: var(--fg);
+  color: var(--bg);
+  border: none;
+  border-radius: 5px;
+  font-family: inherit;
   font-size: 0.9375rem;
   font-weight: 600;
+  cursor: pointer;
+  transition: opacity 120ms ease;
+}
+
+.migration__import-button:hover {
+  opacity: 0.88;
+}
+
+.migration__import-button:focus-visible {
+  outline: 2px solid var(--good);
+  outline-offset: 2px;
 }

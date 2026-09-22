@@ -8,7 +8,7 @@ const openModals: AppModal[] = [];
   templateUrl: './modal.html',
 })
 export class AppModal implements OnDestroy {
-  readonly title = input<string>();
+  readonly header = input<string>();
   readonly ariaLabel = input<string>();
   readonly size = input<'sm' | 'md' | 'lg'>('md');
   readonly closeOnBackdropClick = input<boolean>(true);

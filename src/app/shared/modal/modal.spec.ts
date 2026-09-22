@@ -1,17 +1,17 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, input } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppModal } from './modal';
 
 @Component({
   imports: [AppModal],
   template: `
-    <app-modal [title]="title()" [size]="size()" (closeEvent)="closeCount = closeCount + 1">
+    <app-modal [header]="header()" [size]="size()" (closeEvent)="closeCount = closeCount + 1">
       <div class="host-content">Projected body</div>
     </app-modal>
   `,
 })
 class ModalTestHost {
-  readonly title = input('Test dialog');
+  readonly header = input('Test dialog');
   readonly size = input<'sm' | 'md' | 'lg'>('md');
   closeCount = 0;
 }
@@ -30,11 +30,16 @@ describe('AppModal', () => {
     fixture.detectChanges();
   });
 
-  it('renders title and projected content', () => {
+  it('renders header and projected content', () => {
     const title = fixture.nativeElement.querySelector('.modal__title') as HTMLElement;
     const body = fixture.nativeElement.querySelector('.host-content') as HTMLElement;
     expect(title.textContent).toEqual('Test dialog');
     expect(body.textContent).toEqual('Projected body');
+  });
+
+  it('does not emit a native title attribute on the host', () => {
+    const modal = fixture.nativeElement.querySelector('app-modal') as HTMLElement;
+    expect(modal.hasAttribute('title')).toBe(false);
   });
 
   it('emits closeEvent when backdrop is clicked', () => {

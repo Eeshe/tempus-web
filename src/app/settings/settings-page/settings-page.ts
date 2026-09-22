@@ -13,7 +13,5 @@ interface SettingsNavItem {
   templateUrl: './settings-page.html',
 })
 export class SettingsPage {
-  readonly navItems: readonly SettingsNavItem[] = [
-    { label: 'Migration', route: 'migration' },
-  ];
+  readonly navItems: readonly SettingsNavItem[] = [{ label: 'Migration', route: 'migration' }];
 }
