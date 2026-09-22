@@ -1,5 +1,5 @@
 <div class="bar">
-	<app-date-range-filter [startDate]="startDate()" [endDate]="endDate()" (startDateChangeEvent)="setStartDate($event)" (endDateChangeEvent)="setEndDate($event)"/>
+	<app-date-range-filter [startDate]="startDate()" [endDate]="endDate()" (datesChangeEvent)="updateDates($event.startDate, $event.endDate)"/>
 	<app-project-filter [selectedProjects]="projects()" (selectedProjectsChangeEvent)="setProjects($event)"/>
 	<app-task-filter [selectedTasks]="tasks()" [selectedProjects]="projects()" (selectedTasksChangeEvent)="setTasks($event)"/>
 	<app-description-filter [descriptions]="descriptions()" (descriptionsChangeEvent)="setDescriptions($event)"/>

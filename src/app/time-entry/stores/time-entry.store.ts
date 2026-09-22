@@ -106,7 +106,7 @@ export class TimeEntryStore {
   }
 
   add(timeEntry: TimeEntry): void {
-    this.loadPage(this._timeEntryPage().nextCursor);
+    this.loadPage(this._timeEntryPage().currentCursor);
   }
 
   stopActive(timeEntry: TimeEntry): void {

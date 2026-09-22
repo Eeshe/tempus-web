@@ -1,6 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Service } from "@angular/core";
 import { Observable } from "rxjs";
+import { toInstantEnd, toInstantStart } from "../../shared/util/date.util";
 import { Client } from "../../client/models/client.model";
 import { Project } from "../../project/models/project.model";
 import { Task } from "../../task/models/task.model";
@@ -89,8 +90,8 @@ export class ReportService {
     const taskIds: number[] = tasks.map(task => task.id);
     const clientIds: number[] = clients.map(client => client.id);
     const reportRequest: ReportRequest = {
-      startDate,
-      endDate,
+      startDate: toInstantStart(startDate),
+      endDate: toInstantEnd(endDate),
       projectIds,
       taskIds,
       clientIds,

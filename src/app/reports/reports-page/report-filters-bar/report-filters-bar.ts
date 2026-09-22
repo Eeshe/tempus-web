@@ -31,19 +31,16 @@ export class ReportFiltersBar {
   readonly reportGenerateEvent = output<Report<ProjectReport>>();
 
   constructor() {
-    afterNextRender(() => {
-      this.setStartDate(formatYYYYMMDDDate(new Date()));
-      this.setEndDate(formatYYYYMMDDDate(new Date()));
-    });
+    afterNextRender(() => this.updateDates(
+      formatYYYYMMDDDate(new Date()),
+      formatYYYYMMDDDate(new Date())
+    ));
   }
 
-  setStartDate(value: string | null): void {
-    this.startDate.set(value);
-    this.generateReport();
-  }
+  updateDates(startDate: string | null, endDate: string | null): void {
+    this.startDate.set(startDate);
+    this.endDate.set(endDate);
 
-  setEndDate(value: string | null): void {
-    this.endDate.set(value);
     this.generateReport();
   }
 
@@ -80,6 +77,7 @@ export class ReportFiltersBar {
       this.descriptions(),
       this.isBillable(),
     ).subscribe(report => {
+      console.log(report);
       this.reportGenerateEvent.emit(report);
     });
   }

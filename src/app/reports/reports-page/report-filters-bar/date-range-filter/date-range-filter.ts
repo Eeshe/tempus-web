@@ -13,20 +13,19 @@ export class DateRangeFilter extends PopupSelectorBase {
   readonly startDate = input<string | null>(null);
   readonly endDate = input<string | null>(null);
 
-  readonly startDateChangeEvent = output<string | null>();
-  readonly endDateChangeEvent = output<string | null>();
+  readonly datesChangeEvent = output<{ startDate: string | null, endDate: string | null }>();
 
   readonly startDateInvalid = signal<boolean>(false);
   readonly endDateInvalid = signal<boolean>(false);
 
   onStartDateChange(value: string | null): void {
-    this.startDateChangeEvent.emit(value);
+    this.datesChangeEvent.emit({ startDate: value, endDate: this.endDate() });
 
     this.validateDates(value, this.endDate());
   }
 
   onEndDateChange(value: string | null): void {
-    this.endDateChangeEvent.emit(value);
+    this.datesChangeEvent.emit({ startDate: this.startDate(), endDate: value });
 
     this.validateDates(this.startDate(), value);
   }
@@ -97,8 +96,7 @@ export class DateRangeFilter extends PopupSelectorBase {
     const startStr: string = formatYYYYMMDDDate(start);
     const endStr: string = formatYYYYMMDDDate(end);
 
-    this.startDateChangeEvent.emit(startStr);
-    this.endDateChangeEvent.emit(endStr);
+    this.datesChangeEvent.emit({ startDate: startStr, endDate: endStr });
 
     this.validateDates(startStr, endStr);
   }
