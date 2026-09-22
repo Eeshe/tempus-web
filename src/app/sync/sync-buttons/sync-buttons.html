@@ -20,7 +20,7 @@
 	<button type="button"
 	        class="sync-action sync-action--import"
 	        [class.sync-action--ready]="canImport()"
-	        [title]="'Last import: ' + formattedLastImportTime()"
+	        [title]="'Current snapshot: ' + formattedLastImportTime()"
 	        [disabled]="!canImport()"
 	        (click)="triggerImport()"
 	>
