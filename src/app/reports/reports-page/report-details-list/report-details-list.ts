@@ -32,7 +32,19 @@ export class ReportDetailsList {
     return projectReport.project.id;
   }
 
-  readonly formattedTotalTrackedTime = computed(() => {
+  readonly formattedTotalTrackedTime = computed<string>(() => {
     return formatHHMMSSTime(durationFromMs(this.report().totalTrackedTimeMillis));
+  });
+
+  readonly formattedTotalBillableTrackedTime = computed<string>(() => {
+    return formatHHMMSSTime(durationFromMs(this.report().totalBillableTrackedTimeMillis));
+  });
+
+  readonly formattedTotalNonBillableTrackedTime = computed<string>(() => {
+    return formatHHMMSSTime(durationFromMs(this.report().totalNonBillableTrackedTimeMillis));
+  });
+
+  readonly formattedTotalAccumulatedPay = computed<string>(() => {
+    return this.report().totalAccumulatedPay.toFixed(2);
   });
 }

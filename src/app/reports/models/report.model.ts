@@ -13,5 +13,8 @@ export interface ClientReport {
 
 export interface Report<T> {
   totalTrackedTimeMillis: number,
+  totalBillableTrackedTimeMillis: number,
+  totalNonBillableTrackedTimeMillis: number,
+  totalAccumulatedPay: number,
   reportEntries: T[],
 }
