@@ -10,6 +10,9 @@
   --bad-bg: rgba(242, 85, 92, 0.08);
   --good: #3dd68c;
   --surface-hover: color-mix(in srgb, var(--fg) 3%, var(--surface));
+  --z-sticky-content: 10;
+  --z-nav: 100;
+  --z-modal: 1000;
 }
 
 html {
