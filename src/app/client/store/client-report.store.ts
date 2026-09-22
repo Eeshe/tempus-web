@@ -1,5 +1,4 @@
 import { inject, Service, Signal, signal } from "@angular/core";
-import { forkJoin } from "rxjs";
 import { ClientReport } from "../../reports/models/report.model";
 import { ReportService } from "../../reports/services/report.service";
 import { Client } from "../models/client.model";
@@ -16,13 +15,19 @@ export class ClientReportStore {
 
   load(): void {
     this.clientService.listClients().subscribe(clients =>
-      forkJoin(clients.map(client => this.reportService.generateAllTimeClientReportByClient(client))).subscribe(reports => {
-        let clientReports: ClientReport[] = reports.flatMap(report => report.reportEntries);
-        clientReports = this.populateMissingClients(clients, clientReports);
+      this.reportService.generateClientReport(
+        null,
+        null,
+        [],
+        [],
+        clients,
+        [],
+        null
+      ).subscribe(report => {
+        const clientReports: ClientReport[] = this.populateMissingClients(clients, report.reportEntries);
 
         this._clientReports.set(clientReports);
-      }
-      ));
+      }));
   }
 
   // Since ClientReports are based on time entries, clients with no tracked time won't be shown

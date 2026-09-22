@@ -1,5 +1,4 @@
 import { inject, Service, Signal, signal } from "@angular/core";
-import { forkJoin } from "rxjs";
 import { Client } from "../../client/models/client.model";
 import { ProjectReport } from "../../reports/models/report.model";
 import { ReportService } from "../../reports/services/report.service";
@@ -19,14 +18,20 @@ export class ProjectReportStore {
   readonly projectReports: Signal<ProjectReport[]> = this._projectReports.asReadonly();
 
   load(): void {
-    this.projectService.listProjects().subscribe(projects =>
-      forkJoin(projects.map(project => this.reportService.generateAllTimeProjectReportByProject(project))).subscribe(reports => {
-        let projectReports: ProjectReport[] = reports.flatMap(report => report.reportEntries);
-        projectReports = this.populateMissingProjects(projects, projectReports);
+    this.projectService.listProjects().subscribe(projects => this.reportService.generateProjectReport(
+      null,
+      null,
+      projects,
+      [],
+      [],
+      [],
+      null
+    ).subscribe(report => {
+      let projectReports: ProjectReport[] = report.reportEntries;
+      projectReports = this.populateMissingProjects(projects, projectReports);
 
-        this._projectReports.set(projectReports);
-      }
-      ));
+      this._projectReports.set(projectReports);
+    }));
   }
 
   // Since ProjectReports are based on time entries, projects with no tracked time won't be shown
